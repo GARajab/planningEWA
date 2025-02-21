@@ -1,0 +1,69 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Sign up Contracts</title>
+    {% load static %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'assets/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'signin.css' %}" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    
+<main class="form-signin">
+  <form method="POST">
+    {% csrf_token %}  
+    <img class="mb-4 text-center" src="{% static 'images/EWALogo.png' %}" alt="EWALogo" style="width:300px;">
+    <h1 class="h3 mb-3 fw-normal">Please Sign Up</h1>
+
+    <div class="form-floating">
+      <input type="text" class="form-control mt-4" name="username" placeholder="CPR">
+      <label for="username">CPR</label>
+    </div>
+    <div class="form-floating">
+      <input type="email" class="form-control mt-4" name="email" placeholder="Email">
+      <label for="email">Email</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control mt-4" name="password" placeholder="Password">
+      <label for="password">Password</label>
+    </div>
+
+ 
+    </div>
+    <button class="w-100 btn btn-lg btn-primary mt-4" type="submit">Sign up</button>
+     <div class="col-md-6 d-flex justify-content-center mt-4">
+    <a href="{% url 'signin' %}">You Have Account?</a>
+    </div>
+    <p class="mt-5 mb-3 text-muted mt-4">Mohamed Rajab</p>
+  </form>
+  {% for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
+</main>
+
+  </body>
+</html>
