@@ -1,0 +1,255 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
+  <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <style>
+    :root {
+      --main-color: #2ba8e0;
+      /* Define a variable for the color */
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--main-color);
+      display: flex;
+      flex-direction: column;
+      /* Stack elements vertically */
+      min-height: 100vh;
+      /* Ensure the body takes up the full viewport height */
+    }
+
+    .navbar {
+      background-color: #282c34;
+      padding: 15px;
+      /* Remove top and bottom padding */
+      width: 100%;
+      /* Ensure the navbar takes full width */
+    }
+
+    .navbar-nav {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-item {
+      margin: 0 20px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-size: 1.2em;
+    }
+
+    a {
+      position: relative;
+    }
+
+    .links::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      border-radius: 4px;
+      background-color: var(--main-color);
+      bottom: 0;
+      left: 0;
+      transform-origin: right;
+      transform: scaleX(0);
+      transition: transform .3s ease-in-out;
+    }
+
+    .links:hover {
+      color: var(--main-color);
+    }
+
+    .links:hover::before {
+      transform-origin: left;
+      transform: scaleX(1);
+    }
+
+    .center-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      /* Allow this section to take up remaining space */
+      flex-direction: column;
+      /* Stack elements vertically */
+      padding: 20px;
+      /* Add some padding */
+    }
+
+    .centerImg {
+      max-width: 100%;
+      /* Ensure the image doesn't overflow the screen */
+      max-height: 100%;
+      /* Ensure the image doesn't overflow the screen */
+    }
+
+    h1 {
+      margin-top: 20px;
+      /* Adjust spacing as needed */
+    }
+
+    h6 {
+      margin-top: 10px;
+      /* Adjust spacing as needed */
+      color: #E2201D;
+    }
+
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    /* Custom toast styles */
+    .toast {
+      border: none;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      opacity: 0.7;
+    }
+
+    .toast-header {
+      border-bottom: none;
+    }
+
+    .toast-body {
+      font-size: 1rem;
+
+    }
+  </style>
+  <script defer src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script defer type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+  <script defer src="{% static 'fontawsome/all.min.js' %}"></script>
+  <title>{% block title %}Default Title{% endblock %}</title>
+</head>
+
+<body>
+  <!-- Toast container -->
+  <div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+      <!-- Success Toast -->
+      <div id="successToast" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+          <strong class="me-auto">Success</strong>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          <!-- Message content will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Navbar at the top -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <div class="container-fluid">
+      <button data-mdb-collapse-init class="navbar-toggler" type="button" data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="schemes">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                Depot Schemes
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="#">2024</a></li>
+                <li><a class="dropdown-item" href="#">2025</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                LoadReading Schemes
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="#">2024</a></li>
+                <li><a class="dropdown-item" href="#">2025</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                Design In BP Stage
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="#">2024</a></li>
+                <li><a class="dropdown-item" href="#">2025</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+
+        <!-- User dropdown aligned to the right -->
+        <div class="d-flex align-items-center ms-auto"> <!-- ms-auto pushes it to the right -->
+          <div class="dropdown">
+            <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+              id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+              <img src="{% static 'images/user.jpeg' %}" class="rounded-circle" height="25"
+                alt="Black and White Portrait of a Man" loading="lazy" />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+              <li><a class="dropdown-item" href="#">Login</a></li>
+              <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {% if messages %}
+  {% for message in messages %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toastEl = document.getElementById('successToast');
+      const toastBody = toastEl.querySelector('.toast-body');
+      toastBody.textContent = '{{ message }}';  // Insert the message content
+      const toast = new bootstrap.Toast(toastEl);  // Initialize the toast
+      toast.show();  // Show the toast
+    });
+  </script>
+  {% endfor %}
+  {% endif %}
+  <!-- Centered content below the navbar -->
+  <div class="center-content">
+    {% block content %}
+    <!-- Content will be injected here -->
+    {% endblock %}
+  </div>
+</body>
+
+</html>
