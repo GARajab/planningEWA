@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}
+Home Page
+{% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
+{% if schemes %}
+<table id="example" class="table table-striped" style="width:1500px; text-align: center;">
+  <thead>
+    <tr>
+
+      <th>Scheme Refrence</th>
+      <th>Planning Status</th>
+      <th>Block Number</th>
+      <th>Substation Number</th>
+      <th>Transformer Number</th>
+      <th>Feeder Number</th>
+      <th>LVB Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for scheme in schemes %}
+    <tr>
+
+      <td>{{ scheme.REFRENCENUMBER }}</td>
+      <td>{{ scheme.PlanStatus }}</td>
+      <td>{{ scheme.BLOCKNUMBER }}</td>
+      <td>{{ scheme.SUBSTATIONNUMBER }}</td>
+      <td>{{ scheme.TX }}</td>
+      <td>{{ scheme.FEEDERNUMBER }}</td>
+      <td>{{ scheme.LVBNUMBER }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h1>No Data Available</h1>
+{% endif %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+<!-- DataTables Bootstrap 5 integration -->
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+<script>
+  new DataTable('#example');
+</script>
+{% endblock %}

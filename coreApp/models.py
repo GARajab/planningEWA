@@ -1,7 +1,8 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from mongoengine import Document, StringField, IntField, DateField, DecimalField
+from django.db import models  # type: ignore
+from django.contrib.auth.models import User  # type: ignore
+from django.db.models.signals import post_save  # type: ignore
+from django.dispatch import receiver  # type: ignore
 
 
 class Profile(models.Model):
@@ -21,3 +22,75 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+class Depot2024(Document):
+    REFRENCENUMBER = StringField(max_length=20)
+    DEPOT = StringField(max_length=100)
+    AREA_ENGINEER_NAME = StringField(max_length=100)
+    BLOCKNUMBER = StringField(max_length=20)
+    SUBSTATIONNUMBER = StringField(max_length=20)
+    TX = StringField(max_length=10)
+    FEEDERNUMBER = StringField(max_length=10)
+    LVBNUMBER = StringField(max_length=10)
+    TYPE = StringField(max_length=50)
+    WAYLEAVENUMBER = StringField(max_length=100)
+    USPDATE = DateField(null=True, blank=True)
+    PASSEDDATE = DateField(null=True, blank=True)
+    REMARKES = StringField(blank=True)
+    PlanStatus = StringField(max_length=50)
+    ConStatus = StringField(max_length=50)
+    GISDATE = DateField(null=True, blank=True)
+    RCCDATE = DateField(null=True, blank=True)
+    MSPDATE = DateField(null=True, blank=True)
+    labourcost = DecimalField(max_digits=10, decimal_places=3)
+    ministrycost = DecimalField(max_digits=10, decimal_places=3)
+    cable_length = DecimalField(max_digits=10, decimal_places=2)
+    Area = StringField(max_length=100, blank=True)
+    gov = StringField(max_length=100)
+    sentDate = DateField(null=True, blank=True)
+    noOfServ = IntField()
+    noOfFaults = IntField()
+    areaEngEmail = StringField(blank=True)
+    EngPhoneNumber = StringField(max_length=15, blank=True)
+    AreaOfAe = StringField(max_length=100)
+    totalcost = DecimalField(max_digits=10, decimal_places=3)
+
+    def __str__(self):
+        return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"
+
+
+class Depot2025(models.Model):
+    REFRENCENUMBER = models.CharField(max_length=20)
+    DEPOT = models.CharField(max_length=100)
+    AREA_ENGINEER_NAME = models.CharField(max_length=100)
+    BLOCKNUMBER = models.CharField(max_length=20)
+    SUBSTATIONNUMBER = models.CharField(max_length=20)
+    TX = models.CharField(max_length=10)
+    FEEDERNUMBER = models.CharField(max_length=10)
+    LVBNUMBER = models.CharField(max_length=10)
+    TYPE = models.CharField(max_length=50)  # e.g., "Replacement Only"
+    WAYLEAVENUMBER = models.CharField(max_length=100)
+    USPDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
+    PASSEDDATE = models.DateField(null=True, blank=True)
+    REMARKES = models.TextField(blank=True)
+    PlanStatus = models.CharField(max_length=50)
+    ConStatus = models.CharField(max_length=50)
+    GISDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
+    RCCDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
+    MSPDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
+    labourcost = models.DecimalField(max_digits=10, decimal_places=3)
+    ministrycost = models.DecimalField(max_digits=10, decimal_places=3)
+    cable_length = models.DecimalField(max_digits=10, decimal_places=2)
+    Area = models.CharField(max_length=100, blank=True)
+    gov = models.CharField(max_length=100)  # Governorate
+    sentDate = models.DateField(null=True, blank=True)  # Assuming this can be empty
+    noOfServ = models.IntegerField()
+    noOfFaults = models.IntegerField()
+    areaEngEmail = models.EmailField(blank=True)
+    EngPhoneNumber = models.CharField(max_length=15, blank=True)
+    AreaOfAe = models.CharField(max_length=100)
+    totalcost = models.DecimalField(max_digits=10, decimal_places=3)
+
+    def __str__(self):
+        return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"

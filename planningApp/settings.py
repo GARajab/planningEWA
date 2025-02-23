@@ -77,9 +77,18 @@ WSGI_APPLICATION = "planningApp.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR
+        / "db.sqlite3",  # Use a SQLite database for Django's auth system
     }
 }
+
+from pymongo import MongoClient
+
+uri = "mongodb+srv://garajab24:Rajab102030@webbasedapps.crz8f.mongodb.net/planning?retryWrites=true&w=majority"
+client = MongoClient(uri)
+db = client.planning
+COLLECTION = db.Depot2024
+print("Connected to MongoDB Atlas!")
 
 
 # Password validation
