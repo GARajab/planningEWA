@@ -5,8 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
-from .models import Depot2024
+from django.conf import settings
+from .db import (
+    COLLECTION_DEPOT2024,
+    COLLECTION_DEPOT2025,
+    COLLECTION_LR2024,
+    COLLECTION_LR2025,
+    COLLECTION_NC2024,
+)
 
 
 def signup_view(request):
@@ -96,16 +102,56 @@ def my_view(request):
         return HttpResponse(f"Error: {e}", status=500)
 
 
-from django.conf import settings
-
-
-collection = settings.COLLECTION  # Assuming COLLECTION is defined in your settings
-
-
 def depot24(request):
     if request.user.is_authenticated:
-        schemes = list(collection.find())  # Fetch all documents from the collection
+        schemes = list(
+            COLLECTION_DEPOT2024.find()
+        )  # Fetch all documents from the collection
         context = {"schemes": schemes}
         return render(request, "depot24.html", context)
+    else:
+        return redirect("signin")
+
+
+def depot25(request):
+    if request.user.is_authenticated:
+        schemes = list(
+            COLLECTION_DEPOT2025.find()
+        )  # Fetch all documents from the collection
+        context = {"schemes": schemes}
+        return render(request, "depot25.html", context)
+    else:
+        return redirect("signin")
+
+
+def lr24(request):
+    if request.user.is_authenticated:
+        schemes = list(
+            COLLECTION_LR2024.find()
+        )  # Fetch all documents from the collection
+        context = {"schemes": schemes}
+        return render(request, "depot24.html", context)
+    else:
+        return redirect("signin")
+
+
+def lr25(request):
+    if request.user.is_authenticated:
+        schemes = list(
+            COLLECTION_LR2025.find()
+        )  # Fetch all documents from the collection
+        context = {"schemes": schemes}
+        return render(request, "depot24.html", context)
+    else:
+        return redirect("signin")
+
+
+def nc24(request):
+    if request.user.is_authenticated:
+        schemes = list(
+            COLLECTION_NC2024.find()
+        )  # Fetch all documents from the collection
+        context = {"schemes": schemes}
+        return render(request, "nc2024.html", context)
     else:
         return redirect("signin")

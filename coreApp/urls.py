@@ -8,4 +8,8 @@ urlpatterns = [
     path("home/", views.home, name="home"),
     path("dbstatus/", views.my_view, name="my_view"),
     path("dep24/", views.depot24, name="depot24"),
+    path("dep25/", views.depot25, name="depot25"),
+    path("lr24/", views.lr24, name="lr24"),
+    path("lr25/", views.lr25, name="lr25"),
+    path("nc/", views.nc24, name="nc24"),
 ]

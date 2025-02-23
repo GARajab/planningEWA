@@ -60,7 +60,7 @@ class Depot2024(Document):
         return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"
 
 
-class Depot2025(models.Model):
+class Depot2025(Document):
     REFRENCENUMBER = models.CharField(max_length=20)
     DEPOT = models.CharField(max_length=100)
     AREA_ENGINEER_NAME = models.CharField(max_length=100)
@@ -94,3 +94,33 @@ class Depot2025(models.Model):
 
     def __str__(self):
         return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"
+
+
+from django.db import models
+from django.utils import timezone
+
+
+class BuildingPermit(Document):
+    Number = models.CharField(max_length=50, unique=True, verbose_name="Permit Number")
+    Stage = models.CharField(max_length=100, verbose_name="Stage")
+    Status = models.CharField(max_length=100, verbose_name="Status")
+    Area = models.CharField(max_length=100, verbose_name="Area")
+    Parcel_Number = models.CharField(max_length=50, verbose_name="Parcel Number")
+    Block = models.CharField(max_length=50, verbose_name="Block")
+    KW = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="KW")
+    KVA = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="KVA")
+    PlanEng = models.CharField(max_length=100, verbose_name="Plan Engineer")
+    Plan_Status = models.CharField(max_length=100, verbose_name="Plan Status")
+    PASSED_DATE = models.DateField(verbose_name="Passed Date")
+    TO_WL_DATE = models.DateField(verbose_name="To WL Date")
+    TO_GIS_DATE = models.DateField(verbose_name="To GIS Date")
+    WL_NUMBER = models.CharField(max_length=100, verbose_name="WL_NUMBER")
+    REF_NO = models.CharField(max_length=100, verbose_name="REF_NO")
+    comment = models.CharField(max_length=100, verbose_name="comment")
+
+    def __str__(self):
+        return self.number
+
+    class Meta:
+        verbose_name = "Building Permit"
+        verbose_name_plural = "Building Permits"

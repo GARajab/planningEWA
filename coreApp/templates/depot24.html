@@ -3,49 +3,202 @@
 Home Page
 {% endblock %}
 
-
 {% block content %}
-<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
-{% if schemes %}
-<table id="example" class="table table-striped" style="width:1500px; text-align: center;">
-  <thead>
-    <tr>
+<div class="container mt-4">
+  {% if schemes %}
+  <table id="depot24" class="table table-striped table-bordered" style="width:1400px; text-align: center;">
+    <thead>
+      <tr>
+        <th>Scheme Reference</th>
+        <th>Planning Status</th>
+        <th>Block Number</th>
+        <th>Substation Number</th>
+        <th>Transformer Number</th>
+        <th>Feeder Number</th>
+        <th>LVB Number</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for scheme in schemes %}
+      <tr>
+        <td>{{ scheme.REFRENCENUMBER }}</td>
+        <td>{{ scheme.PlanStatus }}</td>
+        <td>{{ scheme.BLOCKNUMBER }}</td>
+        <td>{{ scheme.SUBSTATIONNUMBER }}</td>
+        <td>{{ scheme.TX }}</td>
+        <td>{{ scheme.FEEDERNUMBER }}</td>
+        <td>{{ scheme.LVBNUMBER }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-1" onclick="viewRow('{{ scheme.REFRENCENUMBER }}')">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="btn btn-sm btn-warning me-1" onclick="editRow('{{ scheme.REFRENCENUMBER }}')">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRow('{{ scheme.REFRENCENUMBER }}')">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <h1>No Data Available</h1>
+  {% endif %}
+</div>
 
-      <th>Scheme Refrence</th>
-      <th>Planning Status</th>
-      <th>Block Number</th>
-      <th>Substation Number</th>
-      <th>Transformer Number</th>
-      <th>Feeder Number</th>
-      <th>LVB Number</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for scheme in schemes %}
-    <tr>
+<!-- Bootstrap Modals -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModalLabel">View Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Scheme Reference:</strong> <span id="viewRefrence"></span></p>
+        <p><strong>Planning Status:</strong> <span id="viewPlanStatus"></span></p>
+        <p><strong>Block Number:</strong> <span id="viewBlockNumber"></span></p>
+        <p><strong>Substation Number:</strong> <span id="viewSubstationNumber"></span></p>
+        <p><strong>Transformer Number:</strong> <span id="viewTransformerNumber"></span></p>
+        <p><strong>Feeder Number:</strong> <span id="viewFeederNumber"></span></p>
+        <p><strong>LVB Number:</strong> <span id="viewLVBNumber"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <td>{{ scheme.REFRENCENUMBER }}</td>
-      <td>{{ scheme.PlanStatus }}</td>
-      <td>{{ scheme.BLOCKNUMBER }}</td>
-      <td>{{ scheme.SUBSTATIONNUMBER }}</td>
-      <td>{{ scheme.TX }}</td>
-      <td>{{ scheme.FEEDERNUMBER }}</td>
-      <td>{{ scheme.LVBNUMBER }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<h1>No Data Available</h1>
-{% endif %}
-<!-- jQuery -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+          <div class="mb-3">
+            <label for="editRefrence" class="form-label">Scheme Reference</label>
+            <input type="text" class="form-control" id="editRefrence" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="editPlanStatus" class="form-label">Planning Status</label>
+            <input type="text" class="form-control" id="editPlanStatus">
+          </div>
+          <div class="mb-3">
+            <label for="editBlockNumber" class="form-label">Block Number</label>
+            <input type="text" class="form-control" id="editBlockNumber">
+          </div>
+          <div class="mb-3">
+            <label for="editSubstationNumber" class="form-label">Substation Number</label>
+            <input type="text" class="form-control" id="editSubstationNumber">
+          </div>
+          <div class="mb-3">
+            <label for="editTransformerNumber" class="form-label">Transformer Number</label>
+            <input type="text" class="form-control" id="editTransformerNumber">
+          </div>
+          <div class="mb-3">
+            <label for="editFeederNumber" class="form-label">Feeder Number</label>
+            <input type="text" class="form-control" id="editFeederNumber">
+          </div>
+          <div class="mb-3">
+            <label for="editLVBNumber" class="form-label">LVB Number</label>
+            <input type="text" class="form-control" id="editLVBNumber">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveChanges()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<!-- Bootstrap Bundle with Popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-<!-- DataTables Bootstrap 5 integration -->
-<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
-  new DataTable('#example');
+  $(document).ready(function () {
+    var table = $('#depot24').DataTable({
+
+    });
+
+    // View Row Function
+    window.viewRow = function (reference) {
+      table.rows().every(function () {
+        var data = this.data();
+        if (data[0] === reference) {
+          $('#viewRefrence').text(data[0]);
+          $('#viewPlanStatus').text(data[1]);
+          $('#viewBlockNumber').text(data[2]);
+          $('#viewSubstationNumber').text(data[3]);
+          $('#viewTransformerNumber').text(data[4]);
+          $('#viewFeederNumber').text(data[5]);
+          $('#viewLVBNumber').text(data[6]);
+          $('#viewModal').modal('show');
+          return false; // Exit the loop
+        }
+      });
+    };
+
+    // Edit Row Function
+    window.editRow = function (reference) {
+      table.rows().every(function () {
+        var data = this.data();
+        if (data[0] === reference) {
+          $('#editRefrence').val(data[0]);
+          $('#editPlanStatus').val(data[1]);
+          $('#editBlockNumber').val(data[2]);
+          $('#editSubstationNumber').val(data[3]);
+          $('#editTransformerNumber').val(data[4]);
+          $('#editFeederNumber').val(data[5]);
+          $('#editLVBNumber').val(data[6]);
+          $('#editModal').modal('show');
+          return false; // Exit the loop
+        }
+      });
+    };
+
+    // Save Changes Function
+    window.saveChanges = function () {
+      var reference = $('#editRefrence').val();
+      table.rows().every(function () {
+        var data = this.data();
+        if (data[0] === reference) {
+          data[1] = $('#editPlanStatus').val();
+          data[2] = $('#editBlockNumber').val();
+          data[3] = $('#editSubstationNumber').val();
+          data[4] = $('#editTransformerNumber').val();
+          data[5] = $('#editFeederNumber').val();
+          data[6] = $('#editLVBNumber').val();
+          this.data(data).draw();
+          return false; // Exit the loop
+        }
+      });
+      $('#editModal').modal('hide');
+    };
+
+    // Delete Row Function
+    window.deleteRow = function (reference) {
+      if (confirm('Are you sure you want to delete this row?')) {
+        table.rows().every(function () {
+          var data = this.data();
+          if (data[0] === reference) {
+            this.remove().draw();
+            return false; // Exit the loop
+          }
+        });
+      }
+    };
+  });
 </script>
 {% endblock %}
