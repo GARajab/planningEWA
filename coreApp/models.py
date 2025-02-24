@@ -24,6 +24,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class depotcases2024(models.Model):
+    id = models.AutoField(primary_key=True)
     REFRENCENUMBER = models.CharField(max_length=20)
     DEPOT = models.CharField(max_length=100)
     AREA_ENGINEER_NAME = models.CharField(max_length=100)

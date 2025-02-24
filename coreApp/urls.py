@@ -11,5 +11,5 @@ urlpatterns = [
     path("lr24/", views.lr24, name="lr24"),
     path("lr25/", views.lr25, name="lr25"),
     path("nc/", views.nc24, name="nc24"),
-    path("delete/<str:permit_id>/", views.delete_permit, name="delete_permit"),
+    path("delete/<str:permit_id>/", views.delete_depot24, name="delete_depot24"),
 ]

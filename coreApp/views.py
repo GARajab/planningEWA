@@ -72,9 +72,12 @@ import json  # To parse the BSON data into JSON
 def depot24(request):
     if request.user.is_authenticated:
         schemes = depotcases2024.objects.all()
-        # Fetch all documents from the collection
 
-        return render(request, "depot24.html", {"schemes": schemes})
+        return render(
+            request,
+            "depot24.html",
+            {"schemes": schemes, "is_admin": request.user.is_superuser},
+        )
     else:
         return redirect("signin")
 
@@ -159,13 +162,12 @@ def edit_permit(request):
     return JsonResponse({"status": "error"})
 
 
-@require_POST
-def delete_permit(request, permit_id):
-    # Fetch the permit by ID
-    permit = get_object_or_404(Permit, id=permit_id)
-
-    # Delete the permit
-    permit.delete()
-
-    # Redirect to the home page or any other page
-    return redirect("home")
+def delete_depot24(request, permit_id):
+    if request.method == "POST":
+        depot_case = get_object_or_404(depotcases2024, id=permit_id)
+        depot_case.delete()
+        messages.success(request, "Record Deleted Successfully.")
+        return redirect("depot24")
+    else:
+        messages.error(request, "Invalid request Record Not Deleted.")
+    return redirect("depot24")
