@@ -1,18 +1,15 @@
 # accounts/views.py
 from typing import Collection
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from .db import (
-    COLLECTION_DEPOT2024,
-    COLLECTION_DEPOT2025,
-    COLLECTION_LR2024,
-    COLLECTION_LR2025,
-    COLLECTION_NC2024,
-)
+from django.views.decorators.csrf import csrf_exempt
+from .models import depotcases2024, Depot2025, Permit
+
+from django.views.decorators.http import require_POST
 
 
 def signup_view(request):
@@ -72,52 +69,20 @@ from bson import json_util  # To handle MongoDB-specific data types like ObjectI
 import json  # To parse the BSON data into JSON
 
 
-def get_mongo_client():
-    uri = "mongodb+srv://garajab24:Rajab102030@webbasedapps.crz8f.mongodb.net/"
-    client = MongoClient(
-        uri, tlsAllowInvalidCertificates=True
-    )  # Disable SSL verification
-    return client
-
-
-def my_view(request):
-    try:
-        # Connect to MongoDB
-        client = get_mongo_client()
-
-        # Access the database (optional, just to confirm the connection)
-        db = client["planning"]  # Replace with your database name
-
-        # Print a success message to the console
-        print("DB Connected")
-
-        # Return an HTTP response (required for Django views)
-        return HttpResponse("DB Connected - Check server console for the message.")
-
-    except Exception as e:
-        # Print the error to the console
-        print(f"Error: {e}")
-
-        # Return an HTTP response with the error message
-        return HttpResponse(f"Error: {e}", status=500)
-
-
 def depot24(request):
     if request.user.is_authenticated:
-        schemes = list(
-            COLLECTION_DEPOT2024.find()
-        )  # Fetch all documents from the collection
-        context = {"schemes": schemes}
-        return render(request, "depot24.html", context)
+        schemes = depotcases2024.objects.all()
+        # Fetch all documents from the collection
+
+        return render(request, "depot24.html", {"schemes": schemes})
     else:
         return redirect("signin")
 
 
 def depot25(request):
     if request.user.is_authenticated:
-        schemes = list(
-            COLLECTION_DEPOT2025.find()
-        )  # Fetch all documents from the collection
+        schemes = Depot2025.objects.all()
+        # Fetch all documents from the collection
         context = {"schemes": schemes}
         return render(request, "depot25.html", context)
     else:
@@ -126,19 +91,17 @@ def depot25(request):
 
 def lr24(request):
     if request.user.is_authenticated:
-        schemes = list(
-            COLLECTION_LR2024.find()
-        )  # Fetch all documents from the collection
-        context = {"schemes": schemes}
-        return render(request, "depot24.html", context)
-    else:
+        # schemes = Depot2024.objects.all()  # Fetch all documents from the collection
+        # context = {"schemes": schemes}
+        # return render(request, "depot24.html", context)
+        # else:
         return redirect("signin")
 
 
 def lr25(request):
     if request.user.is_authenticated:
         schemes = list(
-            COLLECTION_LR2025.find()
+            # COLLECTION_LR2025.find()
         )  # Fetch all documents from the collection
         context = {"schemes": schemes}
         return render(request, "depot24.html", context)
@@ -148,10 +111,61 @@ def lr25(request):
 
 def nc24(request):
     if request.user.is_authenticated:
-        schemes = list(
-            COLLECTION_NC2024.find()
-        )  # Fetch all documents from the collection
+        schemes = Permit.objects.all()
         context = {"schemes": schemes}
         return render(request, "nc2024.html", context)
     else:
         return redirect("signin")
+
+
+def get_permit(request, permit_id):
+    permit = get_object_or_404(Permit, id=permit_id)
+    data = {
+        "id": permit.id,
+        "Number": permit.Number,
+        "REF_NO": permit.REF_NO,
+        "TO_WL_DATE": permit.TO_WL_DATE,
+        "Block": permit.Block,
+        "KW": permit.KW,
+        "KVA": permit.KVA,
+        "TO_GIS_DATE ": permit.TO_GIS_DATE,
+        "Plan_Status": permit.Plan_Status,
+        "PASSED_DATE": permit.PASSED_DATE.strftime(
+            "%Y-%m-%d"
+        ),  # Format date for input field
+    }
+    return JsonResponse(data)
+
+
+@csrf_exempt
+def edit_permit(request):
+    if request.method == "POST":
+        permit_id = request.POST.get("permitId")
+        permit = get_object_or_404(Permit, id=permit_id)
+
+        # Update the permit object with form data
+        permit.Number = request.POST.get("Number")
+        permit.REF_NO = request.POST.get("REF_NO")
+        permit.TO_WL_DATE = request.POST.get("TO_WL_DATE")
+        permit.Block = request.POST.get("Block")
+        permit.KW = request.POST.get("KW")
+        permit.KVA = request.POST.get("KVA")
+        permit.TO_GIS_DATE = request.POST.get("TO_GIS_DATE")
+        permit.Plan_Status = request.POST.get("Plan_Status")
+        permit.PASSED_DATE = request.POST.get("PASSED_DATE")
+        permit.save()
+
+        return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "error"})
+
+
+@require_POST
+def delete_permit(request, permit_id):
+    # Fetch the permit by ID
+    permit = get_object_or_404(Permit, id=permit_id)
+
+    # Delete the permit
+    permit.delete()
+
+    # Redirect to the home page or any other page
+    return redirect("home")

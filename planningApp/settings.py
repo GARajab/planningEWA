@@ -76,17 +76,26 @@ WSGI_APPLICATION = "planningApp.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR
-        / "db.sqlite3",  # Use a SQLite database for Django's auth system
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "defaultdb",  # Database name from Aiven
+        "USER": "avnadmin",  # Username from Aiven
+        "PASSWORD": "AVNS_n5QucdaEBLuejT7yqNA",  # Password from Aiven
+        "HOST": "pg-177ad353-planningweb.l.aivencloud.com",  # Hostname from Aiven
+        "PORT": "16115",  # Port from Aiven (default is 5432)
+        "OPTIONS": {
+            "sslmode": "require",  # Enable SSL
+            "sslrootcert": "path/to/ca_certificate.pem",  # Path to the CA certificate
+            "options": "-c search_path=dep24",
+        },
     }
 }
 
-from pymongo import MongoClient
 
-uri = "mongodb+srv://garajab24:Rajab102030@webbasedapps.crz8f.mongodb.net/planning?retryWrites=true&w=majority"
-client = MongoClient(uri)
-db = client.planning
+# from pymongo import MongoClient
+
+# uri = "mongodb+srv://garajab24:Rajab102030@webbasedapps.crz8f.mongodb.net/planning?retryWrites=true&w=majority"
+# client = MongoClient(uri)
+# db = client.planning
 
 
 # Password validation

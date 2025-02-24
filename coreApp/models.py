@@ -1,4 +1,3 @@
-from mongoengine import Document, StringField, IntField, DateField, DecimalField
 from django.db import models  # type: ignore
 from django.contrib.auth.models import User  # type: ignore
 from django.db.models.signals import post_save  # type: ignore
@@ -24,43 +23,49 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-class Depot2024(Document):
-    REFRENCENUMBER = StringField(max_length=20)
-    DEPOT = StringField(max_length=100)
-    AREA_ENGINEER_NAME = StringField(max_length=100)
-    BLOCKNUMBER = StringField(max_length=20)
-    SUBSTATIONNUMBER = StringField(max_length=20)
-    TX = StringField(max_length=10)
-    FEEDERNUMBER = StringField(max_length=10)
-    LVBNUMBER = StringField(max_length=10)
-    TYPE = StringField(max_length=50)
-    WAYLEAVENUMBER = StringField(max_length=100)
-    USPDATE = DateField(null=True, blank=True)
-    PASSEDDATE = DateField(null=True, blank=True)
-    REMARKES = StringField(blank=True)
-    PlanStatus = StringField(max_length=50)
-    ConStatus = StringField(max_length=50)
-    GISDATE = DateField(null=True, blank=True)
-    RCCDATE = DateField(null=True, blank=True)
-    MSPDATE = DateField(null=True, blank=True)
-    labourcost = DecimalField(max_digits=10, decimal_places=3)
-    ministrycost = DecimalField(max_digits=10, decimal_places=3)
-    cable_length = DecimalField(max_digits=10, decimal_places=2)
-    Area = StringField(max_length=100, blank=True)
-    gov = StringField(max_length=100)
-    sentDate = DateField(null=True, blank=True)
-    noOfServ = IntField()
-    noOfFaults = IntField()
-    areaEngEmail = StringField(blank=True)
-    EngPhoneNumber = StringField(max_length=15, blank=True)
-    AreaOfAe = StringField(max_length=100)
-    totalcost = DecimalField(max_digits=10, decimal_places=3)
+class depotcases2024(models.Model):
+    REFRENCENUMBER = models.CharField(max_length=20)
+    DEPOT = models.CharField(max_length=100)
+    AREA_ENGINEER_NAME = models.CharField(max_length=100)
+    BLOCKNUMBER = models.CharField(max_length=20)
+    SUBSTATIONNUMBER = models.CharField(max_length=20)
+    TX = models.CharField(max_length=10)
+    FEEDERNUMBER = models.CharField(max_length=10)
+    LVBNUMBER = models.CharField(max_length=10)
+    TYPE = models.CharField(max_length=50)
+    WAYLEAVENUMBER = models.CharField(max_length=100)
+    USPDATE = models.DateField(null=True, blank=True)
+    PASSEDDATE = models.DateField(null=True, blank=True)
+    REMARKES = models.TextField(blank=True)
+    PlanStatus = models.CharField(max_length=50)
+    ConStatus = models.CharField(max_length=50)
+    GISDATE = models.DateField(null=True, blank=True)
+    RCCDATE = models.DateField(null=True, blank=True)
+    MSPDATE = models.DateField(null=True, blank=True)
+    labourcost = models.DecimalField(max_digits=10, decimal_places=3)
+    ministrycost = models.DecimalField(max_digits=10, decimal_places=3)
+    cable_length = models.DecimalField(max_digits=10, decimal_places=2)
+    Area = models.CharField(max_length=100, blank=True)
+    gov = models.CharField(max_length=100)
+    sentDate = models.DateField(null=True, blank=True)
+    noOfServ = models.IntegerField()
+    noOfFaults = models.IntegerField()
+    areaEngEmail = models.EmailField(blank=True)
+    EngPhoneNumber = models.CharField(max_length=15, blank=True)
+    AreaOfAe = models.CharField(max_length=100)
+    totalcost = models.DecimalField(max_digits=10, decimal_places=3)
+
+    class Meta:
+        db_table = "depotcases2024"  # Use your schema name
+
+    def __str__(self):
+        return self.areaOfAe
 
     def __str__(self):
         return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"
 
 
-class Depot2025(Document):
+class Depot2025(models.Model):
     REFRENCENUMBER = models.CharField(max_length=20)
     DEPOT = models.CharField(max_length=100)
     AREA_ENGINEER_NAME = models.CharField(max_length=100)
@@ -100,7 +105,7 @@ from django.db import models
 from django.utils import timezone
 
 
-class BuildingPermit(Document):
+class Permit(models.Model):
     Number = models.CharField(max_length=50, unique=True, verbose_name="Permit Number")
     Stage = models.CharField(max_length=100, verbose_name="Stage")
     Status = models.CharField(max_length=100, verbose_name="Status")
@@ -120,7 +125,3 @@ class BuildingPermit(Document):
 
     def __str__(self):
         return self.number
-
-    class Meta:
-        verbose_name = "Building Permit"
-        verbose_name_plural = "Building Permits"
