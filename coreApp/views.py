@@ -180,7 +180,7 @@ def delete_depot24(request, permit_id):
 
 def update_depot_case(request, id):
     case = get_object_or_404(depotcases2024, id=id)
-    
+
     if request.method == "POST":
         # Collect data from request.POST and update the instance
         for field in case._meta.get_fields():

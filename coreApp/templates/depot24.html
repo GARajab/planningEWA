@@ -243,13 +243,15 @@
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
   $(document).ready(function () {
     // Attach the show event for the modal
     $('#updateModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget); // Button that triggered the modal
+      var button = $(event.relatedTarget);
+      console.log(event.relatedTarget)// Button that triggered the modal
       var caseId = button.data('id'); // Extract info from data-* attributes
-
+      console.log('Case ID:', caseId);
       // Fetch case data using AJAX
       $.get('/update/' + caseId + '/', function (data) {
         $('#caseId').val(data.id);
