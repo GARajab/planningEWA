@@ -1,0 +1,6 @@
+# Ignore Django secret settings
+*.pyc
+__pycache__/
+*.env
+settings.py
+settings/*.py
