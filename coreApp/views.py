@@ -305,3 +305,7 @@ def update_depot_case25(request, id):
         )
         return JsonResponse({"success": True})
     return JsonResponse(case_data)
+
+
+def dep24Rep_view(request):
+    return render(request, "dep24Rep.html")

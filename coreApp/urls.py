@@ -15,4 +15,5 @@ urlpatterns = [
     path("delete25/<str:permit_id>/", views.delete_depot25, name="delete_depot25"),
     path("update/<int:id>/", views.update_depot_case, name="update_depot_case"),
     path("update25/<int:id>/", views.update_depot_case25, name="update_depot_case25"),
+    path("dep24rep/", views.dep24Rep_view, name="dep24Rep_view"),
 ]
