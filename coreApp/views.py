@@ -178,6 +178,17 @@ def delete_depot24(request, permit_id):
     return redirect("depot24")
 
 
+def delete_depot25(request, permit_id):
+    if request.method == "POST":
+        depot_case = get_object_or_404(depotcases2025, id=permit_id)
+        depot_case.delete()
+        messages.success(request, "Record Deleted Successfully.")
+        return redirect("depot25")
+    else:
+        messages.error(request, "Invalid request Record Not Deleted.")
+    return redirect("depot25")
+
+
 def update_depot_case(request, id):
     case = get_object_or_404(depotcases2024, id=id)
 
@@ -230,5 +241,67 @@ def update_depot_case(request, id):
             if field.name in request.POST:
                 setattr(case, field.name, request.POST[field.name])
         case.save()
+        messages.success(
+            request, "Scheme " + case.REFRENCENUMBER + " is updated successfully!"
+        )
+        return JsonResponse({"success": True})
+    return JsonResponse(case_data)
+
+
+def update_depot_case25(request, id):
+    case = get_object_or_404(depotcases2025, id=id)
+
+    # For GET request, send case data as JSON
+    case_data = {
+        "id": case.id,
+        "REFRENCENUMBER": case.REFRENCENUMBER,
+        "DEPOT": case.DEPOT,
+        "AREA_ENGINEER_NAME": case.AREA_ENGINEER_NAME,
+        "BLOCKNUMBER": case.BLOCKNUMBER,
+        "SUBSTATIONNUMBER": case.SUBSTATIONNUMBER,
+        "TX": case.TX,
+        "FEEDERNUMBER": case.FEEDERNUMBER,
+        "LVBNUMBER": case.LVBNUMBER,
+        "TYPE": case.TYPE,
+        "WAYLEAVENUMBER": case.WAYLEAVENUMBER,
+        "USPDATE": case.USPDATE,
+        "PASSEDDATE": case.PASSEDDATE,
+        "REMARKES": case.REMARKES,
+        "PlanStatus": case.PlanStatus,
+        "ConStatus": case.ConStatus,
+        "GISDATE": case.GISDATE,
+        "RCCDATE": case.RCCDATE,
+        "MSPDATE": case.MSPDATE,
+        "labourcost": str(
+            case.labourcost
+        ),  # Convert Decimal to String for JSON serialization
+        "ministrycost": str(
+            case.ministrycost
+        ),  # Convert Decimal to String for JSON serialization
+        "cable_length": str(
+            case.cable_length
+        ),  # Convert Decimal to String for JSON serialization
+        "Area": case.Area,
+        "gov": case.gov,
+        "sentDate": case.sentDate,
+        "noOfServ": case.noOfServ,
+        "noOfFaults": case.noOfFaults,
+        "areaEngEmail": case.areaEngEmail,
+        "EngPhoneNumber": case.EngPhoneNumber,
+        "AreaOfAe": case.AreaOfAe,
+        "totalcost": str(
+            case.totalcost
+        ),  # Convert Decimal to String for JSON serialization
+    }
+
+    if request.method == "POST":
+        # Collect data from request.POST and update the instance
+        for field in case._meta.get_fields():
+            if field.name in request.POST:
+                setattr(case, field.name, request.POST[field.name])
+        case.save()
+        messages.success(
+            request, "Scheme " + case.REFRENCENUMBER + " is updated successfully!"
+        )
         return JsonResponse({"success": True})
     return JsonResponse(case_data)
