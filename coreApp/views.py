@@ -181,14 +181,6 @@ def delete_depot24(request, permit_id):
 def update_depot_case(request, id):
     case = get_object_or_404(depotcases2024, id=id)
 
-    if request.method == "POST":
-        # Collect data from request.POST and update the instance
-        for field in case._meta.get_fields():
-            if field.name in request.POST:
-                setattr(case, field.name, request.POST[field.name])
-        case.save()
-        return JsonResponse({"success": True})
-
     # For GET request, send case data as JSON
     case_data = {
         "id": case.id,
@@ -231,4 +223,12 @@ def update_depot_case(request, id):
             case.totalcost
         ),  # Convert Decimal to String for JSON serialization
     }
+
+    if request.method == "POST":
+        # Collect data from request.POST and update the instance
+        for field in case._meta.get_fields():
+            if field.name in request.POST:
+                setattr(case, field.name, request.POST[field.name])
+        case.save()
+        return JsonResponse({"success": True})
     return JsonResponse(case_data)

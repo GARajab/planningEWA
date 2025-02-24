@@ -11,6 +11,8 @@
     display: inline-block;
   }
 </style>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <div class="container mt-4">
   <h1 class="text-center">Depot 2024 Table</h1>
   {% if schemes %}
@@ -62,7 +64,7 @@
   {% else %}
   <h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
   {% endif %}
-  <!-- The Modal -->
+  <!-- Modal -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -75,9 +77,11 @@
         </div>
         <div class="modal-body">
           <form id="updateForm">
+            <!-- CSRF Token (for Django or similar frameworks) -->
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
 
+            <!-- Form Fields -->
             <div class="form-group">
               <label for="REFRENCENUMBER">Reference Number</label>
               <input type="text" class="form-control" id="REFRENCENUMBER" name="REFRENCENUMBER" required>
@@ -128,16 +132,38 @@
               <input type="text" class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER">
             </div>
 
+            <!-- Date Fields with Flatpickr -->
             <div class="form-group">
               <label for="USPDATE">USP Date</label>
-              <input type="date" class="form-control" id="USPDATE" name="USPDATE">
+              <input type="text" class="form-control flatpickr" id="USPDATE" name="USPDATE">
             </div>
 
             <div class="form-group">
               <label for="PASSEDDATE">Passed Date</label>
-              <input type="date" class="form-control" id="PASSEDDATE" name="PASSEDDATE">
+              <input type="text" class="form-control flatpickr" id="PASSEDDATE" name="PASSEDDATE">
             </div>
 
+            <div class="form-group">
+              <label for="GISDATE">GIS Date</label>
+              <input type="text" class="form-control flatpickr" id="GISDATE" name="GISDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="RCCDATE">RCC Date</label>
+              <input type="text" class="form-control flatpickr" id="RCCDATE" name="RCCDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="MSPDATE">MSP Date</label>
+              <input type="text" class="form-control flatpickr" id="MSPDATE" name="MSPDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="sentDate">Sent Date</label>
+              <input type="text" class="form-control flatpickr" id="sentDate" name="sentDate">
+            </div>
+
+            <!-- Other Fields -->
             <div class="form-group">
               <label for="REMARKES">Remarks</label>
               <textarea class="form-control" id="REMARKES" name="REMARKES"></textarea>
@@ -151,21 +177,6 @@
             <div class="form-group">
               <label for="ConStatus">Construction Status</label>
               <input type="text" class="form-control" id="ConStatus" name="ConStatus">
-            </div>
-
-            <div class="form-group">
-              <label for="GISDATE">GIS Date</label>
-              <input type="date" class="form-control" id="GISDATE" name="GISDATE">
-            </div>
-
-            <div class="form-group">
-              <label for="RCCDATE">RCC Date</label>
-              <input type="date" class="form-control" id="RCCDATE" name="RCCDATE">
-            </div>
-
-            <div class="form-group">
-              <label for="MSPDATE">MSP Date</label>
-              <input type="date" class="form-control" id="MSPDATE" name="MSPDATE">
             </div>
 
             <div class="form-group">
@@ -191,11 +202,6 @@
             <div class="form-group">
               <label for="gov">Gov</label>
               <input type="text" class="form-control" id="gov" name="gov">
-            </div>
-
-            <div class="form-group">
-              <label for="sentDate">Sent Date</label>
-              <input type="date" class="form-control" id="sentDate" name="sentDate">
             </div>
 
             <div class="form-group">
@@ -228,6 +234,7 @@
               <input type="number" class="form-control" id="totalcost" name="totalcost" step="0.01">
             </div>
 
+            <!-- Modal Footer -->
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary">Save changes</button>
@@ -237,82 +244,130 @@
       </div>
     </div>
   </div>
-</div>
 
 
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // Attach the show event for the modal
-    $('#updateModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
-      console.log(event.relatedTarget)// Button that triggered the modal
-      var caseId = button.data('id'); // Extract info from data-* attributes
-      console.log('Case ID:', caseId);
-      // Fetch case data using AJAX
-      $.get('/update/' + caseId + '/', function (data) {
-        $('#caseId').val(data.id);
-        $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
-        $('#DEPOT').val(data.DEPOT);
-        $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
-        $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
-        $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
-        $('#TX').val(data.TX);
-        $('#FEEDERNUMBER').val(data.FEEDERNUMBER);
-        $('#LVBNUMBER').val(data.LVBNUMBER);
-        $('#TYPE').val(data.TYPE);
-        $('#WAYLEAVENUMBER').val(data.WAYLEAVENUMBER);
-        $('#USPDATE').val(data.USPDATE);
-        $('#PASSEDDATE').val(data.PASSEDDATE);
-        $('#REMARKES').val(data.REMARKES);
-        $('#PlanStatus').val(data.PlanStatus);
-        $('#ConStatus').val(data.ConStatus);
-        $('#GISDATE').val(data.GISDATE);
-        $('#RCCDATE').val(data.RCCDATE);
-        $('#MSPDATE').val(data.MSPDATE);
-        $('#labourcost').val(data.labourcost);
-        $('#ministrycost').val(data.ministrycost);
-        $('#cable_length').val(data.cable_length);
-        $('#Area').val(data.Area);
-        $('#gov').val(data.gov);
-        $('#sentDate').val(data.sentDate);
-        $('#noOfServ').val(data.noOfServ);
-        $('#noOfFaults').val(data.noOfFaults);
-        $('#areaEngEmail').val(data.areaEngEmail);
-        $('#EngPhoneNumber').val(data.EngPhoneNumber);
-        $('#AreaOfAe').val(data.AreaOfAe);
-        $('#totalcost').val(data.totalcost);
-      });
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-      // Handle form submission
-      $('#updateForm').off('submit').on('submit', function (e) {
-        e.preventDefault();
-        $.ajax({
-          type: "POST",
-          url: '/update/' + caseId + '/',
-          data: $(this).serialize(),
-          success: function (response) {
-            if (response.success) {
-              location.reload(); // Refresh page
+  <script>
+    $(document).ready(function () {
+      // Attach the show event for the modal
+      $('#updateModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        console.log(event.relatedTarget)// Button that triggered the modal
+        var caseId = button.data('id'); // Extract info from data-* attributes
+        if (!caseId) {
+          console.error("Invalid or missing case ID.");
+          return;
+        }
+        // Fetch case data using AJAX
+        $.get('/update/' + caseId + '/', function (data) {
+          $('#caseId').val(data.id);
+          $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
+          $('#DEPOT').val(data.DEPOT);
+          $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
+          $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
+          $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
+          $('#TX').val(data.TX);
+          $('#FEEDERNUMBER').val(data.FEEDERNUMBER);
+          $('#LVBNUMBER').val(data.LVBNUMBER);
+          $('#TYPE').val(data.TYPE);
+          $('#WAYLEAVENUMBER').val(data.WAYLEAVENUMBER);
+          $('#USPDATE').val(data.USPDATE);
+          $('#PASSEDDATE').val(data.PASSEDDATE);
+          $('#REMARKES').val(data.REMARKES);
+          $('#PlanStatus').val(data.PlanStatus);
+          $('#ConStatus').val(data.ConStatus);
+          $('#GISDATE').val(data.GISDATE);
+          $('#RCCDATE').val(data.RCCDATE);
+          $('#MSPDATE').val(data.MSPDATE);
+          $('#labourcost').val(data.labourcost);
+          $('#ministrycost').val(data.ministrycost);
+          $('#cable_length').val(data.cable_length);
+          $('#Area').val(data.Area);
+          $('#gov').val(data.gov);
+          $('#sentDate').val(data.sentDate);
+          $('#noOfServ').val(data.noOfServ);
+          $('#noOfFaults').val(data.noOfFaults);
+          $('#areaEngEmail').val(data.areaEngEmail);
+          $('#EngPhoneNumber').val(data.EngPhoneNumber);
+          $('#AreaOfAe').val(data.AreaOfAe);
+          $('#totalcost').val(data.totalcost);
+        });
+        $("#depot24-form").on("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission behavior
+          // Add your AJAX code here to submit the form data
+          function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
             }
-          },
-          error: function (error) {
-            console.log("Error:", error);
+            return cookieValue;
           }
+
+          const csrftoken = getCookie('csrftoken');
+
+
+          $.ajax({
+            type: "POST",
+            url: '/update/' + caseId + '/',
+            data: $(this).serialize(),
+            headers: {
+              "X-CSRFToken": csrftoken
+            },
+            success: function (response) {
+              if (response.success) {
+                location.reload();
+              }
+            },
+            error: function (error) {
+              console.log("Error:", error);
+            }
+          });
+        });
+        // Handle form submission
+        $('#updateForm').off('submit').on('submit', function (e) {
+          e.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: '/update/' + caseId + '/',
+            data: $(this).serialize(),
+            success: function (response) {
+              if (response.success) {
+                location.reload(); // Refresh page
+              }
+            },
+            error: function (error) {
+              console.log("Error:", error);
+            }
+          });
         });
       });
     });
-  });
-</script>
-<script>
-  $(document).ready(function () {
-    var table = $('#depot24').DataTable({
+  </script>
+  <script>
+    $(document).ready(function () {
+      var table = $('#depot24').DataTable({
 
+      });
+
+    })
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d", // Set the format to yyyy-MM-dd
+      });
     });
-
-  })
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
