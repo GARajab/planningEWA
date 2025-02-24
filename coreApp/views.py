@@ -126,7 +126,6 @@ def nc24(request):
         return redirect("signin")
 
 
-
 def get_permit(request, permit_id):
     permit = get_object_or_404(Permit, id=permit_id)
     data = {
@@ -177,3 +176,59 @@ def delete_depot24(request, permit_id):
     else:
         messages.error(request, "Invalid request Record Not Deleted.")
     return redirect("depot24")
+
+
+def update_depot_case(request, id):
+    case = get_object_or_404(depotcases2024, id=id)
+    
+    if request.method == "POST":
+        # Collect data from request.POST and update the instance
+        for field in case._meta.get_fields():
+            if field.name in request.POST:
+                setattr(case, field.name, request.POST[field.name])
+        case.save()
+        return JsonResponse({"success": True})
+
+    # For GET request, send case data as JSON
+    case_data = {
+        "id": case.id,
+        "REFRENCENUMBER": case.REFRENCENUMBER,
+        "DEPOT": case.DEPOT,
+        "AREA_ENGINEER_NAME": case.AREA_ENGINEER_NAME,
+        "BLOCKNUMBER": case.BLOCKNUMBER,
+        "SUBSTATIONNUMBER": case.SUBSTATIONNUMBER,
+        "TX": case.TX,
+        "FEEDERNUMBER": case.FEEDERNUMBER,
+        "LVBNUMBER": case.LVBNUMBER,
+        "TYPE": case.TYPE,
+        "WAYLEAVENUMBER": case.WAYLEAVENUMBER,
+        "USPDATE": case.USPDATE,
+        "PASSEDDATE": case.PASSEDDATE,
+        "REMARKES": case.REMARKES,
+        "PlanStatus": case.PlanStatus,
+        "ConStatus": case.ConStatus,
+        "GISDATE": case.GISDATE,
+        "RCCDATE": case.RCCDATE,
+        "MSPDATE": case.MSPDATE,
+        "labourcost": str(
+            case.labourcost
+        ),  # Convert Decimal to String for JSON serialization
+        "ministrycost": str(
+            case.ministrycost
+        ),  # Convert Decimal to String for JSON serialization
+        "cable_length": str(
+            case.cable_length
+        ),  # Convert Decimal to String for JSON serialization
+        "Area": case.Area,
+        "gov": case.gov,
+        "sentDate": case.sentDate,
+        "noOfServ": case.noOfServ,
+        "noOfFaults": case.noOfFaults,
+        "areaEngEmail": case.areaEngEmail,
+        "EngPhoneNumber": case.EngPhoneNumber,
+        "AreaOfAe": case.AreaOfAe,
+        "totalcost": str(
+            case.totalcost
+        ),  # Convert Decimal to String for JSON serialization
+    }
+    return JsonResponse(case_data)

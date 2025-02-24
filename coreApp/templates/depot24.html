@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}
-Home Page
-{% endblock %}
+
 
 {% block content %}
 <style>
@@ -16,7 +14,7 @@ Home Page
 <div class="container mt-4">
   <h1 class="text-center">Depot 2024 Table</h1>
   {% if schemes %}
-  <table id="depot24" class="table table-striped table-bordered" style="width:1400px; text-align: center;">
+  <table id="depot24" class="table table-striped table-bordered " width="100%" style="text-align: center;">
     <thead>
       <tr>
         <th>Scheme Reference</th>
@@ -39,11 +37,12 @@ Home Page
         <td>{{ scheme.TX }}</td>
         <td>{{ scheme.FEEDERNUMBER }}</td>
         <td>{{ scheme.LVBNUMBER }}</td>
-        <td>
+        <td style="width: 230px;">
           <button class="btn btn-sm btn-primary me-1" onclick="">
             <i class="fas fa-eye"></i> View
           </button>
-          <button class="btn btn-sm btn-warning me-1" onclick="">
+          <button type="button" class="btn btn-sm btn-warning me-1" data-toggle="modal" data-target="#updateModal"
+            data-id="{{ scheme.id }}">
             <i class="fas fa-edit"></i> Edit
           </button>
           {% if is_admin %}
@@ -63,85 +62,249 @@ Home Page
   {% else %}
   <h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
   {% endif %}
-</div>
+  <!-- The Modal -->
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="updateForm">
+            {% csrf_token %}
+            <input type="hidden" name="id" id="caseId">
 
-<!-- Bootstrap Modals -->
-<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewModalLabel">View Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Scheme Reference:</strong> <span id="viewRefrence"></span></p>
-        <p><strong>Planning Status:</strong> <span id="viewPlanStatus"></span></p>
-        <p><strong>Block Number:</strong> <span id="viewBlockNumber"></span></p>
-        <p><strong>Substation Number:</strong> <span id="viewSubstationNumber"></span></p>
-        <p><strong>Transformer Number:</strong> <span id="viewTransformerNumber"></span></p>
-        <p><strong>Feeder Number:</strong> <span id="viewFeederNumber"></span></p>
-        <p><strong>LVB Number:</strong> <span id="viewLVBNumber"></span></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="form-group">
+              <label for="REFRENCENUMBER">Reference Number</label>
+              <input type="text" class="form-control" id="REFRENCENUMBER" name="REFRENCENUMBER" required>
+            </div>
+
+            <div class="form-group">
+              <label for="DEPOT">Depot</label>
+              <input type="text" class="form-control" id="DEPOT" name="DEPOT">
+            </div>
+
+            <div class="form-group">
+              <label for="AREA_ENGINEER_NAME">Area Engineer Name</label>
+              <input type="text" class="form-control" id="AREA_ENGINEER_NAME" name="AREA_ENGINEER_NAME">
+            </div>
+
+            <div class="form-group">
+              <label for="BLOCKNUMBER">Block Number</label>
+              <input type="text" class="form-control" id="BLOCKNUMBER" name="BLOCKNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="SUBSTATIONNUMBER">Substation Number</label>
+              <input type="text" class="form-control" id="SUBSTATIONNUMBER" name="SUBSTATIONNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="TX">TX</label>
+              <input type="text" class="form-control" id="TX" name="TX">
+            </div>
+
+            <div class="form-group">
+              <label for="FEEDERNUMBER">Feeder Number</label>
+              <input type="text" class="form-control" id="FEEDERNUMBER" name="FEEDERNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="LVBNUMBER">LVB Number</label>
+              <input type="text" class="form-control" id="LVBNUMBER" name="LVBNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="TYPE">Type</label>
+              <input type="text" class="form-control" id="TYPE" name="TYPE">
+            </div>
+
+            <div class="form-group">
+              <label for="WAYLEAVENUMBER">Way Leave Number</label>
+              <input type="text" class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="USPDATE">USP Date</label>
+              <input type="date" class="form-control" id="USPDATE" name="USPDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="PASSEDDATE">Passed Date</label>
+              <input type="date" class="form-control" id="PASSEDDATE" name="PASSEDDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="REMARKES">Remarks</label>
+              <textarea class="form-control" id="REMARKES" name="REMARKES"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="PlanStatus">Plan Status</label>
+              <input type="text" class="form-control" id="PlanStatus" name="PlanStatus">
+            </div>
+
+            <div class="form-group">
+              <label for="ConStatus">Construction Status</label>
+              <input type="text" class="form-control" id="ConStatus" name="ConStatus">
+            </div>
+
+            <div class="form-group">
+              <label for="GISDATE">GIS Date</label>
+              <input type="date" class="form-control" id="GISDATE" name="GISDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="RCCDATE">RCC Date</label>
+              <input type="date" class="form-control" id="RCCDATE" name="RCCDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="MSPDATE">MSP Date</label>
+              <input type="date" class="form-control" id="MSPDATE" name="MSPDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="labourcost">Labour Cost</label>
+              <input type="number" class="form-control" id="labourcost" name="labourcost" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="ministrycost">Ministry Cost</label>
+              <input type="number" class="form-control" id="ministrycost" name="ministrycost" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="cable_length">Cable Length</label>
+              <input type="number" class="form-control" id="cable_length" name="cable_length" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="Area">Area</label>
+              <input type="text" class="form-control" id="Area" name="Area">
+            </div>
+
+            <div class="form-group">
+              <label for="gov">Gov</label>
+              <input type="text" class="form-control" id="gov" name="gov">
+            </div>
+
+            <div class="form-group">
+              <label for="sentDate">Sent Date</label>
+              <input type="date" class="form-control" id="sentDate" name="sentDate">
+            </div>
+
+            <div class="form-group">
+              <label for="noOfServ">Number of Services</label>
+              <input type="number" class="form-control" id="noOfServ" name="noOfServ">
+            </div>
+
+            <div class="form-group">
+              <label for="noOfFaults">Number of Faults</label>
+              <input type="number" class="form-control" id="noOfFaults" name="noOfFaults">
+            </div>
+
+            <div class="form-group">
+              <label for="areaEngEmail">Area Engineer Email</label>
+              <input type="email" class="form-control" id="areaEngEmail" name="areaEngEmail">
+            </div>
+
+            <div class="form-group">
+              <label for="EngPhoneNumber">Engineer Phone Number</label>
+              <input type="text" class="form-control" id="EngPhoneNumber" name="EngPhoneNumber">
+            </div>
+
+            <div class="form-group">
+              <label for="AreaOfAe">Area of Area Engineer</label>
+              <input type="text" class="form-control" id="AreaOfAe" name="AreaOfAe">
+            </div>
+
+            <div class="form-group">
+              <label for="totalcost">Total Cost</label>
+              <input type="number" class="form-control" id="totalcost" name="totalcost" step="0.01">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editForm">
-          <div class="mb-3">
-            <label for="editRefrence" class="form-label">Scheme Reference</label>
-            <input type="text" class="form-control" id="editRefrence" readonly>
-          </div>
-          <div class="mb-3">
-            <label for="editPlanStatus" class="form-label">Planning Status</label>
-            <input type="text" class="form-control" id="editPlanStatus">
-          </div>
-          <div class="mb-3">
-            <label for="editBlockNumber" class="form-label">Block Number</label>
-            <input type="text" class="form-control" id="editBlockNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editSubstationNumber" class="form-label">Substation Number</label>
-            <input type="text" class="form-control" id="editSubstationNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editTransformerNumber" class="form-label">Transformer Number</label>
-            <input type="text" class="form-control" id="editTransformerNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editFeederNumber" class="form-label">Feeder Number</label>
-            <input type="text" class="form-control" id="editFeederNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editLVBNumber" class="form-label">LVB Number</label>
-            <input type="text" class="form-control" id="editLVBNumber">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="saveChanges()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/datatables.net@2.2.2/js/dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Attach the show event for the modal
+    $('#updateModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var caseId = button.data('id'); // Extract info from data-* attributes
 
+      // Fetch case data using AJAX
+      $.get('/update/' + caseId + '/', function (data) {
+        $('#caseId').val(data.id);
+        $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
+        $('#DEPOT').val(data.DEPOT);
+        $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
+        $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
+        $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
+        $('#TX').val(data.TX);
+        $('#FEEDERNUMBER').val(data.FEEDERNUMBER);
+        $('#LVBNUMBER').val(data.LVBNUMBER);
+        $('#TYPE').val(data.TYPE);
+        $('#WAYLEAVENUMBER').val(data.WAYLEAVENUMBER);
+        $('#USPDATE').val(data.USPDATE);
+        $('#PASSEDDATE').val(data.PASSEDDATE);
+        $('#REMARKES').val(data.REMARKES);
+        $('#PlanStatus').val(data.PlanStatus);
+        $('#ConStatus').val(data.ConStatus);
+        $('#GISDATE').val(data.GISDATE);
+        $('#RCCDATE').val(data.RCCDATE);
+        $('#MSPDATE').val(data.MSPDATE);
+        $('#labourcost').val(data.labourcost);
+        $('#ministrycost').val(data.ministrycost);
+        $('#cable_length').val(data.cable_length);
+        $('#Area').val(data.Area);
+        $('#gov').val(data.gov);
+        $('#sentDate').val(data.sentDate);
+        $('#noOfServ').val(data.noOfServ);
+        $('#noOfFaults').val(data.noOfFaults);
+        $('#areaEngEmail').val(data.areaEngEmail);
+        $('#EngPhoneNumber').val(data.EngPhoneNumber);
+        $('#AreaOfAe').val(data.AreaOfAe);
+        $('#totalcost').val(data.totalcost);
+      });
+
+      // Handle form submission
+      $('#updateForm').off('submit').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: '/update/' + caseId + '/',
+          data: $(this).serialize(),
+          success: function (response) {
+            if (response.success) {
+              location.reload(); // Refresh page
+            }
+          },
+          error: function (error) {
+            console.log("Error:", error);
+          }
+        });
+      });
+    });
+  });
+</script>
 <script>
   $(document).ready(function () {
     var table = $('#depot24').DataTable({

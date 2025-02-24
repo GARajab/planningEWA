@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}
-Home Page
-{% endblock %}
+
 
 {% block content %}
 <style>
@@ -61,76 +59,9 @@ Home Page
   {% endif %}
 </div>
 
-<!-- Bootstrap Modals -->
-<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewModalLabel">View Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Scheme Reference:</strong> <span id="viewRefrence"></span></p>
-        <p><strong>Planning Status:</strong> <span id="viewPlanStatus"></span></p>
-        <p><strong>Block Number:</strong> <span id="viewBlockNumber"></span></p>
-        <p><strong>Substation Number:</strong> <span id="viewSubstationNumber"></span></p>
-        <p><strong>Transformer Number:</strong> <span id="viewTransformerNumber"></span></p>
-        <p><strong>Feeder Number:</strong> <span id="viewFeederNumber"></span></p>
-        <p><strong>LVB Number:</strong> <span id="viewLVBNumber"></span></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editForm">
-          <div class="mb-3">
-            <label for="editRefrence" class="form-label">Scheme Reference</label>
-            <input type="text" class="form-control" id="editRefrence" readonly>
-          </div>
-          <div class="mb-3">
-            <label for="editPlanStatus" class="form-label">Planning Status</label>
-            <input type="text" class="form-control" id="editPlanStatus">
-          </div>
-          <div class="mb-3">
-            <label for="editBlockNumber" class="form-label">Block Number</label>
-            <input type="text" class="form-control" id="editBlockNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editSubstationNumber" class="form-label">Substation Number</label>
-            <input type="text" class="form-control" id="editSubstationNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editTransformerNumber" class="form-label">Transformer Number</label>
-            <input type="text" class="form-control" id="editTransformerNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editFeederNumber" class="form-label">Feeder Number</label>
-            <input type="text" class="form-control" id="editFeederNumber">
-          </div>
-          <div class="mb-3">
-            <label for="editLVBNumber" class="form-label">LVB Number</label>
-            <input type="text" class="form-control" id="editLVBNumber">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="saveChanges()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
