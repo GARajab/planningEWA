@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from .models import depotcases2024, Depot2025, Permit
+from .models import depotcases2024, depotcases2025, Permit
 
 from django.views.decorators.http import require_POST
 
@@ -40,7 +40,9 @@ def signin_view(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, "Logged in successfully!")
+            messages.success(
+                request, "Welcome " + username + " You Logged in successfully!"
+            )
             return redirect("home")  # Use redirect instead of render
         else:
             messages.error(request, "Invalid credentials.")
@@ -84,9 +86,9 @@ def depot24(request):
 
 def depot25(request):
     if request.user.is_authenticated:
-        schemes = Depot2025.objects.all()
+        schemes = depotcases2025.objects.all()
         # Fetch all documents from the collection
-        context = {"schemes": schemes}
+        context = {"schemes": schemes, "is_admin": request.user.is_superuser}
         return render(request, "depot25.html", context)
     else:
         return redirect("signin")
@@ -114,11 +116,15 @@ def lr25(request):
 
 def nc24(request):
     if request.user.is_authenticated:
-        schemes = Permit.objects.all()
-        context = {"schemes": schemes}
-        return render(request, "nc2024.html", context)
+        permits = Permit.objects.all()
+        return render(
+            request,
+            "nc2024.html",
+            {"permits": permits, "is_admin": request.user.is_superuser},
+        )
     else:
         return redirect("signin")
+
 
 
 def get_permit(request, permit_id):

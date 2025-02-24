@@ -66,7 +66,8 @@ class depotcases2024(models.Model):
         return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"
 
 
-class Depot2025(models.Model):
+class depotcases2025(models.Model):
+    id = models.AutoField(primary_key=True)
     REFRENCENUMBER = models.CharField(max_length=20)
     DEPOT = models.CharField(max_length=100)
     AREA_ENGINEER_NAME = models.CharField(max_length=100)
@@ -98,6 +99,9 @@ class Depot2025(models.Model):
     AreaOfAe = models.CharField(max_length=100)
     totalcost = models.DecimalField(max_digits=10, decimal_places=3)
 
+    class Meta:
+        db_table = "depotcases2025"
+
     def __str__(self):
         return f"{self.REFRENCENUMBER} - {self.AREA_ENGINEER_NAME}"
 
@@ -107,22 +111,23 @@ from django.utils import timezone
 
 
 class Permit(models.Model):
+    id = models.AutoField(primary_key=True)
     Number = models.CharField(max_length=50, unique=True, verbose_name="Permit Number")
-    Stage = models.CharField(max_length=100, verbose_name="Stage")
-    Status = models.CharField(max_length=100, verbose_name="Status")
-    Area = models.CharField(max_length=100, verbose_name="Area")
-    Parcel_Number = models.CharField(max_length=50, verbose_name="Parcel Number")
-    Block = models.CharField(max_length=50, verbose_name="Block")
-    KW = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="KW")
-    KVA = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="KVA")
-    PlanEng = models.CharField(max_length=100, verbose_name="Plan Engineer")
-    Plan_Status = models.CharField(max_length=100, verbose_name="Plan Status")
-    PASSED_DATE = models.DateField(verbose_name="Passed Date")
-    TO_WL_DATE = models.DateField(verbose_name="To WL Date")
-    TO_GIS_DATE = models.DateField(verbose_name="To GIS Date")
-    WL_NUMBER = models.CharField(max_length=100, verbose_name="WL_NUMBER")
-    REF_NO = models.CharField(max_length=100, verbose_name="REF_NO")
+    parcel_number = models.CharField(max_length=50, verbose_name="Parcel Number")
+    block = models.CharField(max_length=50, verbose_name="Block")
+    kw = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="KW")
+    kva = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="KVA")
+    planeng = models.CharField(max_length=100, verbose_name="Plan Engineer")
+    plan_status = models.CharField(max_length=100, verbose_name="Plan Status")
+    passed_date = models.DateField(verbose_name="Passed Date")
+    to_wl_date = models.DateField(verbose_name="To WL Date")
+    to_gis_date = models.DateField(verbose_name="To GIS Date")
+    wl_number = models.CharField(max_length=100, verbose_name="WL_NUMBER")
+    ref_no = models.CharField(max_length=100, verbose_name="REF_NO")
     comment = models.CharField(max_length=100, verbose_name="comment")
+
+    class Meta:
+        db_table = "Permit"
 
     def __str__(self):
         return self.number

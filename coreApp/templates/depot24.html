@@ -4,6 +4,15 @@ Home Page
 {% endblock %}
 
 {% block content %}
+<style>
+  .dataTables_filter {
+    text-align: right;
+  }
+
+  .search-label {
+    display: inline-block;
+  }
+</style>
 <div class="container mt-4">
   <h1 class="text-center">Depot 2024 Table</h1>
   {% if schemes %}
@@ -41,7 +50,7 @@ Home Page
           <form action="{% url 'delete_depot24' scheme.id %}" method="post" style="display:inline;">
             {% csrf_token %}
             <button type="submit" class="btn btn-sm btn-danger"
-              onclick="return confirm('Are you sure you want to delete this permit?');">
+              onclick="return confirm('Are you sure you want to delete this scheme?');">
               <i class="fas fa-trash"></i> Delete
             </button>
           </form>

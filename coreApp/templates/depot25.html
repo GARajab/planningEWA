@@ -4,6 +4,11 @@ Home Page
 {% endblock %}
 
 {% block content %}
+<style>
+  .dataTables_filter {
+    text-align: right;
+  }
+</style>
 <div class="container mt-4">
   <h1 class="text-center">Depot 2025 Table</h1>
   {% if schemes %}
@@ -31,22 +36,28 @@ Home Page
         <td>{{ scheme.FEEDERNUMBER }}</td>
         <td>{{ scheme.LVBNUMBER }}</td>
         <td>
-          <button class="btn btn-sm btn-primary me-1" onclick="viewRow('{{ scheme.REFRENCENUMBER }}')">
+          <button class="btn btn-sm btn-primary me-1" onclick="">
             <i class="fas fa-eye"></i> View
           </button>
-          <button class="btn btn-sm btn-warning me-1" onclick="editRow('{{ scheme.REFRENCENUMBER }}')">
+          <button class="btn btn-sm btn-warning me-1" onclick="">
             <i class="fas fa-edit"></i> Edit
           </button>
-          <button class="btn btn-sm btn-danger" onclick="deleteRow('{{ scheme.REFRENCENUMBER }}')">
-            <i class="fas fa-trash"></i> Delete
-          </button>
+          {% if is_admin %}
+          <form action="{% url 'delete_depot24' scheme.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-danger"
+              onclick="return confirm('Are you sure you want to delete this permit?');">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </form>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
   {% else %}
-  <h1>No Data Available</h1>
+  <h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
   {% endif %}
 </div>
 
@@ -124,7 +135,7 @@ Home Page
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/2.2.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/datatables.net@2.2.2/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
@@ -133,73 +144,6 @@ Home Page
 
     });
 
-    // View Row Function
-    window.viewRow = function (reference) {
-      table.rows().every(function () {
-        var data = this.data();
-        if (data[0] === reference) {
-          $('#viewRefrence').text(data[0]);
-          $('#viewPlanStatus').text(data[1]);
-          $('#viewBlockNumber').text(data[2]);
-          $('#viewSubstationNumber').text(data[3]);
-          $('#viewTransformerNumber').text(data[4]);
-          $('#viewFeederNumber').text(data[5]);
-          $('#viewLVBNumber').text(data[6]);
-          $('#viewModal').modal('show');
-          return false; // Exit the loop
-        }
-      });
-    };
-
-    // Edit Row Function
-    window.editRow = function (reference) {
-      table.rows().every(function () {
-        var data = this.data();
-        if (data[0] === reference) {
-          $('#editRefrence').val(data[0]);
-          $('#editPlanStatus').val(data[1]);
-          $('#editBlockNumber').val(data[2]);
-          $('#editSubstationNumber').val(data[3]);
-          $('#editTransformerNumber').val(data[4]);
-          $('#editFeederNumber').val(data[5]);
-          $('#editLVBNumber').val(data[6]);
-          $('#editModal').modal('show');
-          return false; // Exit the loop
-        }
-      });
-    };
-
-    // Save Changes Function
-    window.saveChanges = function () {
-      var reference = $('#editRefrence').val();
-      table.rows().every(function () {
-        var data = this.data();
-        if (data[0] === reference) {
-          data[1] = $('#editPlanStatus').val();
-          data[2] = $('#editBlockNumber').val();
-          data[3] = $('#editSubstationNumber').val();
-          data[4] = $('#editTransformerNumber').val();
-          data[5] = $('#editFeederNumber').val();
-          data[6] = $('#editLVBNumber').val();
-          this.data(data).draw();
-          return false; // Exit the loop
-        }
-      });
-      $('#editModal').modal('hide');
-    };
-
-    // Delete Row Function
-    window.deleteRow = function (reference) {
-      if (confirm('Are you sure you want to delete this row?')) {
-        table.rows().every(function () {
-          var data = this.data();
-          if (data[0] === reference) {
-            this.remove().draw();
-            return false; // Exit the loop
-          }
-        });
-      }
-    };
-  });
+  })
 </script>
 {% endblock %}
