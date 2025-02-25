@@ -170,8 +170,11 @@ def edit_permit(request):
 def delete_depot24(request, permit_id):
     if request.method == "POST":
         depot_case = get_object_or_404(depotcases2024, id=permit_id)
+        print(depot_case)
         depot_case.delete()
-        messages.success(request, "Record Deleted Successfully.")
+        messages.success(
+            request, "Scheme " + depot_case.REFRENCENUMBER + " Deleted Successfully."
+        )
         return redirect("depot24")
     else:
         messages.error(request, "Invalid request Record Not Deleted.")

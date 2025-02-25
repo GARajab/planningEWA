@@ -1,18 +1,25 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-
+<script>
+  function submitForm(recordId) {
+      // Set the value of a hidden input to the recordId and submit the form
+      document.getElementById("recordId_" + recordId).value = recordId;
+      document.getElementById("myForm_" + recordId).submit();
+  }
+</script>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <div class="container mt-4">
   <h1 class="text-center">Depot 2024 Table</h1>
   {% if schemes %}
-  <table id="depot24" class="table table-striped table-bordered " width="100%" style="text-align: center;">
-    <thead>
+  <table id="depot24" class="table" width="100%" style="text-align: center;">
+    <thead class="table-info">
       <tr>
+        <th>Area Engineer</th>
         <th>Scheme Reference</th>
         <th>Planning Status</th>
+        <th>Passed Date</th>
         <th>Block Number</th>
         <th>Substation Number</th>
         <th>Transformer Number</th>
@@ -24,8 +31,10 @@
     <tbody>
       {% for scheme in schemes %}
       <tr>
+        <td>{{ scheme.AREA_ENGINEER_NAME }}</td>
         <td>{{ scheme.REFRENCENUMBER }}</td>
         <td>{{ scheme.PlanStatus }}</td>
+        <td>{{ scheme.PASSEDDATE }}</td>
         <td>{{ scheme.BLOCKNUMBER }}</td>
         <td>{{ scheme.SUBSTATIONNUMBER }}</td>
         <td>{{ scheme.TX }}</td>
@@ -35,17 +44,16 @@
           <button class="btn btn-sm btn-primary me-1" onclick="">
             <i class="fas fa-eye"></i> View
           </button>
-          <button type="button" class="btn btn-sm btn-warning me-1" data-toggle="modal" data-target="#updateModal"
-            data-id="{{ scheme.id }}">
-            <i class="fas fa-edit"></i> Edit
-          </button>
+
+          <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ scheme.id }}"></i>
+
           {% if is_admin %}
-          <form action="{% url 'delete_depot24' scheme.id %}" method="post" style="display:inline;">
+          <form id="myForm_{{ scheme.id }}" action="{% url 'delete_depot24' scheme.id %}" method="POST"
+            style="display:inline;">
             {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-danger"
-              onclick="return confirm('Are you sure you want to delete this scheme?');">
-              <i class="fas fa-trash"></i> Delete
-            </button>
+            <input type="hidden" id="recordId_{{ scheme.id }}" name="recordId" value="{{ scheme.id }}">
+            <a href="javascript:void(0);" onclick="submitForm('{{ scheme.id }}')"><i class="fas fa-trash"
+                style="text-decoration: none; color: black; padding: 10px; display: inline-block;"></i></a>
           </form>
           {% endif %}
         </td>
@@ -236,8 +244,6 @@
       </div>
     </div>
   </div>
-
-
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
