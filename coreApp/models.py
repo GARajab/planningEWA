@@ -43,18 +43,18 @@ class depotcases2024(models.Model):
     GISDATE = models.DateField(null=True, blank=True)
     RCCDATE = models.DateField(null=True, blank=True)
     MSPDATE = models.DateField(null=True, blank=True)
-    labourcost = models.IntegerField()
-    ministrycost = models.IntegerField()
-    cable_length = models.IntegerField()
+    labourcost = models.FloatField()
+    ministrycost = models.FloatField()
+    cable_length = models.FloatField()
     Area = models.CharField(max_length=100, blank=True)
     gov = models.CharField(max_length=100)
     sentDate = models.DateField(null=True, blank=True)
-    noOfServ = models.IntegerField()
-    noOfFaults = models.IntegerField()
+    noOfServ = models.FloatField()
+    noOfFaults = models.FloatField()
     areaEngEmail = models.EmailField(blank=True)
     EngPhoneNumber = models.CharField(max_length=15, blank=True)
     AreaOfAe = models.CharField(max_length=100)
-    totalcost = models.IntegerField()
+    totalcost = models.FloatField()
 
     class Meta:
         db_table = "depotcases2024"  # Use your schema name
@@ -86,18 +86,18 @@ class depotcases2025(models.Model):
     GISDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
     RCCDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
     MSPDATE = models.DateField(null=True, blank=True)  # Assuming this can be empty
-    labourcost = models.IntegerField()
-    ministrycost = models.IntegerField()
-    cable_length = models.IntegerField()
+    labourcost = models.FloatField()
+    ministrycost = models.FloatField()
+    cable_length = models.FloatField()
     Area = models.CharField(max_length=100, blank=True)
     gov = models.CharField(max_length=100)  # Governorate
     sentDate = models.DateField(null=True, blank=True)  # Assuming this can be empty
-    noOfServ = models.IntegerField()
-    noOfFaults = models.IntegerField()
+    noOfServ = models.FloatField()
+    noOfFaults = models.FloatField()
     areaEngEmail = models.EmailField(blank=True)
     EngPhoneNumber = models.CharField(max_length=15, blank=True)
     AreaOfAe = models.CharField(max_length=100)
-    totalcost = models.IntegerField()
+    totalcost = models.FloatField()
 
     class Meta:
         db_table = "depotcases2025"
@@ -115,8 +115,8 @@ class Permit(models.Model):
     Number = models.CharField(max_length=50, unique=True, verbose_name="Permit Number")
     parcel_number = models.CharField(max_length=50, verbose_name="Parcel Number")
     block = models.CharField(max_length=50, verbose_name="Block")
-    kw = models.IntegerField()
-    kva = models.IntegerField()
+    kw = models.FloatField()
+    kva = models.FloatField()
     planeng = models.CharField(max_length=100, verbose_name="Plan Engineer")
     plan_status = models.CharField(max_length=100, verbose_name="Plan Status")
     passed_date = models.DateField(verbose_name="Passed Date")

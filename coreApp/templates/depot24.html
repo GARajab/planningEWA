@@ -3,18 +3,55 @@
 {% block content %}
 <script>
   function submitForm(recordId) {
-      // Set the value of a hidden input to the recordId and submit the form
-      document.getElementById("recordId_" + recordId).value = recordId;
-      document.getElementById("myForm_" + recordId).submit();
+    document.getElementById("recordId_" + recordId).value = recordId;
+    document.getElementById("myForm_" + recordId).submit();
   }
 </script>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+  .status-chip {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    /* Rounded corners for chip effect */
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Specific status colors */
+  .status-chip.modern-green {
+    background-color: #00B300;
+    color: white;
+  }
+
+  .status-chip.modern-pink {
+    background-color: #FF69B4;
+    color: white;
+  }
+
+  .status-chip.modern-yellow {
+    background-color: #FFD700;
+    color: black;
+  }
+
+  .status-chip.modern-red {
+    background-color: #FF4500;
+    color: white;
+  }
+
+  .status-chip.modern-orange {
+    background-color: #FFA500;
+    color: white;
+  }
+</style>
 <div class="container mt-4">
   <h1 class="text-center">Depot 2024 Table</h1>
   {% if schemes %}
   <table id="depot24" class="table" width="100%" style="text-align: center;">
-    <thead class="table-info">
+    <thead class="table-info" style="text-align: center;">
       <tr>
         <th>Area Engineer</th>
         <th>Scheme Reference</th>
@@ -33,7 +70,12 @@
       <tr>
         <td>{{ scheme.AREA_ENGINEER_NAME }}</td>
         <td>{{ scheme.REFRENCENUMBER }}</td>
-        <td>{{ scheme.PlanStatus }}</td>
+        <td>
+          <span
+            class="status-chip {% if scheme.PlanStatus == 'Completed' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'In GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'In Wayleave' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'Not Required' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'In Design' %}badge badge-danger rounded-pill d-inline{% endif %}">
+            {{ scheme.PlanStatus }}
+          </span>
+        </td>
         <td>{{ scheme.PASSEDDATE }}</td>
         <td>{{ scheme.BLOCKNUMBER }}</td>
         <td>{{ scheme.SUBSTATIONNUMBER }}</td>
@@ -41,19 +83,17 @@
         <td>{{ scheme.FEEDERNUMBER }}</td>
         <td>{{ scheme.LVBNUMBER }}</td>
         <td style="width: 230px;">
-          <button class="btn btn-sm btn-primary me-1" onclick="">
-            <i class="fas fa-eye"></i> View
-          </button>
-
-          <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ scheme.id }}"></i>
-
+          <a href="#"><i class="fas fa-eye"
+              style="text-decoration: none; color: #679ef2; padding: 10px; display: inline-block; font-size: 20px;"></i></a>
+          <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ scheme.id }}"
+            style="text-decoration: none;font-size: 20px; color: #f4c767; padding: 10px; display: inline-block;"></i>
           {% if is_admin %}
           <form id="myForm_{{ scheme.id }}" action="{% url 'delete_depot24' scheme.id %}" method="POST"
             style="display:inline;">
             {% csrf_token %}
             <input type="hidden" id="recordId_{{ scheme.id }}" name="recordId" value="{{ scheme.id }}">
             <a href="javascript:void(0);" onclick="submitForm('{{ scheme.id }}')"><i class="fas fa-trash"
-                style="text-decoration: none; color: black; padding: 10px; display: inline-block;"></i></a>
+                style="text-decoration: none;font-size: 20px; color: #f88498; padding: 10px; display: inline-block;"></i></a>
           </form>
           {% endif %}
         </td>
@@ -64,6 +104,7 @@
   {% else %}
   <h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
   {% endif %}
+
   <!-- Modal -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
     aria-hidden="true">
@@ -77,7 +118,6 @@
         </div>
         <div class="modal-body">
           <form id="updateForm">
-            <!-- CSRF Token (for Django or similar frameworks) -->
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
 
@@ -181,17 +221,17 @@
 
             <div class="form-group">
               <label for="labourcost">Labour Cost</label>
-              <input type="number" class="form-control" id="labourcost" name="labourcost" step="0.01">
+              <input type="number" class="form-control" id="labourcost" name="labourcost">
             </div>
 
             <div class="form-group">
               <label for="ministrycost">Ministry Cost</label>
-              <input type="number" class="form-control" id="ministrycost" name="ministrycost" step="0.01">
+              <input type="number" class="form-control" id="ministrycost" name="ministrycost">
             </div>
 
             <div class="form-group">
               <label for="cable_length">Cable Length</label>
-              <input type="number" class="form-control" id="cable_length" name="cable_length" step="0.01">
+              <input type="number" class="form-control" id="cable_length" name="cable_length">
             </div>
 
             <div class="form-group">
@@ -231,7 +271,7 @@
 
             <div class="form-group">
               <label for="totalcost">Total Cost</label>
-              <input type="number" class="form-control" id="totalcost" name="totalcost" step="0.01">
+              <input type="number" class="form-control" id="totalcost" name="totalcost">
             </div>
 
             <!-- Modal Footer -->

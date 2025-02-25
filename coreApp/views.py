@@ -78,7 +78,10 @@ def depot24(request):
         return render(
             request,
             "depot24.html",
-            {"schemes": schemes, "is_admin": request.user.is_superuser},
+            {
+                "schemes": schemes,
+                "is_admin": request.user.is_superuser,
+            },
         )
     else:
         return redirect("signin")
