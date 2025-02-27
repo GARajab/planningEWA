@@ -11,44 +11,14 @@
   #dt-search-0 {
     width: 300px;
   }
-
-
-  .modal-content {
-    display: flex;
-    flex-direction: column;
-    max-height: 80vh;
-    /* Adjust as needed */
-  }
-
-  .modal-body {
-    overflow-y: auto;
-    /* Enable scrolling for the body */
-    flex-grow: 1;
-    /* Allow the body to grow and fill available space */
-  }
-
-  .modal-footer {
-    position: sticky;
-    bottom: 0;
-    background-color: white;
-    /* Match the modal background */
-    z-index: 1;
-    /* Ensure the footer stays above the body content */
-    padding: 15px;
-    /* Add padding for better spacing */
-  }
-
-  .form-group {
-    height: 100px
-  }
 </style>
 <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <div class="container mt-4">
-  <h1 class="text-center">Depot 2024 Table</h1>
+  <h1 class="text-center">Depot 2025 Table</h1>
   {% if schemes %}
-  <table id="depot24" class="table" width="100%" style="text-align: center;">
-    <thead class="table-info sticky-top">
+  <table id="depot25" class="table" width="100%" style="text-align: center;">
+    <thead class="table-info sticky-top" style="text-align: center;">
       <tr>
         <th>Area Engineer</th>
         <th>Scheme Reference</th>
@@ -80,10 +50,12 @@
         <td>{{ scheme.FEEDERNUMBER }}</td>
         <td>{{ scheme.LVBNUMBER }}</td>
         <td style="width: 230px;">
+          <a href="#"><i class="fas fa-eye"
+              style="text-decoration: none; color: #679ef2; padding: 10px; display: inline-block; font-size: 20px;"></i></a>
           <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ scheme.id }}"
             style="text-decoration: none;font-size: 20px; color: #f4c767; padding: 10px; display: inline-block;"></i>
           {% if is_admin %}
-          <form id="myForm_{{ scheme.id }}" action="{% url 'delete_depot24' scheme.id %}" method="POST"
+          <form id="myForm_{{ scheme.id }}" action="{% url 'delete_depot25' scheme.id %}" method="POST"
             style="display:inline;">
             {% csrf_token %}
             <input type="hidden" id="recordId_{{ scheme.id }}" name="recordId" value="{{ scheme.id }}">
@@ -109,7 +81,7 @@
           <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
         </div>
         <div class="modal-body">
-          <form id="updateForm24" novalidate>
+          <form id="updateForm">
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
 
@@ -119,6 +91,10 @@
               <input type="text" class="form-control" id="REFRENCENUMBER" name="REFRENCENUMBER" required>
             </div>
 
+            <div class="form-group">
+              <label for="DEPOT">Depot</label>
+              <input type="text" class="form-control" id="DEPOT" name="DEPOT">
+            </div>
 
             <div class="form-group">
               <label for="AREA_ENGINEER_NAME">Area Engineer Name</label>
@@ -151,46 +127,45 @@
             </div>
 
             <div class="form-group">
-              <label for="Type">Type</label>
-              <select class="form-select" id="TYPE" name="TYPE">
-                <option value="1">Reinforcement Only</option>
-                <option value="2">Reinforcement And Replacement</option>
-                <option value="3">Replacement Only</option>
-                <option value="4">Replace Part</option>
-              </select>
+              <label for="TYPE">Type</label>
+              <input type="text" class="form-control" id="TYPE" name="TYPE">
             </div>
 
-
+            <div class="form-group">
+              <label for="WAYLEAVENUMBER">Way Leave Number</label>
+              <input type="text" class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER">
+            </div>
 
             <!-- Date Fields with Flatpickr -->
             <div class="form-group">
               <label for="USPDATE">USP Date</label>
-              <input type="date" class="form-control flatpickr" id="USPDATE" name="USPDATE">
+              <input type="text" class="form-control flatpickr" id="USPDATE" name="USPDATE">
             </div>
 
             <div class="form-group">
               <label for="PASSEDDATE">Passed Date</label>
-              <input type="date" class="form-control flatpickr" id="PASSEDDATE" name="PASSEDDATE">
+              <input type="text" class="form-control flatpickr" id="PASSEDDATE" name="PASSEDDATE">
             </div>
 
             <div class="form-group">
               <label for="GISDATE">GIS Date</label>
-              <input type="date" class="form-control flatpickr" id="GISDATE" name="GISDATE">
+              <input type="text" class="form-control flatpickr" id="GISDATE" name="GISDATE">
             </div>
-
 
             <div class="form-group">
-              <label for="PlanStatus">Plan Status</label>
-              <select class="form-select" id="PlanStatus" name="PlanStatus">
-                <option value="1">In Design</option>
-                <option value="1">Completed</option>
-                <option value="2">In GIS</option>
-                <option value="3">In Wayleave</option>
-                <option value="4">Not Required</option>
-              </select>
+              <label for="RCCDATE">RCC Date</label>
+              <input type="text" class="form-control flatpickr" id="RCCDATE" name="RCCDATE">
             </div>
 
+            <div class="form-group">
+              <label for="MSPDATE">MSP Date</label>
+              <input type="text" class="form-control flatpickr" id="MSPDATE" name="MSPDATE">
+            </div>
 
+            <div class="form-group">
+              <label for="sentDate">Sent Date</label>
+              <input type="text" class="form-control flatpickr" id="sentDate" name="sentDate">
+            </div>
 
             <!-- Other Fields -->
             <div class="form-group">
@@ -198,10 +173,14 @@
               <textarea class="form-control" id="REMARKES" name="REMARKES"></textarea>
             </div>
 
+            <div class="form-group">
+              <label for="PlanStatus">Plan Status</label>
+              <input type="text" class="form-control" id="PlanStatus" name="PlanStatus">
+            </div>
 
             <div class="form-group">
               <label for="ConStatus">Construction Status</label>
-              <input type="text" class="form-control" id="ConStatus" name="ConStatus" disabled>
+              <input type="text" class="form-control" id="ConStatus" name="ConStatus">
             </div>
 
             <div class="form-group">
@@ -217,42 +196,53 @@
             <div class="form-group">
               <label for="cable_length">Cable Length</label>
               <input type="number" class="form-control" id="cable_length" name="cable_length">
+            </div>
 
-              <div class="form-group">
-                <label for="noOfServ">Number of Services</label>
-                <input type="number" class="form-control" id="noOfServ" name="noOfServ">
-              </div>
+            <div class="form-group">
+              <label for="Area">Area</label>
+              <input type="text" class="form-control" id="Area" name="Area">
+            </div>
 
-              <div class="form-group">
-                <label for="noOfFaults">Number of Faults</label>
-                <input type="number" class="form-control" id="noOfFaults" name="noOfFaults">
-              </div>
+            <div class="form-group">
+              <label for="gov">Gov</label>
+              <input type="text" class="form-control" id="gov" name="gov">
+            </div>
 
-              <div class="form-group">
-                <label for="totalcost">Total Cost</label>
-                <input type="number" class="form-control" id="totalcost" name="totalcost" disabled>
-              </div>
+            <div class="form-group">
+              <label for="noOfServ">Number of Services</label>
+              <input type="number" class="form-control" id="noOfServ" name="noOfServ">
+            </div>
 
-              <div class="form-group">
-                <label for="WAYLEAVENUMBER">Way Leave Number</label>
-                <input type="text" class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER">
-              </div>
+            <div class="form-group">
+              <label for="noOfFaults">Number of Faults</label>
+              <input type="number" class="form-control" id="noOfFaults" name="noOfFaults">
+            </div>
 
-              <div class="form-group">
-                <label for="RCCDATE">RCC Date</label>
-                <input type="date" class="form-control flatpickr" id="RCCDATE" name="RCCDATE">
-              </div>
+            <div class="form-group">
+              <label for="areaEngEmail">Area Engineer Email</label>
+              <input type="email" class="form-control" id="areaEngEmail" name="areaEngEmail">
+            </div>
 
-              <div class="form-group">
-                <label for="MSPDATE">MSP Date</label>
-                <input type="date" class="form-control flatpickr" id="MSPDATE" name="MSPDATE">
-              </div>
+            <div class="form-group">
+              <label for="EngPhoneNumber">Engineer Phone Number</label>
+              <input type="text" class="form-control" id="EngPhoneNumber" name="EngPhoneNumber">
+            </div>
 
-              <!-- Modal Footer -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="updateForm" type="submit" class="btn btn-primary">Save changes</button>
-              </div>
+            <div class="form-group">
+              <label for="AreaOfAe">Area of Area Engineer</label>
+              <input type="text" class="form-control" id="AreaOfAe" name="AreaOfAe">
+            </div>
+
+            <div class="form-group">
+              <label for="totalcost">Total Cost</label>
+              <input type="number" class="form-control" id="totalcost" name="totalcost">
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
           </form>
         </div>
       </div>
@@ -284,6 +274,7 @@
         $.get('/update/' + caseId + '/', function (data) {
           $('#caseId').val(data.id);
           $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
+          $('#DEPOT').val(data.DEPOT);
           $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
           $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
           $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
@@ -303,9 +294,14 @@
           $('#labourcost').val(data.labourcost);
           $('#ministrycost').val(data.ministrycost);
           $('#cable_length').val(data.cable_length);
+          $('#Area').val(data.Area);
+          $('#gov').val(data.gov);
+          $('#sentDate').val(data.sentDate);
           $('#noOfServ').val(data.noOfServ);
           $('#noOfFaults').val(data.noOfFaults);
           $('#areaEngEmail').val(data.areaEngEmail);
+          $('#EngPhoneNumber').val(data.EngPhoneNumber);
+          $('#AreaOfAe').val(data.AreaOfAe);
           $('#totalcost').val(data.totalcost);
         });
         $("#depot24-form").on("submit", function (event) {
@@ -347,7 +343,7 @@
           });
         });
         // Handle form submission
-        $('#updateForm24').off('submit').on('submit', function (e) {
+        $('#updateForm').off('submit').on('submit', function (e) {
           e.preventDefault();
           $.ajax({
             type: "POST",
@@ -368,7 +364,7 @@
   </script>
   <script>
     $(document).ready(function () {
-      var table = $('#depot24').DataTable({
+      var table = $('#depot25').DataTable({
         autoFill: true
       });
 

@@ -90,9 +90,15 @@ def depot24(request):
 def depot25(request):
     if request.user.is_authenticated:
         schemes = depotcases2025.objects.all()
-        # Fetch all documents from the collection
-        context = {"schemes": schemes, "is_admin": request.user.is_superuser}
-        return render(request, "depot25.html", context)
+
+        return render(
+            request,
+            "depot25.html",
+            {
+                "schemes": schemes,
+                "is_admin": request.user.is_superuser,
+            },
+        )
     else:
         return redirect("signin")
 
@@ -202,7 +208,6 @@ def update_depot_case(request, id):
     case_data = {
         "id": case.id,
         "REFRENCENUMBER": case.REFRENCENUMBER,
-        "DEPOT": case.DEPOT,
         "AREA_ENGINEER_NAME": case.AREA_ENGINEER_NAME,
         "BLOCKNUMBER": case.BLOCKNUMBER,
         "SUBSTATIONNUMBER": case.SUBSTATIONNUMBER,
@@ -228,14 +233,9 @@ def update_depot_case(request, id):
         "cable_length": str(
             case.cable_length
         ),  # Convert Decimal to String for JSON serialization
-        "Area": case.Area,
-        "gov": case.gov,
-        "sentDate": case.sentDate,
         "noOfServ": case.noOfServ,
         "noOfFaults": case.noOfFaults,
         "areaEngEmail": case.areaEngEmail,
-        "EngPhoneNumber": case.EngPhoneNumber,
-        "AreaOfAe": case.AreaOfAe,
         "totalcost": str(
             case.totalcost
         ),  # Convert Decimal to String for JSON serialization
@@ -253,6 +253,51 @@ def update_depot_case(request, id):
         return JsonResponse({"success": True})
     return JsonResponse(case_data)
 
+    if request.method == "POST":
+        # Get the data from the request
+        uspdate = request.POST.get("USPDATE")
+        passeddate = request.POST.get("PASSEDDATE")
+        gisdate = request.POST.get("GISDATE")
+        rccdate = request.POST.get("RCCDATE")
+        mspdate = request.POST.get("MSPDATE")
+        labourcost = request.POST.get("labourcost")
+        ministrycost = request.POST.get("ministrycost")
+        cable_length = request.POST.get("cable_length")
+        noOfServ = request.POST.get("noOfServ")
+        noOfFaults = request.POST.get("noOfFaults")
+        totalcost = request.POST.get("totalcost")
+
+        # Convert empty strings to None
+        uspdate = None if uspdate == "" else uspdate
+        passeddate = None if passeddate == "" else passeddate
+        gisdate = None if gisdate == "" else gisdate
+        rccdate = None if rccdate == "" else rccdate
+        mspdate = None if mspdate == "" else mspdate
+
+        labourcost = None if labourcost == "" else float(labourcost)
+        ministrycost = None if ministrycost == "" else float(ministrycost)
+        cable_length = None if cable_length == "" else float(cable_length)
+        noOfServ = None if noOfServ == "" else float(noOfServ)
+        noOfFaults = None if noOfFaults == "" else float(noOfFaults)
+        totalcost = None if totalcost == "" else float(totalcost)
+
+        # Create or update the model instance
+        depot_case = depotcases2024(
+            USPDATE=uspdate,
+            PASSEDDATE=passeddate,
+            GISDATE=gisdate,
+            RCCDATE=rccdate,
+            MSPDATE=mspdate,
+            labourcost=labourcost,
+            ministrycost=ministrycost,
+            cable_length=cable_length,
+            noOfServ=noOfServ,
+            noOfFaults=noOfFaults,
+            totalcost=totalcost,
+            # Add other fields here
+        )
+        depot_case.save()
+
 
 def update_depot_case25(request, id):
     case = get_object_or_404(depotcases2025, id=id)
@@ -261,7 +306,6 @@ def update_depot_case25(request, id):
     case_data = {
         "id": case.id,
         "REFRENCENUMBER": case.REFRENCENUMBER,
-        "DEPOT": case.DEPOT,
         "AREA_ENGINEER_NAME": case.AREA_ENGINEER_NAME,
         "BLOCKNUMBER": case.BLOCKNUMBER,
         "SUBSTATIONNUMBER": case.SUBSTATIONNUMBER,
@@ -287,14 +331,9 @@ def update_depot_case25(request, id):
         "cable_length": str(
             case.cable_length
         ),  # Convert Decimal to String for JSON serialization
-        "Area": case.Area,
-        "gov": case.gov,
-        "sentDate": case.sentDate,
         "noOfServ": case.noOfServ,
         "noOfFaults": case.noOfFaults,
         "areaEngEmail": case.areaEngEmail,
-        "EngPhoneNumber": case.EngPhoneNumber,
-        "AreaOfAe": case.AreaOfAe,
         "totalcost": str(
             case.totalcost
         ),  # Convert Decimal to String for JSON serialization

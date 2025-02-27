@@ -88,7 +88,10 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
               <li><a class="dropdown-item" href="#">Hi {{ user.username }}</a></li>
+              {% if user.username %}
+              {% else %}
               <li><a class="dropdown-item" href="#">Login</a></li>
+              {% endif %}
               <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
             </ul>
           </div>
