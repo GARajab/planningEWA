@@ -14,21 +14,90 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
 
   <title>{% block title %}Default Title{% endblock %}</title>
+  <style>
+    /* Base toast styling */
+    .toast-modern {
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    /* Success toast */
+    #successToast {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    #successToast .toast-header {
+      background-color: #c3e6cb;
+      color: #155724;
+      border-bottom: 1px solid #b1dfbb;
+    }
+
+    /* Info toast */
+    #infoToast {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    #infoToast .toast-header {
+      background-color: #bee5eb;
+      color: #0c5460;
+      border-bottom: 1px solid #abdde5;
+    }
+
+    /* Warning toast */
+    #warningToast {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    #warningToast .toast-header {
+      background-color: #ffeeba;
+      color: #856404;
+      border-bottom: 1px solid #ffe08c;
+    }
+
+    /* Error toast */
+    #errorToast {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    #errorToast .toast-header {
+      background-color: #f5c6cb;
+      color: #721c24;
+      border-bottom: 1px solid #f1b0b7;
+    }
+
+    /* Close button styling */
+    .btn-close {
+      filter: invert(1);
+    }
+
+    /* Positioning and spacing */
+    .toast-container {
+      z-index: 1050;
+    }
+  </style>
 </head>
 
 
 <body>
   <!-- Toast container -->
   <div aria-live="polite" aria-atomic="true" class="position-relative">
-    <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="width: 370px;">
       <!-- Success Toast -->
-      <div id="successToast" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-success text-white">
+      <div id="successToast" class="toast toast-modern" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <i class="fas fa-check-circle me-2"></i>
           <strong class="me-auto">Success</strong>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
           <!-- Message content will be inserted here -->
+          Your operation was successful!
         </div>
       </div>
     </div>

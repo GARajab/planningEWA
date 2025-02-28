@@ -135,43 +135,57 @@ def nc24(request):
         return redirect("signin")
 
 
-def get_permit(request, permit_id):
-    permit = get_object_or_404(permit, id=permit_id)
-    data = {
-        "id": permit.id,
-        "Number": permit.Number,
-        "REF_NO": permit.REF_NO,
-        "TO_WL_DATE": permit.TO_WL_DATE,
-        "Block": permit.Block,
-        "KW": permit.KW,
-        "KVA": permit.KVA,
-        "TO_GIS_DATE ": permit.TO_GIS_DATE,
-        "Plan_Status": permit.Plan_Status,
-        "PASSED_DATE": permit.PASSED_DATE.strftime(
-            "%Y-%m-%d"
-        ),  # Format date for input field
-    }
-    return JsonResponse(data)
-
-
 @csrf_exempt
-def edit_permit(request, permit_Id):
-    if request.method == "POST":
-        permit_id = request.POST.get("permitId")
-        permit = get_object_or_404(Permit, id=permit_id)
-        permit.Number = request.POST.get("Number")
-        permit.REF_NO = request.POST.get("REF_NO")
-        permit.TO_WL_DATE = request.POST.get("TO_WL_DATE")
-        permit.Block = request.POST.get("Block")
-        permit.KW = request.POST.get("KW")
-        permit.KVA = request.POST.get("KVA")
-        permit.TO_GIS_DATE = request.POST.get("TO_GIS_DATE")
-        permit.Plan_Status = request.POST.get("Plan_Status")
-        permit.PASSED_DATE = request.POST.get("PASSED_DATE")
-        permit.save()
-
-        return JsonResponse({"status": "success"})
-    return JsonResponse({"status": "error"})
+def edit_permit(request, permit_id):
+    print(f"Received request with permit_id: {permit_id}")  # Debugging log
+    if request.method == "GET":
+        try:
+            permit = Permit.objects.get(id=permit_id)
+            print(f"Found permit: {permit}")  # Debugging log
+            data = {
+                "id": permit.id,
+                "Number": permit.Number,
+                "block": permit.block,
+                "kw": permit.kw,
+                "kva": permit.kva,
+                "plan_status": permit.plan_status,
+                "passed_date": (permit.passed_date),
+                "to_wl_date": (permit.to_wl_date),
+                "to_gis_date": (permit.to_gis_date),
+                "wl_number": permit.wl_number,
+                "ref_no": permit.ref_no,
+                "comment": permit.comment,
+            }
+            return JsonResponse(data)
+        except Permit.DoesNotExist:
+            print(f"Permit with id {permit_id} does not exist.")  # Debugging log
+            return JsonResponse(
+                {"status": "error", "message": "Permit not found"}, status=404
+            )
+    elif request.method == "POST":
+        try:
+            permit = Permit.objects.get(id=permit_id)
+            permit.Number = request.POST.get("Number")
+            permit.block = request.POST.get("block")
+            permit.kw = request.POST.get("kw")
+            permit.kva = request.POST.get("kva")
+            permit.plan_status = request.POST.get("plan_status")
+            permit.passed_date = request.POST.get("passed_date")
+            permit.to_wl_date = request.POST.get("to_wl_date")
+            permit.to_gis_date = request.POST.get("to_gis_date")
+            permit.wl_number = request.POST.get("wl_number")
+            permit.ref_no = request.POST.get("ref_no")
+            permit.comment = request.POST.get("comment")
+            permit.save()
+            return JsonResponse({"status": "success"})
+        except Permit.DoesNotExist:
+            return JsonResponse(
+                {"status": "error", "message": "Permit not found"}, status=404
+            )
+    else:
+        return JsonResponse(
+            {"status": "error", "message": "Invalid request method"}, status=400
+        )
 
 
 def delete_Nc(request, permit_id):
