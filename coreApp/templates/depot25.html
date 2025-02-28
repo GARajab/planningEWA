@@ -109,7 +109,7 @@
           <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
         </div>
         <div class="modal-body">
-            <table id="depot24" class="table" width="100%" style="text-align: center;">
+           <form id="updateForm25" novalidate>
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
 
@@ -153,10 +153,10 @@
             <div class="form-group">
               <label for="Type">Type</label>
               <select class="form-select" id="TYPE" name="TYPE">
-                <option value="1">Reinforcement Only</option>
-                <option value="2">Reinforcement And Replacement</option>
-                <option value="3">Replacement Only</option>
-                <option value="4">Replace Part</option>
+                <option value="Reinforcement Only">Reinforcement Only</option>
+                <option value="Reinforcement And Replacement">Reinforcement And Replacement</option>
+                <option value="Replacement Only">Replacement Only</option>
+                <option value="Replace Part">Replace Part</option>
               </select>
             </div>
 
@@ -251,7 +251,7 @@
               <!-- Modal Footer -->
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="updateForm" type="submit" class="btn btn-primary">Save changes</button>
+                <button id="updateForm25" type="submit" class="btn btn-primary">Save changes</button>
               </div>
           </form>
         </div>
@@ -269,7 +269,7 @@
 
 
 
-  <script>
+ <script>
     $(document).ready(function () {
       // Attach the show event for the modal
       $('#updateModal').on('show.bs.modal', function (event) {
@@ -369,7 +369,7 @@
   <script>
     $(document).ready(function () {
       var table = $('#depot25').DataTable({
-        autoFill: true
+        
       });
 
     })
