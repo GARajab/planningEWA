@@ -109,7 +109,7 @@
           <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
         </div>
         <div class="modal-body">
-          <form id="updateForm25" novalidate>
+            <table id="depot24" class="table" width="100%" style="text-align: center;">
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
 
@@ -182,11 +182,11 @@
             <div class="form-group">
               <label for="PlanStatus">Plan Status</label>
               <select class="form-select" id="PlanStatus" name="PlanStatus">
-                <option value="1">In Design</option>
-                <option value="1">Completed</option>
-                <option value="2">In GIS</option>
-                <option value="3">In Wayleave</option>
-                <option value="4">Not Required</option>
+                <option value="In Design">In Design</option>
+                <option value="Completed">Completed</option>
+                <option value="In GIS">In GIS</option>
+                <option value="In Wayleave">In Wayleave</option>
+                <option value="Not Required">Not Required</option>
               </select>
             </div>
 

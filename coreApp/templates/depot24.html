@@ -182,11 +182,11 @@
             <div class="form-group">
               <label for="PlanStatus">Plan Status</label>
               <select class="form-select" id="PlanStatus" name="PlanStatus">
-                <option value="1">In Design</option>
-                <option value="1">Completed</option>
-                <option value="2">In GIS</option>
-                <option value="3">In Wayleave</option>
-                <option value="4">Not Required</option>
+                <option value="In Design">In Design</option>
+                <option value="Completed">Completed</option>
+                <option value="In GIS">In GIS</option>
+                <option value="In Wayleave">In Wayleave</option>
+                <option value="Not Required">Not Required</option>
               </select>
             </div>
 
@@ -281,7 +281,7 @@
           return;
         }
         // Fetch case data using AJAX
-        $.get('/update/' + caseId + '/', function (data) {
+        $.get('/update24/' + caseId + '/', function (data) {
           $('#caseId').val(data.id);
           $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
           $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
@@ -331,7 +331,7 @@
 
           $.ajax({
             type: "POST",
-            url: '/update/' + caseId + '/',
+            url: '/update24/' + caseId + '/',
             data: $(this).serialize(),
             headers: {
               "X-CSRFToken": csrftoken
@@ -351,7 +351,7 @@
           e.preventDefault();
           $.ajax({
             type: "POST",
-            url: '/update/' + caseId + '/',
+            url: '/update24/' + caseId + '/',
             data: $(this).serialize(),
             success: function (response) {
               if (response.success) {
@@ -369,7 +369,7 @@
   <script>
     $(document).ready(function () {
       var table = $('#depot24').DataTable({
-        autoFill: true
+        
       });
 
     })

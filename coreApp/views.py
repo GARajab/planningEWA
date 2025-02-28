@@ -136,7 +136,7 @@ def nc24(request):
 
 
 def get_permit(request, permit_id):
-    permit = get_object_or_404(Permit, id=permit_id)
+    permit = get_object_or_404(permit, id=permit_id)
     data = {
         "id": permit.id,
         "Number": permit.Number,
@@ -155,12 +155,10 @@ def get_permit(request, permit_id):
 
 
 @csrf_exempt
-def edit_permit(request):
+def edit_permit(request, permit_Id):
     if request.method == "POST":
         permit_id = request.POST.get("permitId")
         permit = get_object_or_404(Permit, id=permit_id)
-
-        # Update the permit object with form data
         permit.Number = request.POST.get("Number")
         permit.REF_NO = request.POST.get("REF_NO")
         permit.TO_WL_DATE = request.POST.get("TO_WL_DATE")
@@ -174,6 +172,19 @@ def edit_permit(request):
 
         return JsonResponse({"status": "success"})
     return JsonResponse({"status": "error"})
+
+
+def delete_Nc(request, permit_id):
+    if request.method == "POST":
+        permitNc = get_object_or_404(Permit, id=permit_id)
+        permitNc.delete()
+        messages.success(
+            request, "Permit Number " + permitNc.Number + " Deleted Successfully."
+        )
+        return redirect("nc24")
+    else:
+        messages.error(request, "Invalid request Record Not Deleted.")
+    return redirect("nc2024")
 
 
 def delete_depot24(request, permit_id):
@@ -201,7 +212,7 @@ def delete_depot25(request, permit_id):
     return redirect("depot25")
 
 
-def update_depot_case(request, id):
+def update_depot24(request, id):
     case = get_object_or_404(depotcases2024, id=id)
 
     # For GET request, send case data as JSON
@@ -299,7 +310,7 @@ def update_depot_case(request, id):
         depot_case.save()
 
 
-def update_depot_case25(request, id):
+def update_depot25(request, id):
     case = get_object_or_404(depotcases2025, id=id)
 
     # For GET request, send case data as JSON
