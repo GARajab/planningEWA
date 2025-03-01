@@ -80,6 +80,7 @@
     .toast-container {
       z-index: 1050;
     }
+
   </style>
 </head>
 
@@ -103,7 +104,7 @@
     </div>
   </div>
   <!-- Navbar at the top -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+  <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary">
     <div class="container-fluid">
       <a href="http://"><img src="{% static 'images/logo.png' %}" alt="" style="width: 20%;"></a>
       <a href="http://"><img src="{% static 'images/EWALogo.png' %}" alt="" style="width: 90%;"></a>
@@ -185,7 +186,9 @@
   <div class="center-content">
     {% block content %}
     <!-- Content will be injected here -->
+   
     {% endblock %}
+      
   </div>
 
   <!-- jQuery -->

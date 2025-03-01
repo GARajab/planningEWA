@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from .models import depotcases2024, depotcases2025, Permit
-
+from django.db.models import Sum
 from django.views.decorators.http import require_POST
 
 
@@ -316,5 +316,55 @@ def update_depot25(request, id):
     return JsonResponse(case_data)
 
 
-def dep24Rep_view(request):
-    return render(request, "dep24Rep.html")
+def depot24Report(request):
+    if not request.user.is_authenticated:
+        return redirect("signin")
+
+    engineer_names = [
+        "A RAJESH",
+        "Bassam",
+        "MOHAMED RAJAB",
+        "MOHAMED ALANSARI",
+        "Ebrahim Isa",
+    ]
+    statuses = [
+        "In Design",
+        "In GIS",
+        "In Wayleave",
+        "Completed",
+        "Replan",
+        "ReplanPassed",
+        "Not Required",
+    ]
+
+    # Dictionary to store data for all engineers
+    engineers_data = {}
+
+    for engineer_name in engineer_names:
+        # Get counts for each status
+        status_counts = {
+            status.replace(" ", "_"): depotcases2024.objects.filter(
+                AREA_ENGINEER_NAME=engineer_name, PlanStatus=status
+            ).count()
+            for status in statuses
+        }
+
+        # Get total count for the engineer
+        total_count = depotcases2024.objects.filter(
+            AREA_ENGINEER_NAME=engineer_name
+        ).count()
+
+        # Store data for this engineer
+        engineers_data[engineer_name] = {
+            "total_count": total_count,
+            "status_counts": status_counts,
+        }
+
+    return render(
+        request,
+        "dep24Rep.html",
+        {
+            "engineers_data": engineers_data,
+            "is_admin": request.user.is_superuser,
+        },
+    )
