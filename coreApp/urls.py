@@ -18,4 +18,5 @@ urlpatterns = [
     path("update25/<int:id>/", views.update_depot25, name="update_depot25"),
     path("updateNc/<int:permit_id>/", views.edit_permit, name="edit_permit"),
     path("dep24rep/", views.depot24Report, name="depot24Report"),
+    path("dep25rep/", views.depot25Report, name="depot25Report"),
 ]
