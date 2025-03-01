@@ -145,6 +145,7 @@ def edit_permit(request, permit_id):
             data = {
                 "id": permit.id,
                 "Number": permit.Number,
+                "parcel_number": permit.parcel_number,
                 "block": permit.block,
                 "kw": permit.kw,
                 "kva": permit.kva,
@@ -166,6 +167,7 @@ def edit_permit(request, permit_id):
         try:
             permit = Permit.objects.get(id=permit_id)
             permit.Number = request.POST.get("Number")
+            permit.parcel_number = request.POST.get("parcel_number")
             permit.block = request.POST.get("block")
             permit.kw = request.POST.get("kw")
             permit.kva = request.POST.get("kva")

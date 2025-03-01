@@ -190,3 +190,13 @@ class Permit(models.Model):
 
     def __str__(self):
         return self.Number
+
+    def save(self, *args, **kwargs):
+        # Convert empty strings to None for date fields
+        if self.passed_date == "":
+            self.passed_date = None
+        if self.to_wl_date == "":
+            self.to_wl_date = None
+        if self.to_gis_date == "":
+            self.to_gis_date = None
+        super().save(*args, **kwargs)

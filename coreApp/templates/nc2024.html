@@ -198,7 +198,7 @@
           <!-- Modal Footer -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="updateNc24" type="submit" class="btn btn-primary">Save changes</button>
+            <button id="updateNc24Btn" type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
       </div>
@@ -216,17 +216,19 @@
 <script>
   $(document).ready(function () {
     // Attach the show event for the modal
-    $('#updateNc24').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
-      console.log(event.relatedTarget)// Button that triggered the modal
-      var permitId = button.data('id'); // Extract info from data-* attributes
+    $('#updateModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var permitId = button.data('id'); // Extract permit ID from data-id attribute
       if (!permitId) {
         console.error("Invalid or missing permit ID.");
         return;
       }
+
       // Fetch permit data using AJAX
       $.get('/updateNc/' + permitId + '/', function (data) {
+        // Populate form fields with fetched data
         $('#permitId').val(data.id);
+        $('#parcel_number').val(data.parcel_number);
         $('#Number').val(data.Number);
         $('#block').val(data.block);
         $('#kw').val(data.kw);
@@ -238,52 +240,67 @@
         $('#wl_number').val(data.wl_number);
         $('#ref_no').val(data.ref_no);
         $('#comment').val(data.comment);
+      }).fail(function (error) {
+        console.error("Error fetching permit data:", error); // Log AJAX errors
       });
-    });
-    $("#updateNc24").on("submit", function (event) {
-      event.preventDefault(); // Prevent default form submission behavior
-      // Add your AJAX code here to submit the form data
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
+
+      $("#updateNc24").on("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var permitId = $('#permitId').val(); // Get permitId from the hidden input field
+        console.log("Permit ID on submit:", permitId); // Debugging: Log the permitId
+
+        if (!permitId) {
+          console.error("Invalid or missing permit ID.");
+          return;
+        }
+
+        // Function to retrieve CSRF token from cookies
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
             }
           }
+          return cookieValue;
         }
-        return cookieValue;
-      }
 
-      const csrftoken = getCookie('csrftoken');
+        const csrftoken = getCookie('csrftoken'); // Get CSRF token
 
-      // Handle form submission
-      $('#updateNc24').off('submit').on('submit', function (e) {
-        e.preventDefault();
+        // Submit form data via AJAX
         $.ajax({
           type: "POST",
-          url: '/updateNc/' + caseId + '/',
-          data: $(this).serialize(),
+          url: '/updateNc/' + permitId + '/', // Use permitId in the URL
+          data: $(this).serialize(), // Serialize form data
+          headers: {
+            'X-CSRFToken': csrftoken // Include CSRF token in headers
+          },
           success: function (response) {
-            if (response.success) {
-              location.reload(); // Refresh page
+            if (response.status === "success") {
+              location.reload(); // Reload page on success
+            } else {
+              console.error("Error:", response.message); // Log server-side errors
             }
           },
           error: function (error) {
-            console.log("Error:", error);
+            console.error("AJAX Error:", error); // Log AJAX errors
           }
         });
       });
     });
   });
+
 </script>
 <script>
   $(document).ready(function () {
     var table = $('#nc24').DataTable({
-      autoFill: true
+
     });
 
   })
