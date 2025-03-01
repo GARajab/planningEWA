@@ -14,30 +14,35 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
 
   <title>{% block title %}Default Title{% endblock %}</title>
- <style>
-  /* Ensure the navbar items are displayed in a single line */
-  .navbar-nav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+  <style>
+    /* Ensure the navbar items are displayed in a single line */
+    .navbar-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
 
-  /* Remove extra margins and padding */
-  .nav-item {
-    margin: 0;
-    padding: 0;
-  }
+    /* Remove extra margins and padding */
+    .nav-item {
+      margin: 0;
+      padding: 0;
+    }
 
-  /* Ensure dropdown items are inline */
-  .dropdown {
-    display: inline-block;
-  }
+    /* Ensure dropdown items are inline */
+    .dropdown {
+      display: inline-block;
+    }
 
-  /* Adjust the margin for dropdown links */
-  .nav-link {
-    margin-right: 30px;
-  }
-</style>
+    /* Adjust the margin for dropdown links */
+    .nav-link {
+      margin-right: 30px;
+    }
+
+
+    .linkFontSize {
+      font-size: large;
+    }
+  </style>
 </head>
 
 
@@ -61,81 +66,91 @@
   </div>
   <!-- Navbar at the top -->
   <nav class="navbar navbar-expand-md navbar-light bg-body-tertiary">
-  <div class="container-fluid">
-    <a href="http://"><img src="{% static 'images/logo.png' %}" alt="" style="width: 20%;"></a>
-    <a href="http://"><img src="{% static 'images/EWALogo.png' %}" alt="" style="width: 90%;"></a>
-    <div class="collapse navbar-collapse" id="schemes">
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <div class="dropdown">
-            <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
-              href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-              <span class="badge badge-danger rounded-pill d-inline">Depot Schemes Reports</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-              <li><a class="dropdown-item" href="{% url 'depot24Report' %}">2024</a></li>
-              <li><a class="dropdown-item" href="{% url 'depot25Report' %}">2025</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <div class="dropdown">
-            <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
-              href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-              <span class="badge badge-success rounded-pill d-inline">Depot Schemes</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-              <li><a class="dropdown-item" href="{% url 'depot24' %}">2024</a></li>
-              <li><a class="dropdown-item" href="{% url 'depot25' %}">2025</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <div class="dropdown">
-            <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
-              href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-              <span class="badge badge-info rounded-pill d-inline">LoadReading Schemes</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-              <li><a class="dropdown-item" href="#">2024</a></li>
-              <li><a class="dropdown-item" href="#">2025</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <div class="dropdown">
-            <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
-              href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-              <span class="badge badge-warning rounded-pill d-inline">Design In BP Stage</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-              <li><a class="dropdown-item" href="{% url 'nc24' %}">NC Page</a></li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+    <div>
+      <a href="http://"><img src="{% static 'images/logo.png' %}" alt="" style="width: 20%;"></a>
+      <a href="http://"><img src="{% static 'images/EWALogo.png' %}" alt="" style="width: 20%;"></a>
+    </div>
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="schemes">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                <span
+                  class="badge badge-danger rounded-pill d-inline linkFontSize shadow p-3 mb-0 bg-body-tertiary rounded">Depot
+                  Schemes Reports</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="{% url 'depot24Report' %}">2024</a></li>
+                <li><a class="dropdown-item" href="{% url 'depot25Report' %}">2025</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                <span
+                  class="badge badge-success rounded-pill d-inline linkFontSize shadow p-3 mb-0 bg-body-tertiary rounded">Depot
+                  Schemes</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="{% url 'depot24' %}">2024</a></li>
+                <li><a class="dropdown-item" href="{% url 'depot25' %}">2025</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                <span
+                  class="badge badge-info rounded-pill d-inline linkFontSize shadow p-3 mb-0 bg-body-tertiary rounded">LoadReading
+                  Schemes</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="#">2024</a></li>
+                <li><a class="dropdown-item" href="#">2025</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow links"
+                href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                <span
+                  class="badge badge-warning rounded-pill d-inline linkFontSize linksBtns shadow p-3 mb-0 bg-body-tertiary rounded">Design
+                  In BP Stage</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                <li><a class="dropdown-item" href="{% url 'nc24' %}">NC Page</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
 
-      <!-- User dropdown aligned to the right -->
-      <div class="d-flex align-items-center ms-auto">
-        <div class="dropdown">
-          <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
-            id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-            <img src="{% static 'images/user.jpeg' %}" class="rounded-circle" height="25"
-              alt="Black and White Portrait of a Man" loading="lazy" />
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-            <li><a class="dropdown-item" href="#">Hi {{ user.username }}</a></li>
-            {% if user.username %}
-            {% else %}
-            <li><a class="dropdown-item" href="#">Login</a></li>
-            {% endif %}
-            <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
-          </ul>
+        <!-- User dropdown aligned to the right -->
+        <div class="d-flex align-items-center ms-auto">
+          <div class="dropdown">
+            <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+              id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+              <img src="{% static 'images/user.jpeg' %}" class="rounded-circle" height="25"
+                alt="Black and White Portrait of a Man" loading="lazy" />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+              <li><a class="dropdown-item" href="#">Hi {{ user.username }}</a></li>
+              {% if user.username %}
+              {% else %}
+              <li><a class="dropdown-item" href="#">Login</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
   {% if messages %}
   {% for message in messages %}
   <script>
@@ -153,9 +168,9 @@
   <div class="center-content">
     {% block content %}
     <!-- Content will be injected here -->
-   
+
     {% endblock %}
-      
+
   </div>
 
   <!-- jQuery -->
