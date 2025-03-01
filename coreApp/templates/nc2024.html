@@ -47,11 +47,6 @@
 <div class="container mt-4">
   <div class="bar" style="display:flex ;">
     <h1 class="text-center" style="flex-grow: 1;">NC Table</h1>
-    <div style="display: flex; ">
-      <a href="#" styl]="badge badge-success rounded-pill d-inline">Link 1</a>
-      <a href="#">Link 2</a>
-    </div>
-
   </div>
   {% if permits %}
   <table id="nc24" class="table" width="100%" style="text-align: center;">
@@ -80,7 +75,7 @@
         <td>{{ permit.planeng }}</td>
         <td>
           <span style="font-size: 12px;"
-            class="{% if permit.plan_status == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif permit.plan_status == 'IN GIS' %}badge badge-primary rounded-pill d-inline{% elif permit.plan_status == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif permit.plan_status == 'Not Required' %}badge badge-info rounded-pill d-inline{% elif permit.plan_status == 'In Design' %}badge badge-danger rounded-pill d-inline{% endif %}">
+            class="{% if permit.plan_status == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif permit.plan_status == 'In GIS' %}badge badge-primary rounded-pill d-inline{% elif permit.plan_status == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif permit.plan_status == 'Not Required' %}badge badge-info rounded-pill d-inline{% elif permit.plan_status == 'In Design' %}badge badge-danger rounded-pill d-inline{% endif %}">
             {{ permit.plan_status }}
           </span>
         <td>{{ permit.block }}</td>
@@ -158,10 +153,9 @@
             <label for="plan_status">Plan Status</label>
             <select class="form-select" id="plan_status" name="plan_status">
               <option value="In Design">In Design</option>
-              <option value="Completed">Completed</option>
               <option value="In GIS">In GIS</option>
               <option value="In Wayleave">In Wayleave</option>
-              <option value="Not Required">Not Required</option>
+              <option value="Completed">Completed</option>
             </select>
           </div>
 
