@@ -139,7 +139,7 @@
                 alt="Black and White Portrait of a Man" loading="lazy" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-              <li><a class="dropdown-item" href="#">Hi {{ user.username }}</a></li>
+              <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
               {% if user.username %}
               {% else %}
               <li><a class="dropdown-item" href="#">Login</a></li>
