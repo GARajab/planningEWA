@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Include Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  html,
+  body {
+    height: 100%
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 87vh;
+    flex-direction: column
+  }
+
+  .table {
+    width: 80%;
+    margin-left: 30px;
+    margin-right: 30px;
+    text-align: center;
+    border: 3px solid #9999;
+
+  }
+
+  .badge {
+    font-size: 20px;
+  }
+</style>
+<div class="container">
+  <div>
+    <h6 style="font-size:40px; margin-top:-50px"> Depot Schemes Report 2024 </h6>
+  </div>
+  <table class="table align-middle bg-white table-bordered row g-3 needs-validation" novalidate
+    style="margin-top:-170px">
+    <thead class="bg-light">
+      <tr>
+        <th>SSNO</th>
+        <th>TXNO</th>
+        <th>Block</th>
+        <th>LVB FDR</th>
+        <th>kVA</th>
+        <th>WorkType</th>
+        <th>Plan Status</th>
+        <th>WL NO</th>
+        <th>Sch Ref</th>
+        <th>Title</th>
+        <th>Job no</th>
+        <th>Rcvd Date</th>
+        <th>PlanEng</th>
+        <th>Plan Rem</th>
+        <th>Cons Rem</th>
+        <th>Labour</th>
+        <th>Material</th>
+        <th>Completed By Construction</th>
+        <th>Wayleave</th>
+        <th>Passed Date</th>
+        <th>GISDATE</th>
+        <th>USPDATE</th>
+        <th>RCCDATE</th>
+        <th>MSPDATE</th>
+        <th>Labour Cost</th>
+        <th>Ministry Cost</th>
+        <th>Cable Length</th>
+        <th>Total Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.ssno }}</td>
+        <td>{{ item.txno }}</td>
+        <td>{{ item.block }}</td>
+        <td>{{ item.lvb_fdr }}</td>
+        <td>{{ item.kva }}</td>
+        <td>{{ item.worktype }}</td>
+        <td>{{ item.plan_status }}</td>
+        <td>{{ item.wl_no }}</td>
+        <td>{{ item.sch_ref }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.job_no }}</td>
+        <td>{{ item.rcvd_date }}</td>
+        <td>{{ item.planeng }}</td>
+        <td>{{ item.plan_rem }}</td>
+        <td>{{ item.cons_rem }}</td>
+        <td>{{ item.labour }}</td>
+        <td>{{ item.material }}</td>
+        <td>{{ item.completed_by_construction }}</td>
+        <td>{{ item.wayleave }}</td>
+        <td>{{ item.passed_date }}</td>
+        <td>{{ item.gisdate }}</td>
+        <td>{{ item.uspdate }}</td>
+        <td>{{ item.rccdate }}</td>
+        <td>{{ item.mspdate }}</td>
+        <td>{{ item.labourcost }}</td>
+        <td>{{ item.ministrycost }}</td>
+        <td>{{ item.cable_length }}</td>
+        <td>{{ item.totalcost }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

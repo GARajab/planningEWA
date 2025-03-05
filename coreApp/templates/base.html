@@ -140,7 +140,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
               <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
-              {% if user.username %}
+              {% if user.is_authenticated %}
               {% else %}
               <li><a class="dropdown-item" href="#">Login</a></li>
               {% endif %}

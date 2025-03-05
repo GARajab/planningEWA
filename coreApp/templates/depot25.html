@@ -69,7 +69,7 @@
         <td>{{ scheme.REFRENCENUMBER }}</td>
         <td>
           <span style="font-size: 12px;"
-            class="{% if scheme.PlanStatus == 'Completed' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'In GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'In Wayleave' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'Not Required' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'In Design' %}badge badge-danger rounded-pill d-inline{% endif %}">
+            class="{% if scheme.PlanStatus == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'IN GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'NOT REQUIRED' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'IN DESIGN' %}badge badge-danger rounded-pill d-inline{% endif %}">
             {{ scheme.PlanStatus }}
           </span>
         </td>
@@ -109,7 +109,7 @@
           <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
         </div>
         <div class="modal-body">
-           <form id="updateForm25" novalidate>
+          <form id="updateForm25" novalidate>
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
 
@@ -182,11 +182,11 @@
             <div class="form-group">
               <label for="PlanStatus">Plan Status</label>
               <select class="form-select" id="PlanStatus" name="PlanStatus">
-                <option value="In Design">In Design</option>
-                <option value="Completed">Completed</option>
-                <option value="In GIS">In GIS</option>
-                <option value="In Wayleave">In Wayleave</option>
-                <option value="Not Required">Not Required</option>
+                <option value="IN DESIGN">IN DESIGN</option>
+                <option value="IN GIS">IN GIS</option>
+                <option value="IN WAYLEAVE">IN WAYLEAVE</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="NOT REQUIRED">NOT REQUIRED</option>
               </select>
             </div>
 
@@ -269,12 +269,12 @@
 
 
 
- <script>
+  <script>
     $(document).ready(function () {
       // Attach the show event for the modal
       $('#updateModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
-        console.log(event.relatedTarget)// Button that triggered the modal
+        console.log(event.relatedTarget) // Button that triggered the modal
         var caseId = button.data('id'); // Extract info from data-* attributes
         if (!caseId) {
           console.error("Invalid or missing case ID.");
@@ -308,9 +308,13 @@
           $('#areaEngEmail').val(data.areaEngEmail);
           $('#totalcost').val(data.totalcost);
         });
-        $("#depot25-form").on("submit", function (event) {
-          event.preventDefault(); // Prevent default form submission behavior
-          // Add your AJAX code here to submit the form data
+
+        // Handle form submission
+        $('#updateForm25').off('submit').on('submit', function (e) {
+          e.preventDefault();
+          var btnSave = $('#updateForm25 button[type="submit"]');
+          btnSave.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'); // Change button text and add spinner
+
           function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -328,7 +332,6 @@
 
           const csrftoken = getCookie('csrftoken');
 
-
           $.ajax({
             type: "POST",
             url: '/update25/' + caseId + '/',
@@ -338,30 +341,32 @@
             },
             success: function (response) {
               if (response.success) {
-                location.reload();
-              }
-            },
-            error: function (error) {
-              console.log("Error:", error);
-            }
-          });
-        });
-        // Handle form submission
-        $('#updateForm25').off('submit').on('submit', function (e) {
-          e.preventDefault();
-          $.ajax({
-            type: "POST",
-            url: '/update25/' + caseId + '/',
-            data: $(this).serialize(),
-            success: function (response) {
-              if (response.success) {
+                btnSave.html('Save changes'); // Reset button text
                 location.reload(); // Refresh page
               }
             },
             error: function (error) {
               console.log("Error:", error);
+              btnSave.html('Save changes'); // Reset button text
             }
           });
+        });
+      });
+      // Handle form submission
+      $('#updateForm25').off('submit').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: '/update25/' + caseId + '/',
+          data: $(this).serialize(),
+          success: function (response) {
+            if (response.success) {
+              location.reload(); // Refresh page
+            }
+          },
+          error: function (error) {
+            console.log("Error:", error);
+          }
         });
       });
     });
@@ -369,7 +374,7 @@
   <script>
     $(document).ready(function () {
       var table = $('#depot25').DataTable({
-        
+
       });
 
     })

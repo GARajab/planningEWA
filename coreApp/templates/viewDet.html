@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depot Cases 24 Form</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      height: calc(100vh);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      width: 100%;
+    }
+
+    .custom-width {
+      width: 70%;
+      /* Adjust the width as needed */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Depot Cases 2024 Form</h2>
+    <form>
+      <div class="row">
+        <!-- Column 1 -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="id">ID</label>
+            <input type="number" class="form-control custom-width" id="id" name="id" value="{{ case.id }}" readonly
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="REFRENCENUMBER">Reference Number</label>
+            <input type="text" class="form-control custom-width" id="REFRENCENUMBER" name="REFRENCENUMBER"
+              value="{{ case.REFRENCENUMBER }}" maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="AREA_ENGINEER_NAME">Area Engineer Name</label>
+            <input type="text" class="form-control custom-width" id="AREA_ENGINEER_NAME" name="AREA_ENGINEER_NAME"
+              value="{{ case.AREA_ENGINEER_NAME }}" maxlength="100" disabled>
+          </div>
+          <div class="form-group">
+            <label for="BLOCKNUMBER">Block Number</label>
+            <input type="text" class="form-control custom-width" id="BLOCKNUMBER" name="BLOCKNUMBER"
+              value="{{ case.BLOCKNUMBER }}" maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="SUBSTATIONNUMBER">Substation Number</label>
+            <input type="text" class="form-control custom-width" id="SUBSTATIONNUMBER" name="SUBSTATIONNUMBER"
+              value="{{ case.SUBSTATIONNUMBER }}" maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="TX">TX</label>
+            <input type="text" class="form-control custom-width" id="TX" name="TX" value="{{ case.TX }}" maxlength="10"
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="FEEDERNUMBER">Feeder Number</label>
+            <input type="text" class="form-control custom-width" id="FEEDERNUMBER" name="FEEDERNUMBER"
+              value="{{ case.FEEDERNUMBER }}" maxlength="10" disabled>
+          </div>
+          <div class="form-group">
+            <label for="noOfServ">Number of Services</label>
+            <input type="number" class="form-control custom-width" id="noOfServ" name="noOfServ"
+              value="{{ case.noOfServ }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="noOfFaults">Number of Faults</label>
+            <input type="number" class="form-control custom-width" id="noOfFaults" name="noOfFaults"
+              value="{{ case.noOfFaults }}" step="0.01" disabled>
+          </div>
+        </div>
+        <!-- Column 2 -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="LVBNUMBER">LVB Number</label>
+            <input type="text" class="form-control custom-width" id="LVBNUMBER" name="LVBNUMBER"
+              value="{{ case.LVBNUMBER }}" maxlength="10" disabled>
+          </div>
+          <div class="form-group">
+            <label for="TYPE">Type</label>
+            <input type="text" class="form-control custom-width" id="TYPE" name="TYPE" value="{{ case.TYPE }}"
+              maxlength="50" disabled>
+          </div>
+          <div class="form-group">
+            <label for="WAYLEAVENUMBER">Wayleave Number</label>
+            <input type="text" class="form-control custom-width" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER"
+              value="{{ case.WAYLEAVENUMBER }}" maxlength="100" disabled>
+          </div>
+          <div class="form-group">
+            <label for="USPDATE">USP Date</label>
+            <input type="date" class="form-control custom-width" id="USPDATE" name="USPDATE" value="{{ case.USPDATE }}"
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="PASSEDDATE">Passed Date</label>
+            <input type="date" class="form-control custom-width" id="PASSEDDATE" name="PASSEDDATE"
+              value="{{ case.PASSEDDATE }}" disabled>
+          </div>
+          <div class="form-group">
+            <label for="REMARKES">Remarks</label>
+            <textarea class="form-control custom-width" id="REMARKES" name="REMARKES" rows="3"
+              disabled>{{ case.REMARKES }}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="PlanStatus">Plan Status</label>
+            <input type="text" class="form-control custom-width" id="PlanStatus" name="PlanStatus"
+              value="{{ case.PlanStatus }}" maxlength="50" disabled>
+          </div>
+          <div class="form-group">
+            <label for="areaEngEmail">Area Engineer Email</label>
+            <input type="email" class="form-control custom-width" id="areaEngEmail" name="areaEngEmail"
+              value="{{ case.areaEngEmail }}" disabled>
+          </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="ConStatus">Construction Status</label>
+            <input type="text" class="form-control custom-width" id="ConStatus" name="ConStatus"
+              value="{{ case.ConStatus }}" maxlength="50" disabled>
+          </div>
+          <div class="form-group">
+            <label for="GISDATE">GIS Date</label>
+            <input type="date" class="form-control custom-width" id="GISDATE" name="GISDATE" value="{{ case.GISDATE }}"
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="RCCDATE">RCC Date</label>
+            <input type="date" class="form-control custom-width" id="RCCDATE" name="RCCDATE" value="{{ case.RCCDATE }}"
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="MSPDATE">MSP Date</label>
+            <input type="date" class="form-control custom-width" id="MSPDATE" name="MSPDATE" value="{{ case.MSPDATE }}"
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="labourcost">Labour Cost</label>
+            <input type="number" class="form-control custom-width" id="labourcost" name="labourcost"
+              value="{{ case.labourcost }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="ministrycost">Ministry Cost</label>
+            <input type="number" class="form-control custom-width" id="ministrycost" name="ministrycost"
+              value="{{ case.ministrycost }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="cable_length">Cable Length</label>
+            <input type="number" class="form-control custom-width" id="cable_length" name="cable_length"
+              value="{{ case.cable_length }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="totalcost">Total Cost</label>
+            <input type="number" class="form-control custom-width" id="totalcost" name="totalcost"
+              value="{{ case.totalcost }}" step="0.01" disabled>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

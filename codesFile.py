@@ -62,3 +62,39 @@ if request.method == "POST":
             # Add other fields here
         )
         depot_case.save()
+
+
+
+          <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+  <p class="fw-normal mb-1">
+            {% if engineer_name == "A RAJESH" %}
+            Area <br> 1 + 2 + 9
+            {% elif engineer_name == "Bassam" %}
+            Area <br> 3 + 12
+            {% elif engineer_name == "MOHAMED RAJAB" %}
+            Area <br> 4 + 5
+            {% elif engineer_name == "MOHAMED ALANSARI" %}
+            Area <br> 6 + 7 + 8
+            {% elif engineer_name == "Ebrahim Isa" %}
+            Area <br> 10
+            {% endif %}
+          </p>
+
+
+
+
+
+ <form id="myForm_{{ scheme.id }}" action="{% url 'delete_depot24' scheme.id %}" method="POST"
+            style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" id="recordId_{{ scheme.id }}" name="recordId" value="{{ scheme.id }}">
+            <a href="javascript:void(0);" onclick="submitForm('{{ scheme.id }}')"><i class="fas fa-trash"
+                style="text-decoration: none;font-size: 20px; color: #f88498; padding: 10px; display: inline-block;"></i></a>
+          </form>

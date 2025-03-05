@@ -15,7 +15,7 @@
     justify-content: space-around;
     align-items: center;
     height: 87vh;
-    flex-direction:column
+    flex-direction: column
   }
 
   .table {
@@ -32,7 +32,9 @@
   }
 </style>
 <div class="container">
-<div>  <h6 style="font-size:40px; margin-top:-50px"> Depot Schemes Report 2025 </h6> </div>
+  <div>
+    <h6 style="font-size:40px; margin-top:-50px"> Depot Schemes Report 2025 </h6>
+  </div>
   <table class="table align-middle bg-white table-bordered" style="margin-top:-170px">
     <thead class="bg-light">
       <tr>
@@ -60,7 +62,19 @@
           <p class="fw-normal mb-1">{{ engineer_name }}</p>
         </td>
         <td>
-          <p class="fw-normal mb-1">{%if engineer_name == "A RAJESH" %} Area <br> 1 + 2 + 9{% elif engineer_name == "Bassam" %}Area <br> 3 + 12{% elif engineer_name == "MOHAMED RAJAB" %}Area <br> 4 + 5{% elif engineer_name == "MOHAMED ALANSARI" %}Area <br> 6 + 7 + 8{% elif engineer_name == "Ebrahim Isa" %}Area <br> 10{% endif %}</p>
+          <p class="fw-normal mb-1">
+            {% if engineer_name == "A RAJESH" %}
+            Area <br> 1 + 2 + 9
+            {% elif engineer_name == "Bassam" %}
+            Area <br> 3 + 12
+            {% elif engineer_name == "MOHAMED RAJAB" %}
+            Area <br> 4 + 5
+            {% elif engineer_name == "MOHAMED ALANSARI" %}
+            Area <br> 6 + 7 + 8
+            {% elif engineer_name == "Ebrahim Isa" %}
+            Area <br> 10
+            {% endif %}
+          </p>
         </td>
         <td>
           <span class="badge badge-info rounded-pill d-inline">{{ data.total_count }}</span>

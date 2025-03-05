@@ -1,4 +1,5 @@
 # accounts/views.py
+
 from typing import Collection
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from .models import depotcases2024, depotcases2025, Permit
+from .models import depotcases2024, depotcases2025, Permit, LoadReading2024
 from django.db.models import Sum
 from django.views.decorators.http import require_POST
 
@@ -65,10 +66,7 @@ def home(request):
         return redirect("signin")
 
 
-from django.http import HttpResponse, JsonResponse
-from pymongo import MongoClient
-from bson import json_util  # To handle MongoDB-specific data types like ObjectId
-import json  # To parse the BSON data into JSON
+from django.http import JsonResponse
 
 
 def depot24(request):
@@ -105,9 +103,11 @@ def depot25(request):
 
 def lr24(request):
     if request.user.is_authenticated:
-        # schemes = Depot2024.objects.all()  # Fetch all documents from the collection
-        # context = {"schemes": schemes}
-        # return render(request, "depot24.html", context)
+        schemes = (
+            depotcases2024.objects.all()
+        )  # Fetch all documents from the collection
+        context = {"schemes": schemes}
+        return render(request, "depot24.html", context)
         # else:
         return redirect("signin")
 
@@ -424,3 +424,36 @@ def depot25Report(request):
             "is_admin": request.user.is_superuser,
         },
     )
+
+
+def loadReading2024Report(request):
+    if not request.user.is_authenticated:
+        return redirect("signin")
+
+    # Fetch all records from the loadreading2025 model
+    load_readings = LoadReading2024.objects.all()
+
+    return render(
+        request,
+        "lr2024.html",
+        {
+            "load_readings": load_readings,
+            "is_admin": request.user.is_superuser,
+        },
+    )
+
+
+def view_case_dep_24(request, id):
+    case = get_object_or_404(depotcases2024, id=id)
+    context = {
+        "case": case,
+    }
+    return render(request, "viewDet.html", context)
+
+
+def view_case_dep_25(request, id):
+    case = get_object_or_404(depotcases2025, id=id)
+    context = {
+        "case": case,
+    }
+    return render(request, "viewDet.html", context)

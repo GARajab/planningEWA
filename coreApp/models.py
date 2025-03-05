@@ -200,3 +200,99 @@ class Permit(models.Model):
         if self.to_gis_date == "":
             self.to_gis_date = None
         super().save(*args, **kwargs)
+
+
+class LoadReading2024(models.Model):
+    id = models.AutoField(primary_key=True)
+    ssno = models.CharField(max_length=20, verbose_name="SSNO")
+
+    txno = models.CharField(max_length=20, blank=True, null=True, verbose_name="TXNO")
+
+    block = models.CharField(max_length=20, blank=True, null=True, verbose_name="BLOCK")
+    lvb_fdr = models.CharField(
+        max_length=20, blank=True, null=True, verbose_name="LVB FDR"
+    )
+
+    kva = models.CharField(max_length=20, blank=True, null=True, verbose_name="kVA")
+    worktype = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="WorkType"
+    )
+    plan_status = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Plan Status"
+    )
+    wl_no = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="WL NO"
+    )
+
+    sch_ref = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Sch Ref"
+    )
+    title = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Title"
+    )
+    job_no = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Job no"
+    )
+    rcvd_date = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Rcvd Date"
+    )
+    planeng = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="PlanEng"
+    )
+    plan_rem = models.TextField(blank=True, null=True, verbose_name="Plan Rem")
+    cons_rem = models.TextField(blank=True, null=True, verbose_name="Cons Rem")
+    labour = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Labour"
+    )
+    material = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Material"
+    )
+
+    completed_by_construction = models.TextField(
+        blank=True, null=True, verbose_name="Completed By Construction"
+    )
+
+    wayleave = models.TextField(blank=True, null=True, verbose_name="wayleave")
+    passed_date = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="passed date"
+    )
+
+    gisdate = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="GISDATE"
+    )
+    uspdate = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="USPDATE"
+    )
+    rccdate = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="RCCDATE"
+    )
+    mspdate = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="MSPDATE"
+    )
+    labourcost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="labourcost",
+    )
+    ministrycost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="ministrycost",
+    )
+    cable_length = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="cable length",
+    )
+    totalcost = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="totalcost"
+    )
+
+    def __str__(self):
+        return f"LoadReading {self.id}"
