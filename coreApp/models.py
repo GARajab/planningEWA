@@ -202,71 +202,58 @@ class Permit(models.Model):
         super().save(*args, **kwargs)
 
 
-class LoadReading2024(models.Model):
+class loadreading2024(models.Model):
     id = models.AutoField(primary_key=True)
-    ssno = models.CharField(max_length=20, verbose_name="SSNO")
+    SSNO = models.CharField(max_length=20, verbose_name="SSNO")
 
-    txno = models.CharField(max_length=20, blank=True, null=True, verbose_name="TXNO")
+    TXNO = models.CharField(max_length=20, blank=True, null=True, verbose_name="TXNO")
 
-    block = models.CharField(max_length=20, blank=True, null=True, verbose_name="BLOCK")
-    lvb_fdr = models.CharField(
+    BLOCK = models.CharField(max_length=20, blank=True, null=True, verbose_name="BLOCK")
+    LVB_FDR = models.CharField(
         max_length=20, blank=True, null=True, verbose_name="LVB FDR"
     )
 
-    kva = models.CharField(max_length=20, blank=True, null=True, verbose_name="kVA")
-    worktype = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="WorkType"
-    )
-    plan_status = models.CharField(
+    KVA = models.CharField(max_length=20, blank=True, null=True, verbose_name="kVA")
+
+    Plan_Status = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Plan Status"
     )
-    wl_no = models.CharField(
+    WL_NO = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="WL NO"
     )
 
-    sch_ref = models.CharField(
+    Sch_Ref = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Sch Ref"
     )
-    title = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Title"
-    )
-    job_no = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Job no"
-    )
-    rcvd_date = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Rcvd Date"
-    )
-    planeng = models.CharField(
+    PlanEng = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="PlanEng"
     )
-    plan_rem = models.TextField(blank=True, null=True, verbose_name="Plan Rem")
-    cons_rem = models.TextField(blank=True, null=True, verbose_name="Cons Rem")
-    labour = models.DecimalField(
+    Labour = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Labour"
     )
-    material = models.DecimalField(
+    Material = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Material"
     )
 
-    completed_by_construction = models.TextField(
+    CONST_COMP = models.TextField(
         blank=True, null=True, verbose_name="Completed By Construction"
     )
 
-    wayleave = models.TextField(blank=True, null=True, verbose_name="wayleave")
+    WL_NO = models.TextField(blank=True, null=True, verbose_name="wayleave")
     passed_date = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="passed date"
     )
 
-    gisdate = models.CharField(
+    GISDATE = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="GISDATE"
     )
-    uspdate = models.CharField(
+    USPDATE = models.CharField(
         max_length=255, blank=False, null=False, verbose_name="USPDATE"
     )
-    rccdate = models.CharField(
+    RCCDATE = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="RCCDATE"
     )
-    mspdate = models.CharField(
+    MSPDATE = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="MSPDATE"
     )
     labourcost = models.DecimalField(
@@ -295,4 +282,87 @@ class LoadReading2024(models.Model):
     )
 
     def __str__(self):
-        return f"LoadReading {self.id}"
+        return f"loadreading2024 {self.id}"
+
+
+class loadreading2025(models.Model):
+    id = models.AutoField(primary_key=True)
+    SSNO = models.CharField(max_length=20, verbose_name="SSNO")
+
+    TXNO = models.CharField(max_length=20, blank=True, null=True, verbose_name="TXNO")
+
+    BLOCK = models.CharField(max_length=20, blank=True, null=True, verbose_name="BLOCK")
+    LVB_FDR = models.CharField(
+        max_length=20, blank=True, null=True, verbose_name="LVB FDR"
+    )
+
+    KVA = models.CharField(max_length=20, blank=True, null=True, verbose_name="kVA")
+
+    Plan_Status = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Plan Status"
+    )
+    WL_NO = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="WL NO"
+    )
+
+    Sch_Ref = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Sch Ref"
+    )
+    PlanEng = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="PlanEng"
+    )
+    Labour = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Labour"
+    )
+    Material = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Material"
+    )
+
+    CONST_COMP = models.TextField(
+        blank=True, null=True, verbose_name="Completed By Construction"
+    )
+
+    WL_NO = models.TextField(blank=True, null=True, verbose_name="wayleave")
+    passed_date = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="passed date"
+    )
+
+    GISDATE = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="GISDATE"
+    )
+    USPDATE = models.CharField(
+        max_length=255, blank=False, null=False, verbose_name="USPDATE"
+    )
+    RCCDATE = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="RCCDATE"
+    )
+    MSPDATE = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="MSPDATE"
+    )
+    labourcost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="labourcost",
+    )
+    ministrycost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="ministrycost",
+    )
+    cable_length = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="cable length",
+    )
+    totalcost = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="totalcost"
+    )
+
+    def __str__(self):
+        return f"loadreading2024 {self.id}"

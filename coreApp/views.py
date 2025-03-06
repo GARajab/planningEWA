@@ -8,9 +8,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from .models import depotcases2024, depotcases2025, Permit, LoadReading2024
-from django.db.models import Sum
-from django.views.decorators.http import require_POST
+from .models import (
+    depotcases2024,
+    depotcases2025,
+    Permit,
+    loadreading2024,
+    loadreading2025,
+)
 
 
 def signup_view(request):
@@ -104,21 +108,21 @@ def depot25(request):
 def lr24(request):
     if request.user.is_authenticated:
         schemes = (
-            depotcases2024.objects.all()
+            loadreading2024.objects.all()
         )  # Fetch all documents from the collection
         context = {"schemes": schemes}
-        return render(request, "depot24.html", context)
-        # else:
+        return render(request, "Lreading24.html", context)
+    else:
         return redirect("signin")
 
 
 def lr25(request):
     if request.user.is_authenticated:
-        schemes = list(
-            # COLLECTION_LR2025.find()
+        schemes = (
+            loadreading2025.objects.all()
         )  # Fetch all documents from the collection
         context = {"schemes": schemes}
-        return render(request, "depot24.html", context)
+        return render(request, "Lreading25.html", context)
     else:
         return redirect("signin")
 
@@ -137,11 +141,9 @@ def nc24(request):
 
 @csrf_exempt
 def edit_permit(request, permit_id):
-    print(f"Received request with permit_id: {permit_id}")  # Debugging log
     if request.method == "GET":
         try:
             permit = Permit.objects.get(id=permit_id)
-            print(f"Found permit: {permit}")  # Debugging log
             data = {
                 "id": permit.id,
                 "Number": permit.Number,
@@ -159,7 +161,6 @@ def edit_permit(request, permit_id):
             }
             return JsonResponse(data)
         except Permit.DoesNotExist:
-            print(f"Permit with id {permit_id} does not exist.")  # Debugging log
             return JsonResponse(
                 {"status": "error", "message": "Permit not found"}, status=404
             )
@@ -206,7 +207,6 @@ def delete_Nc(request, permit_id):
 def delete_depot24(request, permit_id):
     if request.method == "POST":
         depot_case = get_object_or_404(depotcases2024, id=permit_id)
-        print(depot_case)
         depot_case.delete()
         messages.success(
             request, "Scheme " + depot_case.REFRENCENUMBER + " Deleted Successfully."
@@ -431,7 +431,7 @@ def loadReading2024Report(request):
         return redirect("signin")
 
     # Fetch all records from the loadreading2025 model
-    load_readings = LoadReading2024.objects.all()
+    load_readings = loadreading2024.objects.all()
 
     return render(
         request,
@@ -457,3 +457,35 @@ def view_case_dep_25(request, id):
         "case": case,
     }
     return render(request, "viewDet.html", context)
+
+
+def loadreading_detail_view(request, id):
+    # Retrieve a specific record from the loadreading2024 model
+    reading = get_object_or_404(loadreading2024, id=id)
+
+    # Pass the data to the template
+    return render(request, "veiwLR.html", {"reading": reading})
+
+
+def delete_LR24(request, permit_id):
+    if request.method == "POST":
+        lr_del = get_object_or_404(loadreading2024, id=permit_id)
+        lr_del.delete()
+        messages.success(request, "Scheme " + lr_del.Sch_Ref + " Deleted Successfully.")
+        return redirect("Lreading24")
+    else:
+        messages.error(request, "Invalid request Record Not Deleted.")
+    return redirect("Lreading24")
+
+
+def delete_LR25(request, permit_id):
+    if request.method == "POST":
+        lr_del = get_object_or_404(
+            loadreading2024, id=permit_id
+        )  # to be changed to loadreading25 if the table available and it is updated in model
+        lr_del.delete()
+        messages.success(request, "Scheme " + lr_del.Sch_Ref + " Deleted Successfully.")
+        return redirect("Lreading25")
+    else:
+        messages.error(request, "Invalid request Record Not Deleted.")
+    return redirect("Lreading25")

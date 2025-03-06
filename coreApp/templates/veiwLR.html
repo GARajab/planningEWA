@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Load Reading 2024 Form</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      height: calc(100vh);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      width: 100%;
+    }
+
+    .custom-width {
+      width: 70%;
+      /* Adjust the width as needed */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Load Reading 2024 Form</h2>
+    <form>
+      <div class="row">
+        <!-- Column 1 -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="id">ID</label>
+            <input type="number" class="form-control custom-width" id="id" name="id" value="{{ reading.id }}" readonly
+              disabled>
+          </div>
+          <div class="form-group">
+            <label for="SSNO">SSNO</label>
+            <input type="text" class="form-control custom-width" id="SSNO" name="SSNO" value="{{ reading.SSNO }}"
+              maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="TXNO">TXNO</label>
+            <input type="text" class="form-control custom-width" id="TXNO" name="TXNO" value="{{ reading.TXNO }}"
+              maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="BLOCK">BLOCK</label>
+            <input type="text" class="form-control custom-width" id="BLOCK" name="BLOCK" value="{{ reading.BLOCK }}"
+              maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="LVB_FDR">LVB FDR</label>
+            <input type="text" class="form-control custom-width" id="LVB_FDR" name="LVB_FDR"
+              value="{{ reading.LVB_FDR }}" maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="KVA">KVA</label>
+            <input type="text" class="form-control custom-width" id="KVA" name="KVA" value="{{ reading.KVA }}"
+              maxlength="20" disabled>
+          </div>
+          <div class="form-group">
+            <label for="Plan_Status">Plan Status</label>
+            <input type="text" class="form-control custom-width" id="Plan_Status" name="Plan_Status"
+              value="{{ reading.Plan_Status }}" maxlength="255" disabled>
+          </div>
+          <div class="form-group">
+            <label for="WL_NO">WL NO</label>
+            <input type="text" class="form-control custom-width" id="WL_NO" name="WL_NO" value="{{ reading.WL_NO }}"
+              maxlength="255" disabled>
+          </div>
+        </div>
+        <!-- Column 2 -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="Sch_Ref">Sch Ref</label>
+            <input type="text" class="form-control custom-width" id="Sch_Ref" name="Sch_Ref"
+              value="{{ reading.Sch_Ref }}" maxlength="255" disabled>
+          </div>
+          <div class="form-group">
+            <label for="PlanEng">PlanEng</label>
+            <input type="text" class="form-control custom-width" id="PlanEng" name="PlanEng"
+              value="{{ reading.PlanEng }}" maxlength="255" disabled>
+          </div>
+          <div class="form-group">
+            <label for="Labour">Labour</label>
+            <input type="number" class="form-control custom-width" id="Labour" name="Labour"
+              value="{{ reading.Labour }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="Material">Material</label>
+            <input type="number" class="form-control custom-width" id="Material" name="Material"
+              value="{{ reading.Material }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="CONST_COMP">Completed By Construction</label>
+            <textarea class="form-control custom-width" id="CONST_COMP" name="CONST_COMP" rows="3"
+              disabled>{{ reading.CONST_COMP }}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="passed_date">Passed Date</label>
+            <input type="date" class="form-control custom-width" id="passed_date" name="passed_date"
+              value="{{ reading.passed_date }}" disabled>
+          </div>
+          <div class="form-group">
+            <label for="GISDATE">GIS Date</label>
+            <input type="date" class="form-control custom-width" id="GISDATE" name="GISDATE"
+              value="{{ reading.GISDATE }}" disabled>
+          </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="USPDATE">USP Date</label>
+            <input type="date" class="form-control custom-width" id="USPDATE" name="USPDATE"
+              value="{{ reading.USPDATE }}" disabled>
+          </div>
+          <div class="form-group">
+            <label for="RCCDATE">RCC Date</label>
+            <input type="date" class="form-control custom-width" id="RCCDATE" name="RCCDATE"
+              value="{{ reading.RCCDATE }}" disabled>
+          </div>
+          <div class="form-group">
+            <label for="MSPDATE">MSP Date</label>
+            <input type="date" class="form-control custom-width" id="MSPDATE" name="MSPDATE"
+              value="{{ reading.MSPDATE }}" disabled>
+          </div>
+          <div class="form-group">
+            <label for="labourcost">Labour Cost</label>
+            <input type="number" class="form-control custom-width" id="labourcost" name="labourcost"
+              value="{{ reading.labourcost }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="ministrycost">Ministry Cost</label>
+            <input type="number" class="form-control custom-width" id="ministrycost" name="ministrycost"
+              value="{{ reading.ministrycost }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="cable_length">Cable Length</label>
+            <input type="number" class="form-control custom-width" id="cable_length" name="cable_length"
+              value="{{ reading.cable_length }}" step="0.01" disabled>
+          </div>
+          <div class="form-group">
+            <label for="totalcost">Total Cost</label>
+            <input type="number" class="form-control custom-width" id="totalcost" name="totalcost"
+              value="{{ reading.totalcost }}" step="0.01" disabled>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

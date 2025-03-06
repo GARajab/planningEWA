@@ -1,44 +1,7 @@
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault(); // Prevent the default form submission
-      loadingSpinner.style.display = 'block'; // Show the loading spinner
-
-      // Perform the form submission using fetch or XMLHttpRequest
-      fetch(form.action, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token
-        },
-        body: new URLSearchParams(new FormData(form)).toString()
-      })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the response data if needed
-          console.log(data);
-
-          // Hide the loading spinner and reload the page
-          loadingSpinner.style.display = 'none';
-          window.location.reload();
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          loadingSpinner.style.display = 'none';
-        });
-    });
-  });
-</script>
-</tr>
-</tbody>
-</table>
-{% else %}
 <h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
-{% endif %}
 
+{% extends 'base.html' %}
+{% block content %}
 <!-- Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
   aria-hidden="true">
@@ -197,7 +160,43 @@
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const loadingSpinner = document.getElementById('loadingSpinner');
 
+    form.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent the default form submission
+      loadingSpinner.style.display = 'block'; // Show the loading spinner
+
+      // Perform the form submission using fetch or XMLHttpRequest
+      fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token
+        },
+        body: new URLSearchParams(new FormData(form)).toString()
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response data if needed
+          console.log(data);
+
+          // Hide the loading spinner and reload the page
+          loadingSpinner.style.display = 'none';
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          loadingSpinner.style.display = 'none';
+        });
+    });
+  });
+</script>
+</tr>
+</tbody>
+</table>
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
