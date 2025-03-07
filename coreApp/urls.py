@@ -26,4 +26,15 @@ urlpatterns = [
     path("view_dep24/<int:id>", views.view_case_dep_24, name="view_case_dep_24"),
     path("view_dep25/<int:id>", views.view_case_dep_25, name="view_case_dep_25"),
     path("LR/<int:id>/", views.loadreading_detail_view, name="loadreading_detail_view"),
+    path("dashboard/", views.dashboard, name="dashboard"),
+    path(
+        "fetch-scheme-references/<str:year>/",
+        views.fetch_scheme_references,
+        name="fetch_scheme_references",
+    ),
+    path(
+        "fetch-scheme-references/",
+        views.fetch_scheme_references,
+        name="fetch_scheme_references",
+    ),
 ]

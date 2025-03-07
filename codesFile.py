@@ -117,3 +117,192 @@ if request.method == "POST":
   <!-- MDB UI Kit -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.umd.min.js"></script>
   <!-- Font Awesome -->
+
+
+
+
+def dashboard(request):
+    # Fetch all cases for 2024
+    cases_2024 = depotcases2024.objects.all()
+    # Fetch all cases for 2025
+    cases_2025 = depotcases2025.objects.all()
+    # Fetch load readings for 2024
+    load_readings_2024 = loadreading2024.objects.all()
+    # Fetch permit data
+    permits = Permit.objects.all()
+
+    # Prepare data for Chart.js for 2024
+    engineers_2024 = (
+        cases_2024.values("AREA_ENGINEER_NAME")
+        .distinct()
+        .order_by("AREA_ENGINEER_NAME")
+    )
+    statuses_2024 = cases_2024.values("PlanStatus").distinct().order_by("PlanStatus")
+
+    data_2024 = {
+        engineer["AREA_ENGINEER_NAME"]: {
+            status["PlanStatus"]: 0 for status in statuses_2024
+        }
+        for engineer in engineers_2024
+    }
+
+    for case in cases_2024:
+        engineer_name = case.AREA_ENGINEER_NAME
+        plan_status = case.PlanStatus
+        if engineer_name and plan_status:
+            data_2024[engineer_name][plan_status] += 1
+
+    labels_2024 = [engineer for engineer in data_2024.keys()]
+    datasets_2024 = []
+
+    for status in statuses_2024:
+        status_label = (
+            status["PlanStatus"] if status["PlanStatus"] is not None else "Unknown"
+        )
+        dataset = {
+            "label": status_label,
+            "data": [
+                data_2024[engineer].get(status_label, 0) for engineer in labels_2024
+            ],
+            "backgroundColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 0.2)",
+            "borderColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 1)",
+            "borderWidth": 1,
+        }
+        datasets_2024.append(dataset)
+
+    total_records_2024 = cases_2024.count()
+
+    # Prepare data for Chart.js for 2025
+    engineers_2025 = (
+        cases_2025.values("AREA_ENGINEER_NAME")
+        .distinct()
+        .order_by("AREA_ENGINEER_NAME")
+    )
+    statuses_2025 = cases_2025.values("PlanStatus").distinct().order_by("PlanStatus")
+
+    data_2025 = {
+        engineer["AREA_ENGINEER_NAME"]: {
+            status["PlanStatus"]: 0 for status in statuses_2025
+        }
+        for engineer in engineers_2025
+    }
+
+    for case in cases_2025:
+        engineer_name = case.AREA_ENGINEER_NAME
+        plan_status = case.PlanStatus
+        if engineer_name and plan_status:
+            data_2025[engineer_name][plan_status] += 1
+
+    labels_2025 = [engineer for engineer in data_2025.keys()]
+    datasets_2025 = []
+
+    for status in statuses_2025:
+        status_label = (
+            status["PlanStatus"] if status["PlanStatus"] is not None else "Unknown"
+        )
+        dataset = {
+            "label": status_label,
+            "data": [
+                data_2025[engineer].get(status_label, 0) for engineer in labels_2025
+            ],
+            "backgroundColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 0.2)",
+            "borderColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 1)",
+            "borderWidth": 1,
+        }
+        datasets_2025.append(dataset)
+
+    total_records_2025 = cases_2025.count()
+
+    # Prepare data for Chart.js for Load Readings 2024
+    engineers_load_2024 = (
+        load_readings_2024.values("PlanEng").distinct().order_by("PlanEng")
+    )
+    statuses_load_2024 = (
+        load_readings_2024.values("Plan_Status").distinct().order_by("Plan_Status")
+    )
+
+    data_load_2024 = {
+        engineer["PlanEng"]: {status["Plan_Status"]: 0 for status in statuses_load_2024}
+        for engineer in engineers_load_2024
+    }
+
+    for case in load_readings_2024:
+        engineer_name = case.PlanEng
+        plan_status = case.Plan_Status
+        if engineer_name and plan_status:
+            data_load_2024[engineer_name][plan_status] += 1
+
+    labels_load_2024 = [engineer for engineer in data_load_2024.keys()]
+    datasets_load_2024 = []
+
+    for status in statuses_load_2024:
+        status_label = (
+            status["Plan_Status"] if status["Plan_Status"] is not None else "Unknown"
+        )
+        dataset = {
+            "label": status_label,
+            "data": [
+                data_load_2024[engineer].get(status_label, 0)
+                for engineer in labels_load_2024
+            ],
+            "backgroundColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 0.2)",
+            "borderColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 1)",
+            "borderWidth": 1,
+        }
+        datasets_load_2024.append(dataset)
+
+    total_records_load_2024 = load_readings_2024.count()
+
+    # Prepare data for Chart.js for Permits
+    engineers_permits = permits.values("planeng").distinct().order_by("planeng")
+    statuses_permits = permits.values("plan_status").distinct().order_by("plan_status")
+
+    data_permits = {
+        engineer["planeng"]: {status["plan_status"]: 0 for status in statuses_permits}
+        for engineer in engineers_permits
+    }
+
+    for case in permits:
+        engineer_name = case.planeng
+        plan_status = case.plan_status
+        if engineer_name and plan_status:
+            data_permits[engineer_name][plan_status] += 1
+
+    labels_permits = [engineer for engineer in data_permits.keys()]
+    datasets_permits = []
+
+    for status in statuses_permits:
+        status_label = (
+            status["plan_status"] if status["plan_status"] is not None else "Unknown"
+        )
+        dataset = {
+            "label": status_label,
+            "data": [
+                data_permits[engineer].get(status_label, 0)
+                for engineer in labels_permits
+            ],
+            "backgroundColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 0.2)",
+            "borderColor": f"rgba({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)}, 1)",
+            "borderWidth": 1,
+        }
+        datasets_permits.append(dataset)
+
+    total_records_permits = permits.count()
+
+    # Prepare context for the template
+    context = {
+        "labels_2024": labels_2024,
+        "datasets_2024": datasets_2024,
+        "total_records_2024": total_records_2024,
+        "labels_2025": labels_2025,
+        "datasets_2025": datasets_2025,
+        "total_records_2025": total_records_2025,
+        "labels_load_2024": labels_load_2024,
+        "datasets_load_2024": datasets_load_2024,
+        "total_records_load_2024": total_records_load_2024,
+        "labels_permits": labels_permits,
+        "datasets_permits": datasets_permits,
+        "total_records_permits": total_records_permits,
+    }
+
+    return render(request, "dashboard.html", context)

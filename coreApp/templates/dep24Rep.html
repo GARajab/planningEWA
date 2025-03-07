@@ -1,324 +1,131 @@
-<h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
-
 {% extends 'base.html' %}
+
 {% block content %}
-<!-- Modal -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
-      </div>
-      <div class="modal-body">
-        <form id="updateForm24" novalidate>
-          {% csrf_token %}
-          <input type="hidden" name="id" id="caseId">
 
-          <!-- Form Fields -->
-          <div class="form-group">
-            <label for="REFRENCENUMBER">Reference Number</label>
-            <input type="text" class="form-control" id="REFRENCENUMBER" name="REFRENCENUMBER" required>
-          </div>
+<!-- Include Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  html,
+  body {
+    height: 100%
+  }
 
+  .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 87vh;
+    flex-direction: column
+  }
 
-          <div class="form-group">
-            <label for="AREA_ENGINEER_NAME">Area Engineer Name</label>
-            <input type="text" class="form-control" id="AREA_ENGINEER_NAME" name="AREA_ENGINEER_NAME">
-          </div>
+  .table {
+    width: 80%;
+    margin-left: 30px;
+    margin-right: 30px;
+    text-align: center;
+    border: 3px solid #9999;
 
-          <div class="form-group">
-            <label for="BLOCKNUMBER">Block Number</label>
-            <input type="text" class="form-control" id="BLOCKNUMBER" name="BLOCKNUMBER">
-          </div>
+  }
 
-          <div class="form-group">
-            <label for="SUBSTATIONNUMBER">Substation Number</label>
-            <input type="text" class="form-control" id="SUBSTATIONNUMBER" name="SUBSTATIONNUMBER">
-          </div>
-
-          <div class="form-group">
-            <label for="TX">TX</label>
-            <input type="text" class="form-control" id="TX" name="TX">
-          </div>
-
-          <div class="form-group">
-            <label for="FEEDERNUMBER">Feeder Number</label>
-            <input type="text" class="form-control" id="FEEDERNUMBER" name="FEEDERNUMBER">
-          </div>
-
-          <div class="form-group">
-            <label for="LVBNUMBER">LVB Number</label>
-            <input type="text" class="form-control" id="LVBNUMBER" name="LVBNUMBER">
-          </div>
-
-          <div class="form-group">
-            <label for="Type">Type</label>
-            <select class="form-select" id="TYPE" name="TYPE">
-              <option value="Reinforcement Only">Reinforcement Only</option>
-              <option value="Reinforcement And Replacement">Reinforcement And Replacement</option>
-              <option value="Replacement Only">Replacement Only</option>
-              <option value="Replace Part">Replace Part</option>
-            </select>
-          </div>
-
-
-
-          <!-- Date Fields with Flatpickr -->
-          <div class="form-group">
-            <label for="USPDATE">USP Date</label>
-            <input type="date" class="form-control flatpickr" id="USPDATE" name="USPDATE">
-          </div>
-
-          <div class="form-group">
-            <label for="PASSEDDATE">Passed Date</label>
-            <input type="date" class="form-control flatpickr" id="PASSEDDATE" name="PASSEDDATE">
-          </div>
-
-          <div class="form-group">
-            <label for="GISDATE">GIS Date</label>
-            <input type="date" class="form-control flatpickr" id="GISDATE" name="GISDATE">
-          </div>
-
-
-          <div class="form-group">
-            <label for="PlanStatus">Plan Status</label>
-            <select class="form-select" id="PlanStatus" name="PlanStatus">
-              <option value="In Design">In Design</option>
-              <option value="In GIS">In GIS</option>
-              <option value="In Wayleave">In Wayleave</option>
-              <option value="Completed">Completed</option>
-              <option value="Not Required">Not Required</option>
-            </select>
-          </div>
-
-
-
-          <!-- Other Fields -->
-          <div class="form-group">
-            <label for="REMARKES">Remarks</label>
-            <textarea class="form-control" id="REMARKES" name="REMARKES"></textarea>
-          </div>
-
-
-          <div class="form-group">
-            <label for="ConStatus">Construction Status</label>
-            <input type="text" class="form-control" id="ConStatus" name="ConStatus" disabled>
-          </div>
-
-          <div class="form-group">
-            <label for="labourcost">Labour Cost</label>
-            <input type="number" class="form-control" id="labourcost" name="labourcost">
-          </div>
-
-          <div class="form-group">
-            <label for="ministrycost">Ministry Cost</label>
-            <input type="number" class="form-control" id="ministrycost" name="ministrycost">
-          </div>
-
-          <div class="form-group">
-            <label for="cable_length">Cable Length</label>
-            <input type="number" class="form-control" id="cable_length" name="cable_length">
-
-            <div class="form-group">
-              <label for="noOfServ">Number of Services</label>
-              <input type="number" class="form-control" id="noOfServ" name="noOfServ">
-            </div>
-
-            <div class="form-group">
-              <label for="noOfFaults">Number of Faults</label>
-              <input type="number" class="form-control" id="noOfFaults" name="noOfFaults">
-            </div>
-
-            <div class="form-group">
-              <label for="totalcost">Total Cost</label>
-              <input type="number" class="form-control" id="totalcost" name="totalcost" disabled>
-            </div>
-
-            <div class="form-group">
-              <label for="WAYLEAVENUMBER">Way Leave Number</label>
-              <input type="text" class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER">
-            </div>
-
-            <div class="form-group">
-              <label for="RCCDATE">RCC Date</label>
-              <input type="date" class="form-control flatpickr" id="RCCDATE" name="RCCDATE">
-            </div>
-
-            <div class="form-group">
-              <label for="MSPDATE">MSP Date</label>
-              <input type="date" class="form-control flatpickr" id="MSPDATE" name="MSPDATE">
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button id="updateForm24" type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </form>
-      </div>
-    </div>
+  .badge {
+    font-size: 20px;
+  }
+</style>
+<div class="container">
+  <div>
+    <h6 style="font-size:40px; margin-top:-50px"> Depot Schemes Report 2024 </h6>
   </div>
+  <table class="table align-middle bg-white table-bordered" style="margin-top:-170px">
+    <thead class="bg-light">
+      <tr>
+        <th>Engineer Name</th>
+        <th>Engineer Area</th>
+        <th>Total Cases</th>
+        <th>Pending</th>
+        <th>In GIS</th>
+        <th>In WayLeave</th>
+        <th>Not Required</th>
+        <th>Completed</th>
+        <th>Replan</th>
+        <th>Replan Repassed</th>
+        <th>Total Cost</th>
+        <th>Total Length</th>
+        <th>In Progress</th>
+        <th>Completed By Construction</th>
+        <th>Replan</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for engineer_name, data in engineers_data.items %}
+      <tr>
+        <td>
+          <p class="fw-normal mb-1">{{ engineer_name }}</p>
+        </td>
+        <td>
+          <p class="fw-normal mb-1">
+            {% if engineer_name == "A RAJESH" %}
+            Area <br> 1 + 2 + 9
+            {% elif engineer_name == "Bassam" %}
+            Area <br> 3 + 12
+            {% elif engineer_name == "MOHAMED RAJAB" %}
+            Area <br> 4 + 5
+            {% elif engineer_name == "MOHAMED ALANSARI" %}
+            Area <br> 6 + 7 + 8
+            {% elif engineer_name == "Ebrahim Isa" %}
+            Area <br> 10
+            {% endif %}
+          </p>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.total_count }}</span>
+        </td>
+        <td>
+          {% if data.status_counts.In_Design > 5 %}
+          <span class="badge badge-danger rounded-pill d-inline">{{ data.status_counts.In_Design }}</span>
+          {% elif data.status_counts.In_Design == 0 %}
+          <span class="badge badge-success rounded-pill d-inline">{{ data.status_counts.In_Design }}</span>
+          {% else %}
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.In_Design }}</span>
+          {% endif %}
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.In_GIS }}</span>
+        </td>
+        <td>
+          <span class="badge badge-warning rounded-pill d-inline">{{ data.status_counts.In_Wayleave }}</span>
+        </td>
+        <td>
+          <span class="badge badge-primary rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-success rounded-pill d-inline">{{ data.status_counts.Completed }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Replan }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.ReplanPassed }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+      </tr>
+    </tbody>
+  </table>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault(); // Prevent the default form submission
-      loadingSpinner.style.display = 'block'; // Show the loading spinner
-
-      // Perform the form submission using fetch or XMLHttpRequest
-      fetch(form.action, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token
-        },
-        body: new URLSearchParams(new FormData(form)).toString()
-      })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the response data if needed
-          console.log(data);
-
-          // Hide the loading spinner and reload the page
-          loadingSpinner.style.display = 'none';
-          window.location.reload();
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          loadingSpinner.style.display = 'none';
-        });
-    });
-  });
-</script>
-</tr>
-</tbody>
-</table>
-
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
-
-
-
-<script>
-  $(document).ready(function () {
-    // Attach the show event for the modal
-    $('#updateModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
-      console.log(event.relatedTarget)// Button that triggered the modal
-      var caseId = button.data('id'); // Extract info from data-* attributes
-      if (!caseId) {
-        console.error("Invalid or missing case ID.");
-        return;
-      }
-      // Fetch case data using AJAX
-      $.get('/update24/' + caseId + '/', function (data) {
-        $('#caseId').val(data.id);
-        $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
-        $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
-        $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
-        $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
-        $('#TX').val(data.TX);
-        $('#FEEDERNUMBER').val(data.FEEDERNUMBER);
-        $('#LVBNUMBER').val(data.LVBNUMBER);
-        $('#TYPE').val(data.TYPE);
-        $('#WAYLEAVENUMBER').val(data.WAYLEAVENUMBER);
-        $('#USPDATE').val(data.USPDATE);
-        $('#PASSEDDATE').val(data.PASSEDDATE);
-        $('#REMARKES').val(data.REMARKES);
-        $('#PlanStatus').val(data.PlanStatus);
-        $('#ConStatus').val(data.ConStatus);
-        $('#GISDATE').val(data.GISDATE);
-        $('#RCCDATE').val(data.RCCDATE);
-        $('#MSPDATE').val(data.MSPDATE);
-        $('#labourcost').val(data.labourcost);
-        $('#ministrycost').val(data.ministrycost);
-        $('#cable_length').val(data.cable_length);
-        $('#noOfServ').val(data.noOfServ);
-        $('#noOfFaults').val(data.noOfFaults);
-        $('#areaEngEmail').val(data.areaEngEmail);
-        $('#totalcost').val(data.totalcost);
-      });
-      $("#depot24-form").on("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
-        // Add your AJAX code here to submit the form data
-        function getCookie(name) {
-          let cookieValue = null;
-          if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-              }
-            }
-          }
-          return cookieValue;
-        }
-
-        const csrftoken = getCookie('csrftoken');
-
-
-        $.ajax({
-          type: "POST",
-          url: '/update24/' + caseId + '/',
-          data: $(this).serialize(),
-          headers: {
-            "X-CSRFToken": csrftoken
-          },
-          success: function (response) {
-            if (response.success) {
-              location.reload();
-            }
-          },
-          error: function (error) {
-            console.log("Error:", error);
-          }
-        });
-      });
-      // Handle form submission
-      $('#updateForm24').off('submit').on('submit', function (e) {
-        e.preventDefault();
-        $.ajax({
-          type: "POST",
-          url: '/update24/' + caseId + '/',
-          data: $(this).serialize(),
-          success: function (response) {
-            if (response.success) {
-              location.reload(); // Refresh page
-            }
-          },
-          error: function (error) {
-            console.log("Error:", error);
-          }
-        });
-      });
-    });
-  });
-</script>
-<script>
-  $(document).ready(function () {
-    var table = $('#depot24').DataTable({
-
-    });
-
-  })
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    flatpickr(".flatpickr", {
-      dateFormat: "Y-m-d", // Set the format to yyyy-MM-dd
-    });
-  });
-</script>
 
 {% endblock %}

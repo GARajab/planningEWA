@@ -78,7 +78,7 @@
         <td>{{ scheme.REFRENCENUMBER }}</td>
         <td>
           <span style="font-size: 12px;"
-            class="{% if scheme.PlanStatus == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'IN GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'NOT REQUIRED' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'IN DESIGN' %}badge badge-danger rounded-pill d-inline{% endif %}">
+            class="{% if scheme.PlanStatus == 'Completed' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'In GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'In Waylave' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'Not Required' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'In Design' %}badge badge-danger rounded-pill d-inline{% endif %}">
             {{ scheme.PlanStatus }}
           </span>
         </td>

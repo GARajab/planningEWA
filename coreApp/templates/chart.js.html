@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charts Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <h1>Charts Dashboard</h1>
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+    <canvas id="chartDepoCases24"></canvas>
+    <canvas id="chartDepoCases25"></canvas>
+    <canvas id="chartLoadReading24"></canvas>
+    <canvas id="chartPermit"></canvas>
+  </div>
+
+  <script>
+    async function fetchData() {
+      try {
+        const response1 = await fetch('depoCases24C/');
+        const data1 = await response1.json();
+
+        const response2 = await fetch('depoCases25C/');
+        const data2 = await response2.json();
+
+        const response3 = await fetch('loadReading24C/');
+        const data3 = await response3.json();
+
+        const response4 = await fetch('permitC/');
+        const data4 = await response4.json();
+
+        return { data1, data2, data3, data4 };
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    async function createCharts() {
+      const { data1, data2, data3, data4 } = await fetchData();
+
+      new Chart(document.getElementById('chartDepoCases24'), {
+        type: 'bar', // Or 'line', 'pie', etc.
+        data: {
+          labels: data1.map(item => item.label),
+          datasets: [{
+            label: 'Planning Status 24',
+            data: data1.map(item => item.value),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      new Chart(document.getElementById('chartDepoCases25'), {
+        type: 'bar', // Or 'line', 'pie', etc.
+        data: {
+          labels: data2.map(item => item.label),
+          datasets: [{
+            label: 'Planning Status 25',
+            data: data2.map(item => item.value),
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      new Chart(document.getElementById('chartLoadReading24'), {
+        type: 'bar', // Or 'line', 'pie', etc.
+        data: {
+          labels: data3.map(item => item.label),
+          datasets: [{
+            label: 'Load Reading Status 24',
+            data: data3.map(item => item.value),
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      new Chart(document.getElementById('chartPermit'), {
+        type: 'bar', // Or 'line', 'pie', etc.
+        data: {
+          labels: data4.map(item => item.label),
+          datasets: [{
+            label: 'Permit Status',
+            data: data4.map(item => item.value),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Call createCharts when the HTML DOM is loaded
+    document.addEventListener('DOMContentLoaded', createCharts);
+  </script>
+</body>
+
+</html>
