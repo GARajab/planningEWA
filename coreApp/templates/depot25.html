@@ -41,20 +41,42 @@
   .fas.fa-check {
     margin-right: 5px;
   }
+
+  .dataTables_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .dataTables_length,
+  .dt-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .dataTables_length select {
+    margin-left: 0.5rem;
+  }
+
+  .container {
+    width: 1500px !important;
+  }
 </style>
-<!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
 <!-- MDB -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<!-- Flatpickr CSS -->
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
 
-<div class="container mt-4">
+<div class="container" style="width:1500px">
   <h1 class="text-center">Depot 2025 Table</h1>
   {% if schemes %}
-  <table id="depot25" class="table" width="100%" style="text-align: center;">
+  <table id="depot25" class="table" style="text-align: center; width: 1500px;">
     <thead class="table-info sticky-top">
       <tr>
         <th>#</th>
@@ -95,7 +117,7 @@
           </a>
 
           <!-- Edit Icon -->
-          <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ scheme.id }}"
+          <i class="fas fa-edit" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ scheme.id }}"
             style="text-decoration: none;font-size: 20px; color: #f4c767; padding: 10px; display: inline-block; cursor:pointer"></i>
           {% if is_admin %}
           <i class="fas fa-trash text-danger" style="cursor: pointer; font-size: 20px; padding: 10px;"
@@ -291,13 +313,12 @@
   </div>
 </div>
 
-<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.es.min.js"
-  integrity="sha512-BeqBR1tSs66TKfRbufAK3jbKyG2ysd45VAiL+/2QFMEhlJ6JAvzvl6RVTiUh2yi/cVseSrGOgc+QvIUbTubDFQ=="
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+  integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.es.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -326,7 +347,18 @@
     input1.addEventListener('input', calculateSum);
     input2.addEventListener('input', calculateSum);
     // Initialize DataTable
-    $('#depot25').DataTable();
+    $('#depot25').DataTable({
+      dom: '<"top"<"left"f><"right"lB>>rt<"bottom"ip><"clear">',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+      language: {
+        lengthMenu: 'Show _MENU_ entries',
+        info: 'Showing page _PAGE_ of _PAGES_',
+        infoEmpty: 'No records available',
+        infoFiltered: '(filtered from _MAX_ total records)'
+      }
+    });
 
     // Initialize Flatpickr for date inputs
     flatpickr(".flatpickr", {

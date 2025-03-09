@@ -13,7 +13,7 @@
   }
 
   .modal-content {
-    background-color: white;
+    background-color: white !important;
     display: flex;
     flex-direction: column;
     max-height: 80vh;
@@ -25,7 +25,7 @@
   }
 
   .modal-footer {
-    background-color: white;
+    background-color: white !important;
     z-index: 1;
     padding: 15px;
   }
@@ -34,57 +34,49 @@
     height: 100px;
   }
 
-  .spinner-border,
+  .spinner-border {
+    margin-right: 5px;
+  }
+
   .fas.fa-check {
     margin-right: 5px;
   }
 
-  div.top {
+  .dataTables_top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    /* Adds space between elements */
-    margin-bottom: 10px;
-    /* Adds space below the top row */
+    margin-bottom: 1rem;
   }
 
-  #depot24 td,
-  #depot24 th {
-    white-space: nowrap;
-  }
-
-  /* Ensure horizontal scrolling for the table */
-  #depot24_wrapper {
-    overflow-x: auto;
-  }
-
-  /* Align the information to the left and pagination to the right */
-  .wrapper {
+  .dataTables_length,
+  .dt-buttons {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
-    /* Add some spacing */
   }
 
-  .left {
-    text-align: left;
+  .dataTables_length select {
+    margin-left: 0.5rem;
   }
 
-  .right {
-    text-align: right;
+  .container {
+    width: 1500px !important;
   }
 </style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
+<!-- MDB -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
+<!-- Flatpickr CSS -->
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
 
-<div class="container mt-4">
+<div class="container" style="width:1500px">
   <h1 class="text-center">Depot 2024 Table</h1>
   {% if schemes %}
-  <table id="depot24" class="table" width="100%" style="text-align: center;">
+  <table id="depot24" class="table" style="text-align: center; width: 1500px;">
     <thead class="table-info sticky-top">
       <tr>
         <th>#</th>
@@ -107,7 +99,8 @@
         <td>{{ scheme.AREA_ENGINEER_NAME }}</td>
         <td>{{ scheme.REFRENCENUMBER }}</td>
         <td>
-          <span style="font-size: 12px;" class="badge badge-{{ scheme.PlanStatus|lower }} rounded-pill d-inline">
+          <span style="font-size: 12px;"
+            class="{% if scheme.PlanStatus == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'IN GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'NOT REQUIRED' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'IN DESIGN' %}badge badge-danger rounded-pill d-inline{% endif %}">
             {{ scheme.PlanStatus }}
           </span>
         </td>
@@ -118,14 +111,19 @@
         <td>{{ scheme.FEEDERNUMBER }}</td>
         <td>{{ scheme.LVBNUMBER }}</td>
         <td style="width: 230px;">
-          <a href="{% url 'view_case_dep_24' scheme.id %}" style="text-decoration: none;">
-            <i class="fas fa-eye" style="font-size: 20px; color: #4CAF50; padding: 10px;"></i>
+          <!-- View Icon -->
+          <a href="{% url 'view_case_dep_25' scheme.id %}" style="text-decoration: none;">
+            <i class="fas fa-eye" style="font-size: 20px; color: #4CAF50; padding: 10px; display: inline-block;"></i>
           </a>
-          <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ scheme.id }}"
-            style="font-size: 20px; color: #f4c767; padding: 10px; cursor:pointer"></i>
+
+          <!-- Edit Icon -->
+          <i class="fas fa-edit" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ scheme.id }}"
+            style="text-decoration: none;font-size: 20px; color: #f4c767; padding: 10px; display: inline-block; cursor:pointer"></i>
           {% if is_admin %}
           <i class="fas fa-trash text-danger" style="cursor: pointer; font-size: 20px; padding: 10px;"
             data-bs-toggle="modal" data-bs-target="#deleteModal_{{ scheme.id }}"></i>
+
+          <!-- Delete Confirmation Modal -->
           <div class="modal fade" id="deleteModal_{{ scheme.id }}" tabindex="-1" aria-labelledby="deleteModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -134,10 +132,12 @@
                   <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">Are you sure you want to delete scheme number {{scheme.REFRENCENUMBER}}?</div>
+                <div class="modal-body">
+                  Are you sure you want to delete scheme number {{scheme.REFRENCENUMBER}}?
+                </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <form action="{% url 'delete_depot24' scheme.id %}" method="POST" style="display:inline;">
+                  <form action="{% url 'delete_depot25' scheme.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>
@@ -155,6 +155,7 @@
   <h1 style="text-align: center; margin-top: 100px;">No Data Available</h1>
   {% endif %}
 
+  <!-- Modal -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -163,105 +164,220 @@
           <h5 class="modal-title" id="updateModalLabel">Update Depot Case</h5>
         </div>
         <div class="modal-body">
-          <form id="updateForm24" class="data-mdb-input-init needs-validation" novalidate>
+          <form id="updateForm25" class="data-mdb-input-init needs-validation" novalidate>
             {% csrf_token %}
             <input type="hidden" name="id" id="caseId">
+
             <!-- Form Fields -->
-            <div class="form-group"><label for="REFRENCENUMBER">Reference Number</label><input type="text"
-                class="form-control" id="REFRENCENUMBER" name="REFRENCENUMBER" required></div>
-            <div class="form-group"><label for="AREA_ENGINEER_NAME">Area Engineer Name</label><input type="text"
-                class="form-control" id="AREA_ENGINEER_NAME" name="AREA_ENGINEER_NAME"></div>
-            <div class="form-group"><label for="BLOCKNUMBER">Block Number</label><input type="text" class="form-control"
-                id="BLOCKNUMBER" name="BLOCKNUMBER"></div>
-            <div class="form-group"><label for="SUBSTATIONNUMBER">Substation Number</label><input type="text"
-                class="form-control" id="SUBSTATIONNUMBER" name="SUBSTATIONNUMBER"></div>
-            <div class="form-group"><label for="TX">TX</label><input type="text" class="form-control" id="TX" name="TX">
+            <div class="form-group">
+              <label for="REFRENCENUMBER">Reference Number</label>
+              <input type="text" class="form-control" id="REFRENCENUMBER" name="REFRENCENUMBER" required>
             </div>
-            <div class="form-group"><label for="FEEDERNUMBER">Feeder Number</label><input type="text"
-                class="form-control" id="FEEDERNUMBER" name="FEEDERNUMBER"></div>
-            <div class="form-group"><label for="LVBNUMBER">LVB Number</label><input type="text" class="form-control"
-                id="LVBNUMBER" name="LVBNUMBER"></div>
-            <div class="form-group"><label for="TYPE">Type</label><select class="form-select" id="TYPE" name="TYPE">
+
+            <div class="form-group">
+              <label for="AREA_ENGINEER_NAME">Area Engineer Name</label>
+              <input type="text" class="form-control" id="AREA_ENGINEER_NAME" name="AREA_ENGINEER_NAME">
+            </div>
+
+            <div class="form-group">
+              <label for="BLOCKNUMBER">Block Number</label>
+              <input type="text" class="form-control" id="BLOCKNUMBER" name="BLOCKNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="SUBSTATIONNUMBER">Substation Number</label>
+              <input type="text" class="form-control" id="SUBSTATIONNUMBER" name="SUBSTATIONNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="TX">TX</label>
+              <input type="text" class="form-control" id="TX" name="TX">
+            </div>
+
+            <div class="form-group">
+              <label for="FEEDERNUMBER">Feeder Number</label>
+              <input type="text" class="form-control" id="FEEDERNUMBER" name="FEEDERNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="LVBNUMBER">LVB Number</label>
+              <input type="text" class="form-control" id="LVBNUMBER" name="LVBNUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="TYPE">Type</label>
+              <select class="form-select" id="TYPE" name="TYPE">
                 <option value="Reinforcement Only">Reinforcement Only</option>
                 <option value="Reinforcement And Replacement">Reinforcement And Replacement</option>
                 <option value="Replacement Only">Replacement Only</option>
                 <option value="Replace Part">Replace Part</option>
-              </select></div>
-            <div class="form-group"><label for="USPDATE">USP Date</label><input type="date"
-                class="form-control flatpickr" id="USPDATE" name="USPDATE" required></div>
-            <div class="form-group"><label for="PASSEDDATE">Passed Date</label><input type="date"
-                class="form-control flatpickr" id="PASSEDDATE" name="PASSEDDATE"></div>
-            <div class="form-group"><label for="GISDATE">GIS Date</label><input type="date"
-                class="form-control flatpickr" id="GISDATE" name="GISDATE"></div>
-            <div class="form-group"><label for="PlanStatus">Plan Status</label><select class="form-select"
-                id="PlanStatus" name="PlanStatus">
+              </select>
+            </div>
+
+            <!-- Date Fields with Flatpickr -->
+            <div class="form-group">
+              <label for="USPDATE">USP Date</label>
+              <input type="date" class="form-control flatpickr" id="USPDATE" name="USPDATE" required>
+            </div>
+
+            <div class="form-group">
+              <label for="PASSEDDATE">Passed Date</label>
+              <input type="date" class="form-control flatpickr" id="PASSEDDATE" name="PASSEDDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="GISDATE">GIS Date</label>
+              <input type="date" class="form-control flatpickr" id="GISDATE" name="GISDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="PlanStatus">Plan Status</label>
+              <select class="form-select" id="PlanStatus" name="PlanStatus">
                 <option value="IN DESIGN">IN DESIGN</option>
                 <option value="IN GIS">IN GIS</option>
                 <option value="IN WAYLEAVE">IN WAYLEAVE</option>
                 <option value="COMPLETED">COMPLETED</option>
                 <option value="NOT REQUIRED">NOT REQUIRED</option>
-              </select></div>
-            <div class="form-group"><label for="REMARKES">Remarks</label><textarea class="form-control" id="REMARKES"
-                name="REMARKES"></textarea></div>
-            <div class="form-group"><label for="ConStatus">Construction Status</label><input type="text"
-                class="form-control" id="ConStatus" name="ConStatus" disabled></div>
-            <div class="form-group"><label for="labourcost">Labour Cost</label><input type="number" class="form-control"
-                id="labourcost" name="labourcost"></div>
-            <div class="form-group"><label for="ministrycost">Ministry Cost</label><input type="number"
-                class="form-control" id="ministrycost" name="ministrycost"></div>
-            <div class="form-group"><label for="cable_length">Cable Length</label><input type="number"
-                class="form-control" id="cable_length" name="cable_length"></div>
-            <div class="form-group"><label for="noOfServ">Number of Services</label><input type="number"
-                class="form-control" id="noOfServ" name="noOfServ"></div>
-            <div class="form-group"><label for="noOfFaults">Number of Faults</label><input type="number"
-                class="form-control" id="noOfFaults" name="noOfFaults"></div>
-            <div class="form-group"><label for="totalcost">Total Cost</label><input type="number" class="form-control"
-                id="totalcost" name="totalcost" readonly></div>
-            <div class="form-group"><label for="WAYLEAVENUMBER">Way Leave Number</label><input type="text"
-                class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER"></div>
-            <div class="form-group"><label for="RCCDATE">RCC Date</label><input type="date"
-                class="form-control flatpickr" id="RCCDATE" name="RCCDATE"></div>
-            <div class="form-group"><label for="MSPDATE">MSP Date</label><input type="date"
-                class="form-control flatpickr" id="MSPDATE" name="MSPDATE"></div>
+              </select>
+            </div>
+
+            <!-- Other Fields -->
+            <div class="form-group">
+              <label for="REMARKES">Remarks</label>
+              <textarea class="form-control" id="REMARKES" name="REMARKES"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="ConStatus">Construction Status</label>
+              <input type="text" class="form-control" id="ConStatus" name="ConStatus" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="labourcost">Labour Cost</label>
+              <input type="number" class="form-control" id="labourcost" name="labourcost">
+            </div>
+
+            <div class="form-group">
+              <label for="ministrycost">Ministry Cost</label>
+              <input type="number" class="form-control" id="ministrycost" name="ministrycost">
+            </div>
+
+            <div class="form-group">
+              <label for="cable_length">Cable Length</label>
+              <input type="number" class="form-control" id="cable_length" name="cable_length">
+            </div>
+
+            <div class="form-group">
+              <label for="noOfServ">Number of Services</label>
+              <input type="number" class="form-control" id="noOfServ" name="noOfServ">
+            </div>
+
+            <div class="form-group">
+              <label for="noOfFaults">Number of Faults</label>
+              <input type="number" class="form-control" id="noOfFaults" name="noOfFaults">
+            </div>
+
+            <div class="form-group">
+              <label for="totalcost">Total Cost</label>
+              <input type="number" class="form-control" id="totalcost" name="totalcost" readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="WAYLEAVENUMBER">Way Leave Number</label>
+              <input type="text" class="form-control" id="WAYLEAVENUMBER" name="WAYLEAVENUMBER">
+            </div>
+
+            <div class="form-group">
+              <label for="RCCDATE">RCC Date</label>
+              <input type="date" class="form-control flatpickr" id="RCCDATE" name="RCCDATE">
+            </div>
+
+            <div class="form-group">
+              <label for="MSPDATE">MSP Date</label>
+              <input type="date" class="form-control flatpickr" id="MSPDATE" name="MSPDATE">
+            </div>
+
+            <!-- Modal Footer -->
             <div class="modal-footer">
-              <button id="closeBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button id="submitButton" type="submit" class="btn btn-primary">Save Changes</button>
+              <form id="modalBtns">
+                <button id="closeBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                  Save Changes
+                </button>
             </div>
           </form>
         </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+  integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.es.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
 <script>
   $(document).ready(function () {
+    // Get references to the input fields
     const input1 = document.getElementById('labourcost');
     const input2 = document.getElementById('ministrycost');
     const result = document.getElementById('totalcost');
+
+    // Function to calculate the sum and update the result field
     function calculateSum() {
-      const value1 = parseFloat(input1.value) || 0;
-      const value2 = parseFloat(input2.value) || 0;
-      result.value = value1 + value2;
+      // Get the values from the input fields and convert them to numbers
+      const value1 = parseFloat(input1.value) || 0; // Default to 0 if empty or invalid
+      const value2 = parseFloat(input2.value) || 0; // Default to 0 if empty or invalid
+
+      // Calculate the sum
+      const sum = value1 + value2;
+
+      // Update the result field
+      result.value = sum;
     }
+
+    // Add event listeners to both input fields
     input1.addEventListener('input', calculateSum);
     input2.addEventListener('input', calculateSum);
+    // Initialize DataTable
     $('#depot24').DataTable({
-      dom: '<"top"Blf><"clear"><"wrapper"<"left"i><"right"p>>rt',
+      dom: '<"top"<"left"f><"right"lB>>rt<"bottom"ip><"clear">',
       buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print' // Add buttons here
-      ]
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+      language: {
+        lengthMenu: 'Show _MENU_ entries',
+        info: 'Showing page _PAGE_ of _PAGES_',
+        infoEmpty: 'No records available',
+        infoFiltered: '(filtered from _MAX_ total records)'
+      }
     });
-    flatpickr(".flatpickr", { dateFormat: "Y-m-d" });
+
+    // Initialize Flatpickr for date inputs
+    flatpickr(".flatpickr", {
+      dateFormat: "Y-m-d",
+    });
+
+    // Handle modal show event
     $('#updateModal').on('show.bs.modal', function (event) {
       let $button = $(event.relatedTarget);
-      let caseId = $button.data('id');
-      if (!caseId) return;
+      let caseId = $button.data('id'); // Get case ID from the button
+
+      if (!caseId) {
+        console.error("Invalid or missing case ID.");
+        return;
+      }
+
+      // Fetch data for the selected case
       $.get('/update24/' + caseId + '/', function (data) {
+        // Populate form fields with fetched data
         $('#caseId').val(data.id);
         $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
         $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
@@ -289,13 +405,22 @@
         $('#totalcost').val(data.totalcost);
       });
     });
+
+    // Handle form submission
     $('#updateForm24').on('submit', function (e) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent default form submission
+
       let $submitButton = $('#submitButton');
-      let originalText = $submitButton.html();
+      let originalText = $submitButton.html(); // Save the original button text
+
+      // Change button text to spinner and "Saving Data"
       $submitButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving Data');
-      $submitButton.prop('disabled', true);
+      $submitButton.prop('disabled', true); // Disable the button to prevent multiple submissions
+
+      // Get the case ID from the hidden input field
       let caseId = $('#caseId').val();
+
+      // Get CSRF token
       function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -310,23 +435,30 @@
         }
         return cookieValue;
       }
+
       const csrftoken = getCookie('csrftoken');
+
+      // Perform the AJAX request
       $.ajax({
         type: "POST",
         url: '/update24/' + caseId + '/',
         data: $(this).serialize(),
-        headers: { "X-CSRFToken": csrftoken },
+        headers: {
+          "X-CSRFToken": csrftoken
+        },
         success: function (response) {
           if (response.success) {
+            // On success, change button text to "Saved" with a tick
             $submitButton.html('<span class="fas fa-check"></span> Saved');
-            $submitButton.prop('disabled', false);
+            $submitButton.prop('disabled', false); // Re-enable the button
             location.reload();
           }
         },
         error: function (error) {
           console.log("Error:", error);
+          // On error, reset the button and show an error message
           $submitButton.html('Error! Try Again');
-          $submitButton.prop('disabled', false);
+          $submitButton.prop('disabled', false); // Re-enable the button
         }
       });
     });
