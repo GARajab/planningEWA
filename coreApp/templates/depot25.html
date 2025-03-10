@@ -8,6 +8,7 @@
   }
 </script>
 <style>
+  /* Existing styles */
   #dt-search-0 {
     width: 300px;
   }
@@ -60,7 +61,26 @@
   }
 
   .container {
-    width: 1500px !important;
+    max-width: 2000px !important;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .left,
+  .right {
+    display: inline-block;
+  }
+
+  /* New CSS to prevent text wrapping in DataTable cells */
+  .dataTables_wrapper table td,
+  .dataTables_wrapper table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
@@ -76,7 +96,7 @@
 <div class="container" style="width:1500px">
   <h1 class="text-center">Depot 2025 Table</h1>
   {% if schemes %}
-  <table id="depot25" class="table" style="text-align: center; width: 1500px;">
+  <table id="depot25" class="table" style="text-align: center;">
     <thead class="table-info sticky-top">
       <tr>
         <th>#</th>
@@ -348,16 +368,10 @@
     input2.addEventListener('input', calculateSum);
     // Initialize DataTable
     $('#depot25').DataTable({
-      dom: '<"top"<"left"f><"right"lB>>rt<"bottom"ip><"clear">',
+      dom: '<"top"<"left"lB><"right"f>>rt<"bottom"ip><"clear">',
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
       ],
-      language: {
-        lengthMenu: 'Show _MENU_ entries',
-        info: 'Showing page _PAGE_ of _PAGES_',
-        infoEmpty: 'No records available',
-        infoFiltered: '(filtered from _MAX_ total records)'
-      }
     });
 
     // Initialize Flatpickr for date inputs

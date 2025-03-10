@@ -479,10 +479,10 @@ def delete_LR24(request, permit_id):
         lr_del = get_object_or_404(loadreading2024, id=permit_id)
         lr_del.delete()
         messages.success(request, "Scheme " + lr_del.Sch_Ref + " Deleted Successfully.")
-        return redirect("Lreading24")
+        return redirect("lr24")
     else:
         messages.error(request, "Invalid request Record Not Deleted.")
-    return redirect("Lreading24")
+    return redirect("lr24")
 
 
 def delete_LR25(request, permit_id):
@@ -492,10 +492,10 @@ def delete_LR25(request, permit_id):
         )  # to be changed to loadreading25 if the table available and it is updated in model
         lr_del.delete()
         messages.success(request, "Scheme " + lr_del.Sch_Ref + " Deleted Successfully.")
-        return redirect("Lreading25")
+        return redirect("lr25")
     else:
         messages.error(request, "Invalid request Record Not Deleted.")
-    return redirect("Lreading25")
+    return redirect("lr25")
 
 
 from django.shortcuts import render
@@ -722,3 +722,53 @@ def fetch_scheme_references(request):
         )
 
     return JsonResponse({"schemeReferences": scheme_references})
+
+
+def update_LR24(request, id):
+    case = get_object_or_404(loadreading2024, id=id)
+
+    if request.method == "POST":
+        for field in case._meta.get_fields():
+            if field.name in request.POST:
+                value = request.POST[field.name]
+                if value == "":
+                    value = None
+                setattr(case, field.name, value)
+        case.save()
+        messages.success(request, f"Scheme {case.Sch_Ref} is updated successfully!")
+        return JsonResponse({"success": True})
+    else:
+        case_data = {
+            "id": case.id,
+            "Sch_Ref": case.Sch_Ref,
+            "PlanEng": case.PlanEng,
+            "BLOCK": case.BLOCK,
+            "SSNO": case.SSNO,
+            "TXNO": case.TXNO,
+            "LVB_FDR": case.LVB_FDR,
+            "KVA": case.KVA,
+            "WL_NO": case.WL_NO,
+            "USPDATE": case.USPDATE,
+            "passed_date": case.passed_date,
+            "Plan_Status": case.Plan_Status,
+            "CONST_COMP": case.CONST_COMP,
+            "Labour": case.Labour,
+            "Material": case.Material,
+            "cable_length": case.cable_length,
+            "totalcost": case.totalcost,
+            "GISDATE": case.GISDATE,
+            "RCCDATE": case.RCCDATE,
+            "MSPDATE": case.MSPDATE,
+        }
+
+    if request.method == "POST":
+        # Collect data from request.POST and update the instance
+        for field in case._meta.get_fields():
+            if field.name in request.POST:
+                setattr(case, field.name, request.POST[field.name])
+        case.save()
+        messages.success(
+            request, "Scheme " + case.Sch_Ref + " is updated successfully!"
+        )
+        return JsonResponse({"success": True})
+    return JsonResponse(case_data)

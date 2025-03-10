@@ -202,6 +202,9 @@ class Permit(models.Model):
         super().save(*args, **kwargs)
 
 
+from django.db import models
+
+
 class loadreading2024(models.Model):
     id = models.AutoField(primary_key=True)
     SSNO = models.CharField(max_length=20, verbose_name="SSNO")
@@ -228,12 +231,8 @@ class loadreading2024(models.Model):
     PlanEng = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="PlanEng"
     )
-    Labour = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Labour"
-    )
-    Material = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="Material"
-    )
+    Labour = models.FloatField(blank=True, null=True, verbose_name="Labour")
+    Material = models.FloatField(blank=True, null=True, verbose_name="Material")
 
     CONST_COMP = models.TextField(
         blank=True, null=True, verbose_name="Completed By Construction"
@@ -256,30 +255,22 @@ class loadreading2024(models.Model):
     MSPDATE = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="MSPDATE"
     )
-    labourcost = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+    labourcost = models.FloatField(
         blank=True,
         null=True,
         verbose_name="labourcost",
     )
-    ministrycost = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+    ministrycost = models.FloatField(
         blank=True,
         null=True,
         verbose_name="ministrycost",
     )
-    cable_length = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+    cable_length = models.FloatField(
         blank=True,
         null=True,
         verbose_name="cable length",
     )
-    totalcost = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True, verbose_name="totalcost"
-    )
+    totalcost = models.FloatField(blank=True, null=True, verbose_name="totalcost")
 
     def __str__(self):
         return f"loadreading2024 {self.id}"

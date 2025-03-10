@@ -85,7 +85,7 @@
         <td>{{ permit.to_gis_date }}</td>
         <td>{{ permit.to_wl_date }}</td>
         <td style="width: 230px;">
-          <i class="fas fa-edit" data-toggle="modal" data-target="#updateModal" data-id="{{ permit.id }}"
+          <i class="fas fa-edit" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="{{ permit.id }}"
             style="text-decoration: none;font-size: 20px; color: #f4c767; padding: 10px; display: inline-block;"></i>
           {% if is_admin %}
           <form id="myForm_{{ permit.id }}" action="{% url 'delete_Nc' permit.id %}" method="POST"
@@ -194,7 +194,7 @@
           <!-- Modal Footer -->
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="updateNc24Btn" type="submit" class="btn btn-primary">Save changes</button>
+            <button id="submitButton" type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
       </div>
@@ -205,7 +205,11 @@
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+  integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.es.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -243,6 +247,13 @@
       $("#updateNc24").on("submit", function (event) {
         event.preventDefault(); // Prevent default form submission
 
+        let $submitButton = $('#submitButton');
+        let originalText = $submitButton.html(); // Save the original button text
+
+        // Change button text to spinner and "Saving Data"
+        $submitButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving Data');
+        $submitButton.prop('disabled', true); // Disable the button to prevent multiple submissions
+
         var permitId = $('#permitId').val(); // Get permitId from the hidden input field
         console.log("Permit ID on submit:", permitId); // Debugging: Log the permitId
 
@@ -273,19 +284,23 @@
         $.ajax({
           type: "POST",
           url: '/updateNc/' + permitId + '/', // Use permitId in the URL
-          data: $(this).serialize(), // Serialize form data
+          data: $(this).serialize(),
           headers: {
-            'X-CSRFToken': csrftoken // Include CSRF token in headers
+            "X-CSRFToken": csrftoken
           },
           success: function (response) {
-            if (response.status === "success") {
-              location.reload(); // Reload page on success
-            } else {
-              console.error("Error:", response.message); // Log server-side errors
+            if (response.success) {
+              // On success, change button text to "Saved" with a tick
+              $submitButton.html('<span class="fas fa-check"></span> Saved');
+              $submitButton.prop('disabled', false); // Re-enable the button
+              location.reload();
             }
           },
           error: function (error) {
-            console.error("AJAX Error:", error); // Log AJAX errors
+            console.log("Error:", error);
+            // On error, reset the button and show an error message
+            $submitButton.html('Error! Try Again');
+            $submitButton.prop('disabled', false); // Re-enable the button
           }
         });
       });

@@ -316,30 +316,30 @@
       $.get('/update24/' + caseId + '/', function (data) {
         // Populate form fields with fetched data
         $('#caseId').val(data.id);
-        $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
-        $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
-        $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
-        $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
-        $('#TX').val(data.TX);
-        $('#FEEDERNUMBER').val(data.FEEDERNUMBER);
-        $('#LVBNUMBER').val(data.LVBNUMBER);
-        $('#TYPE').val(data.TYPE);
-        $('#WAYLEAVENUMBER').val(data.WAYLEAVENUMBER);
-        $('#USPDATE').val(data.USPDATE);
-        $('#PASSEDDATE').val(data.PASSEDDATE);
-        $('#REMARKES').val(data.REMARKES);
-        $('#PlanStatus').val(data.PlanStatus);
-        $('#ConStatus').val(data.ConStatus);
-        $('#GISDATE').val(data.GISDATE);
-        $('#RCCDATE').val(data.RCCDATE);
-        $('#MSPDATE').val(data.MSPDATE);
-        $('#labourcost').val(data.labourcost);
-        $('#ministrycost').val(data.ministrycost);
-        $('#cable_length').val(data.cable_length);
-        $('#noOfServ').val(data.noOfServ);
-        $('#noOfFaults').val(data.noOfFaults);
-        $('#areaEngEmail').val(data.areaEngEmail);
-        $('#totalcost').val(data.totalcost);
+        $('#REFRENCENUMBER').val(data.Sch_Ref); // Assuming Sch_Ref is the reference number
+        $('#AREA_ENGINEER_NAME').val(data.PlanEng); // Assuming PlanEng is the area engineer name
+        $('#BLOCKNUMBER').val(data.BLOCK); // Assuming BLOCK is the block number
+        $('#SUBSTATIONNUMBER').val(data.SSNO); // Assuming SSNO is the substation number
+        $('#TX').val(data.TXNO); // Assuming TXNO is the TX number
+        $('#FEEDERNUMBER').val(data.LVB_FDR); // Assuming LVB_FDR is the feeder number
+        $('#LVBNUMBER').val(data.LVB_FDR); // Assuming LVB_FDR is the LVB number
+        $('#TYPE').val(data.KVA); // Assuming KVA is the type
+        $('#WAYLEAVENUMBER').val(data.WL_NO); // Assuming WL_NO is the wayleave number
+        $('#USPDATE').val(data.USPDATE); // USPDATE remains the same
+        $('#PASSEDDATE').val(data.passed_date); // Assuming passed_date is the passed date
+        $('#REMARKES').val(data.CONST_COMP); // Assuming CONST_COMP is the remarks
+        $('#PlanStatus').val(data.Plan_Status); // Assuming Plan_Status is the plan status
+        $('#ConStatus').val(data.CONST_COMP); // Assuming CONST_COMP is the construction status
+        $('#GISDATE').val(data.GISDATE); // GISDATE remains the same
+        $('#RCCDATE').val(data.RCCDATE); // RCCDATE remains the same
+        $('#MSPDATE').val(data.MSPDATE); // MSPDATE remains the same
+        $('#labourcost').val(data.labourcost); // labourcost remains the same
+        $('#ministrycost').val(data.ministrycost); // ministrycost remains the same
+        $('#cable_length').val(data.cable_length); // cable_length remains the same
+        $('#noOfServ').val(data.noOfServ); // Assuming noOfServ is not in the model, you might need to add it
+        $('#noOfFaults').val(data.noOfFaults); // Assuming noOfFaults is not in the model, you might need to add it
+        $('#areaEngEmail').val(data.areaEngEmail); // Assuming areaEngEmail is not in the model, you might need to add it
+        $('#totalcost').val(data.totalcost); // totalcost remains the same
       });
     });
 
