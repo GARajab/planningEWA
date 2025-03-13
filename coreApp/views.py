@@ -764,3 +764,57 @@ def view_case_nc(request, id):
         "case": case,
     }
     return render(request, "viewNC.py.html", context)
+
+
+def LR24Report(request):
+    if not request.user.is_authenticated:
+        return redirect("signin")
+
+    engineer_names = [
+        "A RAJESH",
+        "Bassam",
+        "MOHAMED RAJAB",
+        "MOHAMED ALANSARI",
+        "Ebrahim Isa",
+    ]
+    statuses = [
+        "In Design",
+        "In GIS",
+        "In Wayleave",
+        "Completed",
+        "Replan",
+        "ReplanPassed",
+        "Not Required",
+    ]
+
+    # Dictionary to store data for all engineers
+    engineers_data = {}
+
+    for engineer_name in engineer_names:
+        # Get counts for each status
+        status_counts = {
+            status.replace(" ", "_"): loadreading2024.objects.filter(
+                PlanEng=engineer_name, Plan_Status=status
+            ).count()
+            for status in statuses
+        }
+
+        # Get total count for the engineer
+        total_count = loadreading2024.objects.filter(
+            PlanEng=engineer_name
+        ).count()
+
+        # Store data for this engineer
+        engineers_data[engineer_name] = {
+            "total_count": total_count,
+            "status_counts": status_counts,
+        }
+
+    return render(
+        request,
+        "LR2024Rep.py.html",
+        {
+            "engineers_data": engineers_data,
+            "is_admin": request.user.is_superuser,
+        },
+    )
