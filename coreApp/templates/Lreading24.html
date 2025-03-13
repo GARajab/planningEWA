@@ -54,7 +54,7 @@
 <div class="container mt-4" style="max-width: 1500px;">
   <h1 class="text-center">Load Reading 2024 Table</h1>
   {% if schemes %}
-  <table id="depot24" class="table" width="100%" style="text-align: center;">
+  <table id="LR24" class="table" width="100%" style="text-align: center;">
     <thead class="table-info sticky-top">
       <tr>
         <th>#</th>
@@ -77,7 +77,7 @@
         <td>{{ scheme.Sch_Ref }}</td>
         <td>
           <span style="font-size: 12px;"
-            class="{% if scheme.PlanStatus == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif scheme.PlanStatus == 'IN GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.PlanStatus == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif scheme.PlanStatus == 'NOT REQUIRED' %}badge badge-info rounded-pill d-inline{% elif scheme.PlanStatus == 'IN DESIGN' %}badge badge-danger rounded-pill d-inline{% endif %}">
+            class="{% if scheme.Plan_Status == 'COMPLETED' %}badge badge-success rounded-pill d-inline{% elif scheme.Plan_Status == 'IN GIS' %}badge badge-primary rounded-pill d-inline{% elif scheme.Plan_Status == 'IN WAYLEAVE' %}badge badge-warning rounded-pill d-inline{% elif scheme.Plan_Status == 'NOT REQUIRED' %}badge badge-info rounded-pill d-inline{% elif scheme.Plan_Status == 'IN DESIGN' %}badge badge-danger rounded-pill d-inline{% endif %}">
             {{ scheme.Plan_Status }}
           </span>
         </td>
@@ -274,7 +274,12 @@
 <script>
   $(document).ready(function () {
     // Initialize DataTable
-    $('#depot24').DataTable();
+    $('#LR24').DataTable({
+      dom: '<"top"<"left"lB><"right"f>>rt<"bottom"ip><"clear">',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+    });
 
     // Initialize Flatpickr for date inputs
     flatpickr(".flatpickr", {

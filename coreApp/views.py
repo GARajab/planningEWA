@@ -136,65 +136,50 @@ def lr25(request):
 def nc24(request):
     if request.user.is_authenticated:
         permits = Permit.objects.all()
+        context = {
+            "permits": permits,
+            "is_admin": request.user.is_superuser,
+        }
         return render(
             request,
             "nc2024.html",
-            {"permits": permits, "is_admin": request.user.is_superuser},
+            context
         )
     else:
         return redirect("signin")
 
 
-@csrf_exempt
 def edit_permit(request, permit_id):
-    if request.method == "GET":
-        try:
-            permit = Permit.objects.get(id=permit_id)
-            data = {
-                "id": permit.id,
-                "Number": permit.Number,
-                "parcel_number": permit.parcel_number,
-                "block": permit.block,
-                "kw": permit.kw,
-                "kva": permit.kva,
-                "plan_status": permit.plan_status,
-                "passed_date": (permit.passed_date),
-                "to_wl_date": (permit.to_wl_date),
-                "to_gis_date": (permit.to_gis_date),
-                "wl_number": permit.wl_number,
-                "ref_no": permit.ref_no,
-                "comment": permit.comment,
-            }
-            return JsonResponse(data)
-        except Permit.DoesNotExist:
-            return JsonResponse(
-                {"status": "error", "message": "Permit not found"}, status=404
-            )
-    elif request.method == "POST":
-        try:
-            permit = Permit.objects.get(id=permit_id)
-            permit.Number = request.POST.get("Number")
-            permit.parcel_number = request.POST.get("parcel_number")
-            permit.block = request.POST.get("block")
-            permit.kw = request.POST.get("kw")
-            permit.kva = request.POST.get("kva")
-            permit.plan_status = request.POST.get("plan_status")
-            permit.passed_date = request.POST.get("passed_date")
-            permit.to_wl_date = request.POST.get("to_wl_date")
-            permit.to_gis_date = request.POST.get("to_gis_date")
-            permit.wl_number = request.POST.get("wl_number")
-            permit.ref_no = request.POST.get("ref_no")
-            permit.comment = request.POST.get("comment")
-            permit.save()
-            return JsonResponse({"status": "success"})
-        except Permit.DoesNotExist:
-            return JsonResponse(
-                {"status": "error", "message": "Permit not found"}, status=404
-            )
-    else:
-        return JsonResponse(
-            {"status": "error", "message": "Invalid request method"}, status=400
-        )
+    
+    permit = get_object_or_404(Permit, id=permit_id)
+
+    # Prepare permit data for JSON response
+    permit_data = {
+        "id": permit.id,
+        "Number": permit.Number,
+        "parcel_number": permit.parcel_number,
+        "block": permit.block,
+        "kw": permit.kw,
+        "kva": permit.kva,
+        "plan_status": permit.plan_status,
+        "passed_date": permit.passed_date,
+        "to_wl_date": permit.to_wl_date,
+        "to_gis_date": permit.to_gis_date,
+        "wl_number": permit.wl_number,
+        "ref_no": permit.ref_no,
+        "comment": permit.comment,
+    }
+
+    if request.method == "POST":
+        # Collect data from request.POST and update the instance
+        for field in permit._meta.get_fields():
+            if field.name in request.POST:
+                setattr(permit, field.name, request.POST[field.name])
+        permit.save()
+        messages.success(request, f"Permit {permit.Number} updated successfully!")
+        return JsonResponse({"success": True})
+
+    return JsonResponse(permit_data)
 
 
 def delete_Nc(request, permit_id):

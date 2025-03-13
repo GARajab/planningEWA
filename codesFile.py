@@ -306,3 +306,50 @@ def dashboard(request):
     }
 
     return render(request, "dashboard.html", context)
+
+
+
+
+def update_depot24(request, id):
+    case = get_object_or_404(depotcases2024, id=id)
+
+    # For GET request, send case data as JSON
+    case_data = {
+        "id": case.id,
+        "REFRENCENUMBER": case.REFRENCENUMBER,
+        "AREA_ENGINEER_NAME": case.AREA_ENGINEER_NAME,
+        "BLOCKNUMBER": case.BLOCKNUMBER,
+        "SUBSTATIONNUMBER": case.SUBSTATIONNUMBER,
+        "TX": case.TX,
+        "FEEDERNUMBER": case.FEEDERNUMBER,
+        "LVBNUMBER": case.LVBNUMBER,
+        "TYPE": case.TYPE,
+        "WAYLEAVENUMBER": case.WAYLEAVENUMBER,
+        "USPDATE": case.USPDATE,
+        "PASSEDDATE": case.PASSEDDATE,
+        "REMARKES": case.REMARKES,
+        "PlanStatus": case.PlanStatus,
+        "ConStatus": case.ConStatus,
+        "GISDATE": case.GISDATE,
+        "RCCDATE": case.RCCDATE,
+        "MSPDATE": case.MSPDATE,
+        "labourcost": case.labourcost,  # Convert Decimal to String for JSON serialization
+        "ministrycost": case.ministrycost,  # Convert Decimal to String for JSON serialization
+        "cable_length": case.cable_length,  # Convert Decimal to String for JSON serialization
+        "noOfServ": case.noOfServ,
+        "noOfFaults": case.noOfFaults,
+        "areaEngEmail": case.areaEngEmail,
+        "totalcost": case.totalcost,  # Convert Decimal to String for JSON serialization
+    }
+
+    if request.method == "POST":
+        # Collect data from request.POST and update the instance
+        for field in case._meta.get_fields():
+            if field.name in request.POST:
+                setattr(case, field.name, request.POST[field.name])
+        case.save()
+        messages.success(
+            request, "Scheme " + case.REFRENCENUMBER + " is updated successfully!"
+        )
+        return JsonResponse({"success": True})
+    return JsonResponse(case_data)
