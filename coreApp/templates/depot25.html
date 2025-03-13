@@ -345,84 +345,39 @@
 
 <script>
   $(document).ready(function () {
-    // Get references to the input fields
-    const input1 = document.getElementById('labourcost');
-    const input2 = document.getElementById('ministrycost');
-    const result = document.getElementById('totalcost');
-
-    // Function to calculate the sum and update the result field
-    function calculateSum() {
-      // Get the values from the input fields and convert them to numbers
-      const value1 = parseFloat(input1.value) || 0; // Default to 0 if empty or invalid
-      const value2 = parseFloat(input2.value) || 0; // Default to 0 if empty or invalid
-
-      // Calculate the sum
-      const sum = value1 + value2;
-
-      // Update the result field
-      result.value = sum;
-    }
-
-    // Add event listeners to both input fields
-    input1.addEventListener('input', calculateSum);
-    input2.addEventListener('input', calculateSum);
-    // Initialize DataTable
-    $('#depot25').DataTable({
-      dom: '<"top"<"left"lB><"right"f>>rt<"bottom"ip><"clear">',
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-      ],
-    });
-
-    // Initialize Flatpickr for date inputs
-    flatpickr(".flatpickr", {
-      dateFormat: "Y-m-d",
-    });
-
-    // Handle modal show event
+    // Attach the show event for the modal
     $('#updateModal').on('show.bs.modal', function (event) {
-      let $button = $(event.relatedTarget);
-      let caseId = $button.data('id'); // Get case ID from the button
-
-      if (!caseId) {
-        console.error("Invalid or missing case ID.");
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var permitId = button.data('id'); // Extract permit ID from data-id attribute
+      if (!permitId) {
+        console.error("Invalid or missing permit ID.");
         return;
       }
 
-      // Fetch data for the selected case
-      $.get('/update25/' + caseId + '/', function (data) {
+      // Fetch permit data using AJAX
+      $.get('/updateNc/' + permitId + '/', function (data) {
         // Populate form fields with fetched data
-        $('#caseId').val(data.id);
-        $('#REFRENCENUMBER').val(data.REFRENCENUMBER);
-        $('#AREA_ENGINEER_NAME').val(data.AREA_ENGINEER_NAME);
-        $('#BLOCKNUMBER').val(data.BLOCKNUMBER);
-        $('#SUBSTATIONNUMBER').val(data.SUBSTATIONNUMBER);
-        $('#TX').val(data.TX);
-        $('#FEEDERNUMBER').val(data.FEEDERNUMBER);
-        $('#LVBNUMBER').val(data.LVBNUMBER);
-        $('#TYPE').val(data.TYPE);
-        $('#WAYLEAVENUMBER').val(data.WAYLEAVENUMBER);
-        $('#USPDATE').val(data.USPDATE);
-        $('#PASSEDDATE').val(data.PASSEDDATE);
-        $('#REMARKES').val(data.REMARKES);
-        $('#PlanStatus').val(data.PlanStatus);
-        $('#ConStatus').val(data.ConStatus);
-        $('#GISDATE').val(data.GISDATE);
-        $('#RCCDATE').val(data.RCCDATE);
-        $('#MSPDATE').val(data.MSPDATE);
-        $('#labourcost').val(data.labourcost);
-        $('#ministrycost').val(data.ministrycost);
-        $('#cable_length').val(data.cable_length);
-        $('#noOfServ').val(data.noOfServ);
-        $('#noOfFaults').val(data.noOfFaults);
-        $('#areaEngEmail').val(data.areaEngEmail);
-        $('#totalcost').val(data.totalcost);
+        $('#permitId').val(data.id);
+        $('#parcel_number').val(data.parcel_number);
+        $('#Number').val(data.Number);
+        $('#block').val(data.block);
+        $('#kw').val(data.kw);
+        $('#kva').val(data.kva);
+        $('#plan_status').val(data.plan_status);
+        $('#passed_date').val(data.passed_date);
+        $('#to_wl_date').val(data.to_wl_date);
+        $('#to_gis_date').val(data.to_gis_date);
+        $('#wl_number').val(data.wl_number);
+        $('#ref_no').val(data.ref_no);
+        $('#comment').val(data.comment);
+      }).fail(function (error) {
+        console.error("Error fetching permit data:", error); // Log AJAX errors
       });
     });
 
-    // Handle form submission
-    $('#updateForm25').on('submit', function (e) {
-      e.preventDefault(); // Prevent default form submission
+    // Form submission handler
+    $("#updateNc24").on("submit", function (event) {
+      event.preventDefault(); // Prevent default form submission
 
       let $submitButton = $('#submitButton');
       let originalText = $submitButton.html(); // Save the original button text
@@ -431,10 +386,15 @@
       $submitButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving Data');
       $submitButton.prop('disabled', true); // Disable the button to prevent multiple submissions
 
-      // Get the case ID from the hidden input field
-      let caseId = $('#caseId').val();
+      var permitId = $('#permitId').val(); // Get permitId from the hidden input field
+      console.log("Permit ID on submit:", permitId); // Debugging: Log the permitId
 
-      // Get CSRF token
+      if (!permitId) {
+        console.error("Invalid or missing permit ID.");
+        return;
+      }
+
+      // Function to retrieve CSRF token from cookies
       function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -452,25 +412,31 @@
 
       const csrftoken = getCookie('csrftoken');
 
-      // Perform the AJAX request
+      // Submit form data via AJAX
       $.ajax({
         type: "POST",
-        url: '/update25/' + caseId + '/',
+        url: '/updateNc/' + permitId + '/', // Use permitId in the URL
         data: $(this).serialize(),
         headers: {
           "X-CSRFToken": csrftoken
         },
         success: function (response) {
+          console.log("Response from server:", response); // Log the server response
           if (response.success) {
             // On success, change button text to "Saved" with a tick
             $submitButton.html('<span class="fas fa-check"></span> Saved');
+            setTimeout(function () {
+              location.reload(); // Reload the page after a short delay
+            }, 1000); // Adjust the delay as needed
+          } else {
+            console.error("Server responded with success=false:", response);
+            $submitButton.html('Error! Try Again');
             $submitButton.prop('disabled', false); // Re-enable the button
-            location.reload();
           }
         },
-        error: function (error) {
-          console.log("Error:", error);
-          // On error, reset the button and show an error message
+        error: function (xhr, status, error) {
+          console.error("AJAX Error:", status, error); // Log the full error
+          console.error("Server Response:", xhr.responseText); // Log the server's response
           $submitButton.html('Error! Try Again');
           $submitButton.prop('disabled', false); // Re-enable the button
         }
