@@ -23,6 +23,7 @@ urlpatterns = [
     path("update25/<int:id>/", views.update_depot25, name="update_depot25"),
     path("updateNc/<int:permit_id>/", views.edit_permit, name="edit_permit"),
     path("dep24rep/", views.depot24Report, name="depot24Report"),
+    path("lr24rep/", views.LR24Report, name="LR24Report"),
     path("dep25rep/", views.depot25Report, name="depot25Report"),
     path("lr25rep/", views.loadReading2024Report, name="loadReading2024Report"),
     path("view_dep24/<int:id>", views.view_case_dep_24, name="view_case_dep_24"),

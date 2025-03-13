@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<!-- Google Fonts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+  integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" /> -->
+<!-- MDB -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<!-- Include Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  html,
+  body {
+    height: 100%
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 87vh;
+    flex-direction: column
+  }
+
+  .table {
+    width: 80%;
+    margin-left: 30px;
+    margin-right: 30px;
+    text-align: center;
+    border: 3px solid #9999;
+
+  }
+
+  .badge {
+    font-size: 20px;
+  }
+</style>
+<div class="container">
+  <div>
+    <h6 style="font-size:40px; margin-top:-50px"> Load Reading Report 2024 </h6>
+  </div>
+  <table class="table align-middle bg-white table-bordered" style="margin-top:-170px">
+    <thead class="bg-light">
+      <tr>
+        <th>Engineer Name</th>
+        <th>Engineer Area</th>
+        <th>Total Cases</th>
+        <th>Pending</th>
+        <th>In GIS</th>
+        <th>In WayLeave</th>
+        <th>Not Required</th>
+        <th>Completed</th>
+        <th>Replan</th>
+        <th>Replan Repassed</th>
+        <th>Total Cost</th>
+        <th>Total Length</th>
+        <th>In Progress</th>
+        <th>Completed By Construction</th>
+        <th>Replan</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for engineer_name, data in engineers_data.items %}
+      <tr>
+        <td>
+          <p class="fw-normal mb-1">{{ engineer_name }}</p>
+        </td>
+        <td>
+          <p class="fw-normal mb-1">
+            {% if engineer_name == "A RAJESH" %}
+            Area <br> 1 + 2 + 9
+            {% elif engineer_name == "Bassam" %}
+            Area <br> 3 + 12
+            {% elif engineer_name == "MOHAMED RAJAB" %}
+            Area <br> 4 + 5
+            {% elif engineer_name == "MOHAMED ALANSARI" %}
+            Area <br> 6 + 7 + 8
+            {% elif engineer_name == "Ebrahim Isa" %}
+            Area <br> 10
+            {% endif %}
+          </p>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.total_count }}</span>
+        </td>
+        <td>
+          {% if data.status_counts.In_Design > 5 %}
+          <span class="badge badge-danger rounded-pill d-inline">{{ data.status_counts.In_Design }}</span>
+          {% elif data.status_counts.In_Design == 0 %}
+          <span class="badge badge-success rounded-pill d-inline">{{ data.status_counts.In_Design }}</span>
+          {% else %}
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.In_Design }}</span>
+          {% endif %}
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.In_GIS }}</span>
+        </td>
+        <td>
+          <span class="badge badge-warning rounded-pill d-inline">{{ data.status_counts.In_Wayleave }}</span>
+        </td>
+        <td>
+          <span class="badge badge-primary rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-success rounded-pill d-inline">{{ data.status_counts.Completed }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Replan }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.ReplanPassed }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+        <td>
+          <span class="badge badge-info rounded-pill d-inline">{{ data.status_counts.Not_Required }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
