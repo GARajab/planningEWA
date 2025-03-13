@@ -57,7 +57,6 @@ def signin_view(request):
     return render(request, "signin.html")
 
 
-@login_required
 def signout_view(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
@@ -772,3 +771,11 @@ def update_LR24(request, id):
         )
         return JsonResponse({"success": True})
     return JsonResponse(case_data)
+
+
+def view_case_nc(request, id):
+    case = get_object_or_404(Permit, id=id)
+    context = {
+        "case": case,
+    }
+    return render(request, "viewNC.py.html", context)

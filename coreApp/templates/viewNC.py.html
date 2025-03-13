@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Permit Details</title>
+  <!-- Bootstrap CSS -->
+  <link href=" {% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="javascript:history.back()" class="btn btn-primary mb-3">Back</a>
+        <h2 class="mb-4">Permit Details</h2>
+        <div class="form-group">
+          <label for="permitNumber">Permit Number</label>
+          <input type="text" class="form-control" id="permitNumber" placeholder="Permit Number"
+            value="{{ case.Number }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="parcelNumber">Parcel Number</label>
+          <input type="text" class="form-control" id="parcelNumber" placeholder="Parcel Number"
+            value="{{ case.parcel_number }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="block">Block</label>
+          <input type="text" class="form-control" id="block" placeholder="Block" value="{{ case.block }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="kw">KW</label>
+          <input type="number" class="form-control" id="kw" placeholder="KW" value="{{ case.kw }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="kva">KVA</label>
+          <input type="number" class="form-control" id="kva" placeholder="KVA" value="{{ case.kva }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="planEng">Plan Engineer</label>
+          <input type="text" class="form-control" id="planEng" placeholder="Plan Engineer" value="{{ case.planeng }}"
+            readonly>
+        </div>
+        <div class="form-group">
+          <label for="planStatus">Plan Status</label>
+          <input type="text" class="form-control" id="planStatus" placeholder="Plan Status"
+            value="{{ case.plan_status }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="passedDate">Passed Date</label>
+          <input type="date" class="form-control" id="passedDate" value="{{ case.passed_date }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="toWLDate">To WL Date</label>
+          <input type="date" class="form-control" id="toWLDate" value="{{ case.to_wl_date }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="toGISDate">To GIS Date</label>
+          <input type="date" class="form-control" id="toGISDate" value="{{ case.to_gis_date }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="wlNumber">WL Number</label>
+          <input type="text" class="form-control" id="wlNumber" placeholder="WL Number" value="{{ case.wl_number }}"
+            readonly>
+        </div>
+        <div class="form-group">
+          <label for="refNo">REF NO</label>
+          <input type="text" class="form-control" id="refNo" placeholder="REF NO" value="{{ case.ref_no }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="comment">Comment</label>
+          <input type="text" class="form-control" id="comment" placeholder="Comment" value="{{ case.comment }}"
+            readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

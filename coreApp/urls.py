@@ -26,6 +26,7 @@ urlpatterns = [
     path("dep25rep/", views.depot25Report, name="depot25Report"),
     path("lr25rep/", views.loadReading2024Report, name="loadReading2024Report"),
     path("view_dep24/<int:id>", views.view_case_dep_24, name="view_case_dep_24"),
+    path("view_nc/<int:id>", views.view_case_nc, name="view_case_nc"),
     path("view_dep25/<int:id>", views.view_case_dep_25, name="view_case_dep_25"),
     path("LR/<int:id>/", views.loadreading_detail_view, name="loadreading_detail_view"),
     path("dashboard/", views.dashboard, name="dashboard"),
