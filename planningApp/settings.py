@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-lp!wsq*w%riljr=6dcpzc#ix-7(_&y226*z86xzxaf5dtx@xl*"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -71,16 +71,11 @@ WSGI_APPLICATION = "planningApp.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "planningewadb",  # Database name from Aiven
-        "USER": "planningewadb_user",  # Username from Aiven
-        "PASSWORD": "jsTnfhRnAYhb4GISGj7HWqaZzeptdOuM",  # Password from Aiven
-        "HOST": "dpg-cv8t6gtumphs738ut380-a.oregon-postgres.render.com",  # Hostname from Aiven
+        "NAME": "railway",  # Database name from Aiven
+        "USER": "postgres",  # Username from Aiven
+        "PASSWORD": "mUPpPgcaiTDzVcvQSsPzEaCMALqJwIER",  # Password from Aiven
+        "HOST": "postgres.railway.internal",  # Hostname from Aiven
         "PORT": "5432",  # Port from Aiven (default is 5432)
-        "OPTIONS": {
-            "sslmode": "require",  # Enable SSL
-            "sslrootcert": "path/to/ca_certificate.pem",  # Path to the CA certificate
-            "options": "-c search_path=dep24",
-        },
     }
 }
 
