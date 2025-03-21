@@ -219,7 +219,7 @@ class loadreading2024(models.Model):
     KVA = models.CharField(max_length=20, blank=True, null=True, verbose_name="kVA")
 
     Plan_Status = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Plan Status"
+        max_length=255, blank=True, null=True, verbose_name="Plan_Status"
     )
     WL_NO = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="WL NO"

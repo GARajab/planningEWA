@@ -140,17 +140,13 @@ def nc24(request):
             "permits": permits,
             "is_admin": request.user.is_superuser,
         }
-        return render(
-            request,
-            "nc2024.html",
-            context
-        )
+        return render(request, "nc2024.html", context)
     else:
         return redirect("signin")
 
 
 def edit_permit(request, permit_id):
-    
+
     permit = get_object_or_404(Permit, id=permit_id)
 
     # Prepare permit data for JSON response
@@ -321,13 +317,13 @@ def depot24Report(request):
         "Ebrahim Isa",
     ]
     statuses = [
-        "In Design",
-        "In GIS",
-        "In Wayleave",
-        "Completed",
-        "Replan",
-        "ReplanPassed",
-        "Not Required",
+        "IN DESIGN",
+        "IN GIS",
+        "IN WAYLEAVE",
+        "COMPLETED",
+        "REPLAN",
+        "REPLANPASSED",
+        "NOT REQUIRED",
     ]
 
     # Dictionary to store data for all engineers
@@ -375,13 +371,13 @@ def depot25Report(request):
         "Ebrahim Isa",
     ]
     statuses = [
-        "In Design",
-        "In GIS",
-        "In Wayleave",
-        "Completed",
-        "Replan",
-        "ReplanPassed",
-        "Not Required",
+        "IN DESIGN",
+        "IN GIS",
+        "IN WAYLEAVE",
+        "COMPLETED",
+        "REPLAN",
+        "REPLANPASSED",
+        "NOT REQUIRED",
     ]
 
     # Dictionary to store data for all engineers
@@ -778,13 +774,13 @@ def LR24Report(request):
         "Ebrahim Isa",
     ]
     statuses = [
-        "In Design",
-        "In GIS",
-        "In Wayleave",
-        "Completed",
-        "Replan",
-        "ReplanPassed",
-        "Not Required",
+        "IN DESIGN",
+        "IN GIS",
+        "IN WAYLEAVE",
+        "COMPLETED",
+        "REPLAN",
+        "REPLANPASSED",
+        "NOT REQUIRED",
     ]
 
     # Dictionary to store data for all engineers
@@ -800,9 +796,7 @@ def LR24Report(request):
         }
 
         # Get total count for the engineer
-        total_count = loadreading2024.objects.filter(
-            PlanEng=engineer_name
-        ).count()
+        total_count = loadreading2024.objects.filter(PlanEng=engineer_name).count()
 
         # Store data for this engineer
         engineers_data[engineer_name] = {
@@ -816,5 +810,33 @@ def LR24Report(request):
         {
             "engineers_data": engineers_data,
             "is_admin": request.user.is_superuser,
+        },
+    )
+
+
+def dashV_Two(request):
+
+    pendingDep24_counts = (
+        depotcases2024.objects.filter(PlanStatus="In Design").count() or 0
+    )
+    pendingDep25_counts = (
+        depotcases2025.objects.filter(PlanStatus="In Design").count() or 0
+    )
+    pendingLR24_counts = (
+        loadreading2024.objects.filter(Plan_Status="In Design (plan)").count() or 0
+    )
+    pendingLR25_counts = (
+        loadreading2025.objects.filter(Plan_Status="In Design (Plan)").count() or 0
+    )
+    pendingNc_counts = Permit.objects.filter(plan_status="In Design").count() or 0
+    return render(
+        request,
+        "index.html",
+        {
+            "pendingDep24_counts": pendingDep24_counts,
+            "pendingDep25_counts": pendingDep25_counts,
+            "pendingLR24_counts": pendingLR24_counts,
+            "pendingLR25_counts": pendingLR25_counts,
+            "pendingNc_counts": pendingNc_counts,
         },
     )

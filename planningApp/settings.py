@@ -61,7 +61,7 @@ TEMPLATES = [
         },
     },
 ]
-
+print("Template directories:", TEMPLATES[0]["DIRS"])
 WSGI_APPLICATION = "planningApp.wsgi.application"
 
 
