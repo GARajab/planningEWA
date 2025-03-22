@@ -52,6 +52,7 @@ def signin_view(request):
             )
             return redirect("home")  # Use redirect instead of render
         else:
+            return redirect("signin")
             messages.error(request, "Invalid credentials.")
             return redirect("signin")
 
@@ -817,64 +818,68 @@ def LR24Report(request):
 
 def dashV_Two(request):
 
-    pendingDep24_counts = (
-        depotcases2024.objects.filter(
-            ~Q(PlanStatus="Completed")
-            & ~Q(PlanStatus="Not Required")
-            & ~Q(PlanStatus="Single Consumer")
-        ).count()
-        or 0
-    )
-    pendingDep25_counts = (
-        depotcases2025.objects.filter(
-            ~Q(PlanStatus="Completed")
-            & ~Q(PlanStatus="Not Required")
-            & ~Q(PlanStatus="Single Consumer")
-        ).count()
-        or 0
-    )
-    pendingLR24_counts = (
-        loadreading2024.objects.filter(
-            ~Q(Plan_Status="Completed")
-            & ~Q(Plan_Status="Not Required")
-            & ~Q(Plan_Status="Single Consumer")
-        ).count()
-        or 0
-    )
-    pendingLR25_counts = (
-        loadreading2025.objects.filter(
-            ~Q(Plan_Status="Completed")
-            & ~Q(Plan_Status="Not Required")
-            & ~Q(Plan_Status="Single Consumer")
-        ).count()
-        or 0
-    )
-    pendingNc_counts = (
-        Permit.objects.filter(
-            ~Q(plan_status="COMPLETED") & ~Q(plan_status="Not Required")
-        ).count()
-        or 0
-    )
+    if request.user.is_authenticated:
 
-    allDep24_counts = depotcases2024.objects.all().count()
-    allDep25_counts = depotcases2025.objects.all().count()
-    allLR24_counts = loadreading2024.objects.all().count()
-    allLR25_counts = loadreading2025.objects.all().count()
-    allNc_counts = Permit.objects.all().count()
+        pendingDep24_counts = (
+            depotcases2024.objects.filter(
+                ~Q(PlanStatus="Completed")
+                & ~Q(PlanStatus="Not Required")
+                & ~Q(PlanStatus="Single Consumer")
+            ).count()
+            or 0
+        )
+        pendingDep25_counts = (
+            depotcases2025.objects.filter(
+                ~Q(PlanStatus="Completed")
+                & ~Q(PlanStatus="Not Required")
+                & ~Q(PlanStatus="Single Consumer")
+            ).count()
+            or 0
+        )
+        pendingLR24_counts = (
+            loadreading2024.objects.filter(
+                ~Q(Plan_Status="Completed")
+                & ~Q(Plan_Status="Not Required")
+                & ~Q(Plan_Status="Single Consumer")
+            ).count()
+            or 0
+        )
+        pendingLR25_counts = (
+            loadreading2025.objects.filter(
+                ~Q(Plan_Status="Completed")
+                & ~Q(Plan_Status="Not Required")
+                & ~Q(Plan_Status="Single Consumer")
+            ).count()
+            or 0
+        )
+        pendingNc_counts = (
+            Permit.objects.filter(
+                ~Q(plan_status="COMPLETED") & ~Q(plan_status="Not Required")
+            ).count()
+            or 0
+        )
 
-    return render(
-        request,
-        "index.html",
-        {
-            "pendingDep24_counts": pendingDep24_counts,
-            "pendingDep25_counts": pendingDep25_counts,
-            "pendingLR24_counts": pendingLR24_counts,
-            "pendingLR25_counts": pendingLR25_counts,
-            "pendingNc_counts": pendingNc_counts,
-            "allDep24_counts": allDep24_counts,
-            "allDep25_counts": allDep25_counts,
-            "allLR24_counts": allLR24_counts,
-            "allLR25_counts": allLR25_counts,
-            "allNc_counts": allNc_counts,
-        },
-    )
+        allDep24_counts = depotcases2024.objects.all().count()
+        allDep25_counts = depotcases2025.objects.all().count()
+        allLR24_counts = loadreading2024.objects.all().count()
+        allLR25_counts = loadreading2025.objects.all().count()
+        allNc_counts = Permit.objects.all().count()
+
+        return render(
+            request,
+            "index.html",
+            {
+                "pendingDep24_counts": pendingDep24_counts,
+                "pendingDep25_counts": pendingDep25_counts,
+                "pendingLR24_counts": pendingLR24_counts,
+                "pendingLR25_counts": pendingLR25_counts,
+                "pendingNc_counts": pendingNc_counts,
+                "allDep24_counts": allDep24_counts,
+                "allDep25_counts": allDep25_counts,
+                "allLR24_counts": allLR24_counts,
+                "allLR25_counts": allLR25_counts,
+                "allNc_counts": allNc_counts,
+            },
+        )
+    else:
+        return redirect("signin")
