@@ -1,58 +1,132 @@
 # accounts/views.py
 
 import random
-from typing import Collection
-from django.shortcuts import get_object_or_404, render, redirect
-from django.db.models import Q
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from .models import (
-    depotcases2024,
-    depotcases2025,
-    Permit,
-    loadreading2024,
-    loadreading2025,
-)
+from django.core.mail import send_mail
+from asgiref.sync import sync_to_async
+from django.core.signing import Signer,BadSignature
+from django.db.models import Q
+from .models import loadreading2025
 
 
-def signup_view(request):
+
+
+
+
+def generate_verification_token(email):
+    signer = Signer()
+    return signer.sign(email)
+
+
+async def verify_email_async(email):
+    """
+    Send a verification email asynchronously.
+    """
+    token = generate_verification_token(email)
+
+    # Construct the verification URL
+    verification_url = f"http://127.0.0.1:8000/verify-email/{token}/"
+
+    # Email content
+    subject = "MainRecords Account Email Verification"
+    message = f"Please verify your email by clicking on the link: {verification_url}"
+    try:
+        await sync_to_async(send_mail)(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [email],
+            fail_silently=False,
+        )
+        return True  # Email sent successfully
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False  # Email failed to send
+
+async def signup_view(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        email = request.POST["email"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        email = request.POST.get("email")
 
-        if User.objects.filter(username=username).exists():
+        # Check if username already exists
+        username_exists = await sync_to_async(User.objects.filter(username=username).exists)()
+        if username_exists:
             messages.error(request, "Username already exists.")
             return redirect("signup")
 
-        user = User.objects.create_user(
-            username=username, password=password, email=email
+        # Send verification email
+        email_sent = await verify_email_async(email)
+        if not email_sent:
+            messages.error(request, "Failed to send verification email. Please try again.")
+            return redirect("signup")
+
+        # Create the user
+        user = await sync_to_async(User.objects.create_user)(
+            username=username,
+            password=password,
+            email = email,
+            is_active = False
         )
-        user.save()
-        messages.success(request, "Signup successful! Now you can sign in.")
+
+        messages.success(request, "Signup successful! Please check your email to verify your account.")
         return redirect("signin")
 
+    # Render the signup form for GET requests
     return render(request, "signup.html")
+
+
+def verify_email_view(request, token):
+    """
+    Verify the email using the token.
+    """
+    signer = Signer()
+    try:
+        # Verify the token
+        email = signer.unsign(token)  # Extract the email from the token
+        user = User.objects.get(email=email)
+
+        # Mark the user as verified (you can add a field to the User model for this)
+        user.is_active = True  # Or set a custom field like `user.email_verified = True`
+        user.save()
+
+        messages.success(request, "Your email has been verified successfully!")
+        return redirect("signin")  # Redirect to the login page
+    except BadSignature:
+        messages.error(request, "Invalid verification link.")
+        return redirect("signup")  # Redirect to the signup page
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect("signup")
+
 
 
 def signin_view(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
 
+        # Check if the user exists and is active
+        try:
+            user = User.objects.get(username=username)
+            if not user.is_active:
+                messages.error(request, "Your account is not activated. Please check your email.")
+                return redirect("signin")
+        except User.DoesNotExist:
+            messages.error(request, "Invalid credentials.")
+            return redirect("signin")
+
+        # Authenticate the user
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(
-                request, "Welcome " + username + " You Logged in successfully!"
-            )
-            return redirect("home")  # Use redirect instead of render
+            messages.success(request, "Welcome " + username + " You Logged in successfully!")
+            return redirect("dashV_Two")
         else:
-            return redirect("signin")
             messages.error(request, "Invalid credentials.")
             return redirect("signin")
 

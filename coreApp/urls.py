@@ -42,4 +42,5 @@ urlpatterns = [
         name="fetch_scheme_references",
     ),
     path("dashV_Two/", views.dashV_Two, name="dashV_Two"),
+    path("verify-email/<str:token>/", views.verify_email_view, name="verify-email"),
 ]

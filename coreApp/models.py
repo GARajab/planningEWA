@@ -2,11 +2,37 @@ from django.db import models  # type: ignore
 from django.contrib.auth.models import User  # type: ignore
 from django.db.models.signals import post_save  # type: ignore
 from django.dispatch import receiver  # type: ignore
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
+from django.conf import settings
+
+User = get_user_model()
+
+class CustomUser(AbstractUser):
+    is_activated = models.BooleanField(default=False)  # Custom field
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # Custom related_name
+        blank=True,
+        verbose_name='groups',
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',  # Custom related_name
+        blank=True,
+        verbose_name='user permissions',
+        help_text='Specific permissions for this user.',
+    )
+
+    def __str__(self):
+        return self.username
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cpr = models.CharField(max_length=255, blank=True, null=True)  # Updated
+    is_activated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

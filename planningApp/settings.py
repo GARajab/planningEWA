@@ -28,8 +28,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "coreApp",
     "django_flatpickr",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # Add this line
@@ -39,9 +45,20 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "planningApp.urls"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER ='ga.rajab.24@gmail.com'
+EMAIL_HOST_PASSWORD = 'wogyfizeroxwybfp'
+
+DEFAULT_FROM_EMAIL = 'noreply<ga.rajab.24@gmail.com>'
 
 TEMPLATES = [
     {
@@ -61,9 +78,11 @@ TEMPLATES = [
         },
     },
 ]
-print("Template directories:", TEMPLATES[0]["DIRS"])
+
 WSGI_APPLICATION = "planningApp.wsgi.application"
 
+LOGIN_REDIRECT_URL = 'dashV_Two'  # Replace 'home' with your desired URL name
+LOGOUT_REDIRECT_URL = 'signin_view'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
