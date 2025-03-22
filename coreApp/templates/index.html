@@ -211,6 +211,22 @@
           /* Maximum width */
         }
       </style>
+      <style>
+        /* Add a smooth transition and initial shadow */
+        .hover-shadow {
+          transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+          /* Initial shadow */
+        }
+
+        /* Add a larger shadow and slight scale effect on hover */
+        .hover-shadow:hover {
+          box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+          /* Hover shadow */
+          transform: translateY(-5px);
+          /* Slight lift effect */
+        }
+      </style>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -229,7 +245,7 @@
           </div>
           <div class="row">
             <div class="col-md-2 stretch-card grid-margin">
-              <div class="card bg-gradient-danger card-img-holder text-white">
+              <div class="card bg-gradient-danger card-img-holder text-white hover-shadow">
                 <div class="card-body" onclick="window.location.href='/dep24'" style="cursor: pointer;">
                   <img src="{% static 'dBoardFiles/dist/assets/images/dashboard/circle.svg' %}"
                     class="card-img-absolute" alt="circle-image" />
@@ -237,25 +253,24 @@
                   </h4>
                   <h2>Pending Schemes</h2>
                   <br>
-                  <h2 style="text-align: center;">{{pendingDep24_counts}}</h2>
+                  <h2 style="text-align: center;">{{pendingDep24_counts}} / {{allDep24_counts}}</h2>
                 </div>
               </div>
             </div>
             <div class="col-md-2 stretch-card grid-margin">
-              <div class="card bg-gradient-info card-img-holder text-white">
+              <div class="card bg-gradient-info card-img-holder text-white hover-shadow">
                 <div class="card-body" onclick="window.location.href='/dashV-Two'" style="cursor: pointer;">
                   <img src="{% static 'dBoardFiles/dist/assets/images/dashboard/circle.svg' %}"
                     class="card-img-absolute" alt="circle-image" />
-                  <h4 class="font-weight-normal mb-3">Depot Cases 2025
-                  </h4>
+                  <h4 class="font-weight-normal mb-3">Depot Cases 2025</h4>
                   <h2>Pending Schemes</h2>
                   <br>
-                  <h2 style="text-align: center;">{{pendingDep25_counts}}</h2>
+                  <h2 style="text-align: center;">{{pendingDep25_counts}} / {{allDep25_counts}}</h2>
                 </div>
               </div>
             </div>
             <div class="col-md-2 stretch-card grid-margin">
-              <div class="card bg-gradient-primary card-img-holder text-white">
+              <div class="card bg-gradient-primary card-img-holder text-white hover-shadow">
                 <div class="card-body" onclick="window.location.href='/dashV-Two'" style="cursor: pointer;">
                   <img src="{% static 'dBoardFiles/dist/assets/images/dashboard/circle.svg' %}"
                     class="card-img-absolute" alt="circle-image" />
@@ -263,12 +278,13 @@
                   </h4>
                   <h2>Pending Schemes</h2>
                   <br>
-                  <h2 style="text-align: center;">{{pendingLR24_counts}}</h2>
+                  <h2 style="text-align: center;">{{pendingLR24_counts}} / {{allLR24_counts}}</h2>
+                  <h6 style="text-align:center">A=X and B=Y and C=Z</h6>
                 </div>
               </div>
             </div>
             <div class="col-md-2 stretch-card grid-margin">
-              <div class="card bg-gradient-success card-img-holder text-white">
+              <div class="card bg-gradient-success card-img-holder text-white hover-shadow">
                 <div class="card-body" onclick="window.location.href='/dashV_Two'" style="cursor: pointer;">
                   <img src="{% static 'dBoardFiles/dist/assets/images/dashboard/circle.svg' %}"
                     class="card-img-absolute" alt="circle-image" />
@@ -276,12 +292,12 @@
                   </h4>
                   <h2>Pending Schemes</h2>
                   <br>
-                  <h2 style="text-align: center;">{{pendingLR25_counts}}</h2>
+                  <h2 style="text-align: center;">{{pendingLR25_counts}} / {{allLR25_counts}}</h2>
                 </div>
               </div>
             </div>
             <div class="col-md-2 stretch-card grid-margin">
-              <div class="card bg-gradient-danger card-img-holder text-white">
+              <div class="card bg-gradient-danger card-img-holder text-white hover-shadow">
                 <div class="card-body" onclick="window.location.href='/dashV-Two'" style="cursor: pointer;">
                   <img src="{% static 'dBoardFiles/dist/assets/images/dashboard/circle.svg' %}"
                     class="card-img-absolute" alt="circle-image" />
@@ -289,9 +305,9 @@
                   </h4>
                   <h2>Pending Cases</h2>
                   <br>
-                  <h3 style="text-align: center;" class="pendingPermit">{{pendingNc_counts}}
+                  <h3 style="text-align: center;" class="pendingPermit">{{pendingNc_counts}} / {{allNc_counts}}
                     <br>
-                    <span id="warning">More Than 60 Scheme</span>
+                    <span id="warning">More Than 160 Permit</span>
                   </h3>
                 </div>
               </div>
@@ -376,7 +392,7 @@
       pendingNcElements.forEach(element => {
         const pendingNc_counts = parseInt(element.innerHTML, 10);
         var blink_speed = 1500;
-        if (pendingNc_counts > 60) {
+        if (pendingNc_counts > 160) {
           var t = setInterval(function () {
             element.style.visibility = (element.style.visibility == 'hidden' ? '' : 'hidden');
             element.style.color = "#F90B31";
