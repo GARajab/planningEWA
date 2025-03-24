@@ -31,6 +31,12 @@
   <!-- End layout styles -->
   <link rel="shortcut icon" href="{% static 'link' %}" />
 </head>
+<style>
+  h6 {
+    font-size: 20px;
+    color: black
+  }
+</style>
 
 <body>
   <div class="container-scroller">
@@ -254,6 +260,10 @@
                   <h2>Pending Schemes</h2>
                   <br>
                   <h2 style="text-align: center;">{{pendingDep24_counts}} / {{allDep24_counts}}</h2>
+                  <br>
+                  <h6 style="text-align:center">In Design={{inDESIGNDep24_counts}} In GIS={{inGISDep24_counts}} and In
+                    Wayleave={{inWLDep24_counts}} and
+                    Completed={{completedDep24_counts}} and Not Required = {{inDESIGNLR25_counts}}</h6>
                 </div>
               </div>
             </div>
@@ -266,6 +276,9 @@
                   <h2>Pending Schemes</h2>
                   <br>
                   <h2 style="text-align: center;">{{pendingDep25_counts}} / {{allDep25_counts}}</h2>
+                  <br>
+                  <h6 style="text-align:center">In Design = {{inDESIGNDep25_counts}} And In GIS=X and In Wayleave=Y And
+                    Completed=Z And Not Required = {{inDESIGNLR25_counts}}</h6>
                 </div>
               </div>
             </div>
@@ -279,7 +292,9 @@
                   <h2>Pending Schemes</h2>
                   <br>
                   <h2 style="text-align: center;">{{pendingLR24_counts}} / {{allLR24_counts}}</h2>
-                  <h6 style="text-align:center">A=X and B=Y and C=Z</h6>
+                  <br>
+                  <h6 style="text-align:center">In Design={{inDESIGNLR24_counts}} In GIS=X and In Wayleave=Y and
+                    Completed=Z and Not Required = {{inDESIGNLR25_counts}}</h6>
                 </div>
               </div>
             </div>
@@ -293,6 +308,9 @@
                   <h2>Pending Schemes</h2>
                   <br>
                   <h2 style="text-align: center;">{{pendingLR25_counts}} / {{allLR25_counts}}</h2>
+                  <br>
+                  <h6 style="text-align:center">In Design={{inDESIGNLR25_counts}} In GIS=X and In Wayleave=Y and
+                    Completed=Z</h6>
                 </div>
               </div>
             </div>
@@ -309,6 +327,8 @@
                     <br>
                     <span id="warning">More Than 160 Permit</span>
                   </h3>
+                  <h6 style="text-align:center">In Design={{inDESIGNDep24_counts}} In GIS=X and In Wayleave=Y and
+                    Completed=Z</h6>
                 </div>
               </div>
             </div>

@@ -8,13 +8,9 @@ from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
 from asgiref.sync import sync_to_async
-from django.core.signing import Signer,BadSignature
+from django.core.signing import Signer, BadSignature
 from django.db.models import Q
 from .models import loadreading2025
-
-
-
-
 
 
 def generate_verification_token(email):
@@ -47,6 +43,7 @@ async def verify_email_async(email):
         print(f"Error sending email: {e}")
         return False  # Email failed to send
 
+
 async def signup_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -54,7 +51,9 @@ async def signup_view(request):
         email = request.POST.get("email")
 
         # Check if username already exists
-        username_exists = await sync_to_async(User.objects.filter(username=username).exists)()
+        username_exists = await sync_to_async(
+            User.objects.filter(username=username).exists
+        )()
         if username_exists:
             messages.error(request, "Username already exists.")
             return redirect("signup")
@@ -62,18 +61,20 @@ async def signup_view(request):
         # Send verification email
         email_sent = await verify_email_async(email)
         if not email_sent:
-            messages.error(request, "Failed to send verification email. Please try again.")
+            messages.error(
+                request, "Failed to send verification email. Please try again."
+            )
             return redirect("signup")
 
         # Create the user
         user = await sync_to_async(User.objects.create_user)(
-            username=username,
-            password=password,
-            email = email,
-            is_active = False
+            username=username, password=password, email=email, is_active=False
         )
 
-        messages.success(request, "Signup successful! Please check your email to verify your account.")
+        messages.success(
+            request,
+            "Signup successful! Please check your email to verify your account.",
+        )
         return redirect("signin")
 
     # Render the signup form for GET requests
@@ -104,7 +105,6 @@ def verify_email_view(request, token):
         return redirect("signup")
 
 
-
 def signin_view(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -114,7 +114,9 @@ def signin_view(request):
         try:
             user = User.objects.get(username=username)
             if not user.is_active:
-                messages.error(request, "Your account is not activated. Please check your email.")
+                messages.error(
+                    request, "Your account is not activated. Please check your email."
+                )
                 return redirect("signin")
         except User.DoesNotExist:
             messages.error(request, "Invalid credentials.")
@@ -124,7 +126,9 @@ def signin_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, "Welcome " + username + " You Logged in successfully!")
+            messages.success(
+                request, "Welcome " + username + " You Logged in successfully!"
+            )
             return redirect("dashV_Two")
         else:
             messages.error(request, "Invalid credentials.")
@@ -938,6 +942,50 @@ def dashV_Two(request):
         allLR24_counts = loadreading2024.objects.all().count()
         allLR25_counts = loadreading2025.objects.all().count()
         allNc_counts = Permit.objects.all().count()
+        inDESIGNDep24_counts = depotcases2024.objects.filter(
+            PlanStatus="In Design"
+        ).count()
+        inDESIGNDep25_counts = depotcases2025.objects.filter(
+            PlanStatus="In Design"
+        ).count()
+        inDESIGNLR24_counts = loadreading2024.objects.filter(
+            Plan_Status="In Design"
+        ).count()
+        inDESIGNLR25_counts = loadreading2025.objects.filter(
+            Plan_Status="In Design"
+        ).count()
+        inDESIGNNc_counts = Permit.objects.filter(plan_status="In Design").count()
+        inGISDep24_counts = depotcases2024.objects.filter(PlanStatus="In GIS").count()
+        inGISDep25_counts = depotcases2025.objects.filter(PlanStatus="In GIS").count()
+        inGISLR24_counts = loadreading2024.objects.filter(Plan_Status="In GIS").count()
+        inGISLR25_counts = loadreading2025.objects.filter(Plan_Status="In GIS").count()
+        inGISNc_counts = Permit.objects.filter(plan_status="In GIS").count()
+        inWLDep24_counts = depotcases2024.objects.filter(
+            PlanStatus="In Wayleave"
+        ).count()
+        inWLDep25_counts = depotcases2025.objects.filter(
+            PlanStatus="In Wayleave"
+        ).count()
+        inWLLR24_counts = loadreading2024.objects.filter(
+            Plan_Status="In Wayleave"
+        ).count()
+        inWLLR25_counts = loadreading2025.objects.filter(
+            Plan_Status="In Wayleave"
+        ).count()
+        inWLNc_counts = Permit.objects.filter(plan_status="In Wayleave").count()
+        completedDep24_counts = depotcases2024.objects.filter(
+            PlanStatus="Completed"
+        ).count()
+        completedDep25_counts = depotcases2025.objects.filter(
+            PlanStatus="Completed"
+        ).count()
+        completedLR24_counts = loadreading2024.objects.filter(
+            Plan_Status="Completed"
+        ).count()
+        completedLR25_counts = loadreading2025.objects.filter(
+            Plan_Status="Completed"
+        ).count()
+        completedNc_counts = Permit.objects.filter(plan_status="Completed").count()
 
         return render(
             request,
@@ -953,6 +1001,25 @@ def dashV_Two(request):
                 "allLR24_counts": allLR24_counts,
                 "allLR25_counts": allLR25_counts,
                 "allNc_counts": allNc_counts,
+                "inGISDep24_counts": inGISDep24_counts,
+                "inGISDep25_counts": inGISDep25_counts,
+                "inGISLR24_counts": inGISLR24_counts,
+                "inGISLR25_counts": inGISLR25_counts,
+                "inGISNc_counts": inGISNc_counts,
+                "inWLDep24_counts": inWLDep24_counts,
+                "inWLDep25_counts": inWLDep25_counts,
+                "inWLLR24_counts": inWLLR24_counts,
+                "inWLLR25_counts": inWLLR25_counts,
+                "inWLNc_counts": inWLNc_counts,
+                "completedDep24_counts": completedDep24_counts,
+                "completedDep25_counts": completedDep25_counts,
+                "completedLR24_counts": completedLR24_counts,
+                "completedLR25_counts": completedLR25_counts,
+                "completedNc_counts": completedNc_counts,
+                "inDESIGNDep24_counts": inDESIGNDep24_counts,
+                "inDESIGNDep25_counts": inDESIGNDep25_counts,
+                "inDESIGNLR24_counts": inDESIGNLR24_counts,
+                "inDESIGNLR25_counts": inDESIGNLR25_counts,
             },
         )
     else:
